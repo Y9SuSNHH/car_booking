@@ -14,61 +14,57 @@ A. Quản lý
 - Quản lý người dùng
 - Quản lý nhân viên
 - Quản lý xe
-Tên xe
-Ảnh
-Hãng
-Chỗ ngồi
-Mô tả
-Địa điểm
-Điều khoản
-Mức giá niêm yết
-Mức giá 1 ngày
-Đánh giá
+    + Tên xe
+    + Ảnh
+    + Hãng
+    + Chỗ ngồi
+    + Mô tả
+    + Địa điểm
+    + Điều khoản
+    + Mức giá niêm yết
+    + Mức giá 1 ngày
+    + Đánh giá
 - Hóa đơn
-id
-id người dùng
-id xe
-Ngày bắt đầu
-Ngày kết thúc
-Tổng tiền
-Trạng thái (đã thanh toán, chưa thanh toán)
+    + id
+    + id người dùng
+    + id xe
+    + Ngày bắt đầu
+    + Ngày kết thúc
+    + Tổng tiền
+    + Trạng thái (đã thanh toán, chưa thanh toán)
 
 B. Nhân viên
 - Đăng nhập
 - Quản lý xe
-Tên xe
-Ảnh
-Hãng
-Chỗ ngồi
-Mô tả
-Địa điểm
-Điều khoản
-Mức giá niêm yết
-Mức giá 1 ngày
-Đánh giá
-
-
-
+    + Tên xe
+    + Ảnh
+    + Hãng
+    + Chỗ ngồi
+    + Mô tả
+    + Địa điểm
+    + Điều khoản
+    + Mức giá niêm yết
+    + Mức giá 1 ngày
+    + Đánh giá
 - Hóa đơn
-id
-id người dùng
-id xe
-Ngày bắt đầu
-Ngày kết thúc
-Tổng tiền
-Ngày đặt xe
-Tổng tiền
+    + id
+    + id người dùng
+    + id xe
+    + Ngày bắt đầu
+    + Ngày kết thúc
+    + Tổng tiền
+    + Trạng thái (đã thanh toán, chưa thanh toán)
 
 C. Người dùng
 - Đăng nhập, đăng kí
 -Thông tin người dùng
-+ id
-+ name
-+ giới tính
-+ email 
-+ địa chỉ
-+ ảnh
-+ tài khoản
-+ mật khẩu
-+ role(0.Người dùng, 1.Nhân viên, 2. Quản lý) 
+    + id
+    + name
+    + giới tính
+    + email 
+    + địa chỉ
+    + ảnh
+    + tài khoản
+    + mật khẩu
+    + role(0.Người dùng, 1.Nhân viên, 2. Quản lý) 
 
