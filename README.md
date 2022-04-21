@@ -13,8 +13,8 @@
 
   1. [Giới thiệu](#giới-thiệu)
   2. [Chức năng từng đối tượng](#chức-năng-từng-đối-tượng)    
-     + [Quản trị viên](#a-.-quản-trị-viên)
-     + [Người dùng](#b-.-người-dùng)
+     + [Quản trị viên](#quản-trị-viên)
+     + [Người dùng](#người-dùng)
  
 ## Chức năng từng đối tượng
 ### Quản trị viên
