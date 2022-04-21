@@ -42,7 +42,9 @@
     + Tổng tiền
     + Trạng thái: đã thanh toán, chưa thanh toán
 <br>
+
 **[⬆ Về mục lục](#mục-lục)**
+
 ### Người dùng
 - Đăng nhập, đăng kí
 - Quản lý thông tin cá nhân
@@ -56,4 +58,5 @@
     + mật khẩu
     + role(0.Người dùng, 1.Nhân viên, 2. Quản lý) 
 <br>
+
 **[⬆ Về mục lục](#mục-lục)**
