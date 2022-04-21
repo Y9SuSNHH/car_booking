@@ -17,7 +17,7 @@
      + [Người dùng](#người-dùng)
  
 ## Chức năng từng đối tượng
-###A. Quản trị viên
+### A. Quản trị viên
 - Đăng nhập
 - Quản lý trang thông tin: logo, banner, giới thiệu,…
 - Quản lý người dùng: thông tin cá nhân người dùng, nhân viên
@@ -41,7 +41,7 @@
     + Tổng tiền
     + Trạng thái: đã thanh toán, chưa thanh toán
 
-###B. Người dùng
+### B. Người dùng
 - Đăng nhập, đăng kí
 - Quản lý thông tin cá nhân
     + id
