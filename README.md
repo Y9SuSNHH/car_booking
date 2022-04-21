@@ -11,10 +11,10 @@
     
 ## Mục lục
 
-  1. [Giới thiệu](#giới-thiệu)
-  2. [Chức năng từng đối tượng](#chức-năng-từng-đối-tượng)    
-     + [Quản trị viên](#quản-trị-viên)
-     + [Người dùng](#người-dùng)
+  I. [Giới thiệu](#giới-thiệu)
+  II. [Chức năng từng đối tượng](#chức-năng-từng-đối-tượng)    
+     + [A. Quản trị viên](#quản-trị-viên)
+     + [B. Người dùng](#người-dùng)
  
 ## Chức năng từng đối tượng
 ### A. Quản trị viên
