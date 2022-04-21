@@ -1,6 +1,6 @@
 # Trang web thuê xe tự lái
 
-#Giới thiệu
+## Giới thiệu
 
 Đề 13: Phân tích web cho thuê xe ô tô tự lái
 [![Sơ đồ thực thể](https://app.diagrams.net/images/favicon-32x32.png)](https://drive.google.com/file/d/1jYtZcnhptKfiRMTN0OnewkmpCINyiXx7/view?usp=sharing)
@@ -11,10 +11,10 @@
     
 ## Mục lục
 
-  I. [Giới thiệu](#giới-thiệu)
-  II. [Chức năng từng đối tượng](#chức-năng-từng-đối-tượng)    
-     + [A. Quản trị viên](#quản-trị-viên)
-     + [B. Người dùng](#người-dùng)
+  1. [Giới thiệu](#giới-thiệu)
+  2. [Chức năng từng đối tượng](#chức-năng-từng-đối-tượng)    
+     + [Quản trị viên](#a-.-quản-trị-viên)
+     + [Người dùng](#b-.-người-dùng)
  
 ## Chức năng từng đối tượng
 ### A. Quản trị viên
