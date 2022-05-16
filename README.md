@@ -27,8 +27,8 @@
     + Ảnh
     + Hãng
     + Chỗ ngồi
-    + Mô tả
     + Địa điểm
+    + Mô tả
     + Điều khoản
     + Mức giá niêm yết
     + Mức giá 1 ngày
