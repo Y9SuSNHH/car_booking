@@ -1,0 +1,20 @@
+Client:
+- Khách hàng nhập thời hạn thuê, khu vực
+- Fillter theo sự lựa chọn
+- Chọn xe 
+- Đăng nhập(Đăng kí)
+- Xác thực GPLX, SĐT
+- Thuê xe 
+- Hóa đơn
+
+Admin:
+- Đăng nhập(admin/spadmin)
++ Admin
+ . Duyệt, sửa hóa đơn
+ . Duyệt GPLX, SĐT khách hàng
+ . Thêm, Sửa, thay đổi trạng thái xe
++ Super Admin
+ . Thống kê thu chi hóa đơn theo tháng, xe được thuê nhiều/ít nhất
+ . Quản lý thông tin admin
+ . Quản lý hóa đơn
+ . Quản lý xe
