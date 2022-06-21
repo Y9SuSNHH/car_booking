@@ -10,9 +10,9 @@ Client:
 Admin:
 - Đăng nhập(admin/spadmin)
 + Admin
- . Duyệt, sửa hóa đơn
- . Duyệt GPLX, SĐT khách hàng
  . Thêm, Sửa, thay đổi trạng thái xe
+ . Duyệt, sửa hóa đơn
+ . Duyệt GPLX khách hàng
 + Super Admin
  . Thống kê thu chi hóa đơn theo tháng, xe được thuê nhiều/ít nhất
  . Quản lý thông tin admin
