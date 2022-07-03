@@ -66,6 +66,7 @@ class AuthController extends Controller
         if (auth()->check()) {
             User::where('id', auth()->user()->id)
                 ->update([
+                    'name'     => $request->name,
                     'gender'   => $request->gender,
                     'phone'    => $request->phone,
                     'address'  => $request->address,

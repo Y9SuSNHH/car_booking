@@ -1,16 +1,15 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<table class="table">
+@extends('layout_backend.master')
+@section('content')
+<table class="table table-striped table-centered mb-0">
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">Thông tin</th>
-        <th scope="col">CMND</th>
-        <th scope="col">GPLX</th>
-        <th scope="col">Address</th>
-        <th scope="col">Role</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
+        <th>#</th>
+        <th>Thông tin</th>
+        <th>CMND</th>
+        <th>GPLX</th>
+        <th>Địa chỉ</th>
+        <th>Quyền</th>
+        <th>Xử lý</th>
     </tr>
     </thead>
     <tbody>
@@ -45,6 +44,10 @@
             </td>
             <td>{{$each->address}}</td>
             <td>{{$each->RoleName}}</td>
+            <td class="table-action">
+                <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+            </td>
         </tr>
     @endforeach
     </tbody>
@@ -54,3 +57,4 @@
         {{$data->links()}}
     </ul>
 </nav>
+@endsection
