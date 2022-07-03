@@ -15,7 +15,7 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 Route::get('/', function() {
-    return view('welcome');
+    return view('layout_backend.master');
 })->name('welcome');
 
 Route::get('/signin', [AuthController::class, 'signin'])->name('signin');
