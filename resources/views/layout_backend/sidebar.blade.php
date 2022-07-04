@@ -3,7 +3,13 @@
         <li class="side-nav-item">
             <a href="{{ route('admin.users.index') }}" class="side-nav-link">
                 <i class="uil uil-user"></i>
-                <span> Users </span>
+                <span> Người dùng </span>
+            </a>
+        </li>
+        <li class="side-nav-item">
+            <a href="{{ route('admin.cars.index') }}" class="side-nav-link">
+                <i class="mdi mdi-car"></i>
+                <span> Quản lý xe </span>
             </a>
         </li>
     </ul>

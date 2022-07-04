@@ -32,7 +32,8 @@
                             <th>Thông tin</th>
                             <th>CMND</th>
                             <th>GPLX</th>
-                            <th>Địa chỉ</th>
+                            <th>Quận/Huyện</th>
+                            <th>Tỉnh/TP</th>
                             <th>Role</th>
                             <th>Xử lý</th>
                         </tr>
@@ -70,17 +71,19 @@
                                     @endforeach
                                 </td>
                                 <td>{{$each->address}}</td>
+                                <td>{{$each->address2}}</td>
                                 <td>{{$each->RoleName}}</td>
                                 <td class="table-action">
                                     <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
                                     @if($each->role === 1)
-                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                        <a href="javascript: void(0);" class="action-icon"> <i
+                                                class="mdi mdi-pencil"></i></a>
                                     @endif
                                     <form action="{{ route("admin.$table.destroy", $each)}}" method="post"
-                                          class="action-icon">
+                                          class="action-icon" style="margin: 0px;padding: 0px;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-link action-icon"><i class="mdi mdi-delete"></i></button>
+                                        <button class="btn btn-link action-icon" style="border: 0px;"><i class="mdi mdi-delete"></i></button>
                                     </form>
                                 </td>
                             </tr>
