@@ -1,19 +1,19 @@
 <html lang="en" class="mm-active">
 <head>
     <meta charset="utf-8">
-    <title>Calendar | {{config('app.name')}}</title>
+    <title>{{ $title ?? '' }} - {{ config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description">
     <meta content="Coderthemes" name="author">
     <!-- App favicon -->
 {{--    <link rel="shortcut icon" href="assets/images/favicon.ico">--}}
 
-    <!-- App css -->
+<!-- App css -->
     <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/app-modern.min.css')}}" rel="stylesheet" type="text/css" id="light-style"
           disabled="disabled">
     <link href="{{asset('css/app-modern-dark.min.css')}}" rel="stylesheet" type="text/css" id="light-style">
-
+    @stack('css')
 </head>
 
 <body class="mm-show" data-layout="detached"
@@ -40,24 +40,13 @@
                     <div class="col-12">
                         <div class="page-title-box">
                             <h4 class="page-title">
-                                {{$title}}
+                                {{$title ?? ''}}
                             </h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-12">
-
-                        <div class="card">
-                            <div class="card-body">
-                                @yield('content')
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
+                @yield('content')
 
             </div>
 
@@ -74,5 +63,6 @@
 <!-- bundle -->
 <script src="{{asset('js/vendor.min.js')}}"></script>
 <script src="{{asset('js/app.min.js')}}"></script>
+@stack('js')
 </body>
 </html>
