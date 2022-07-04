@@ -91,7 +91,7 @@
            {{ $errors->first('fuel_comsumpiton') }}
          </span>
         @endif
-        <br>      
+        <br>
         <div class="form-floating">
             <label for="motaxe">Mô tả </label>
             <textarea class="form-control" placeholder="Nhập mô tả ở đây.." name="description"></textarea>
@@ -125,7 +125,7 @@
            {{ $errors->first('price_service') }}
          </span>
         @endif
-        <br> 
+        <br>
         Trạng thái
         <select name="status" class="form-control">
             <option value="0">Sẵn sàng</option>
