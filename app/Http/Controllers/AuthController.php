@@ -54,7 +54,7 @@ class AuthController extends Controller
             ->where('email', $request->get('email'))
             ->firstOrFail();
         if (!Hash::check($request->get('password'), $user->password)) {
-            dd(1);
+            return redirect()->route('signup');
         }
         $role = strtolower(UserRoleEnum::getKey($user->role));
         return redirect()->route("$role.welcome");

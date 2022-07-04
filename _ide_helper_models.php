@@ -1,10 +1,16 @@
 <?php
 
-namespace App\Models;
+// @formatter:off
+/**
+ * A helper file for your Eloquent Models
+ * Copy the phpDocs from this file to the correct Model,
+ * And remove them from this file, to prevent double declarations.
+ *
+ * @author Barry vd. Heuvel <barryvdh@gmail.com>
+ */
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
+namespace App\Models{
 /**
  * App\Models\Car
  *
@@ -50,27 +56,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereTransmission($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereUpdatedAt($value)
- * @mixin \Eloquent
  */
-class Car extends Model
-{
-    use HasFactory;
-
-    protected $fillable =  [
-        'name', 
-        'image', 
-        'brand', 
-        'address',
-        'type', 
-        'slot', 
-        'transmission',
-        'fuel',
-        'fuel_comsumpiton',
-        'description',
-        'price_1_day',
-        'price_insure',
-        'price_service',
-        'status',
-        'slug',
-    ];
+	class Car extends \Eloquent {}
 }
+
