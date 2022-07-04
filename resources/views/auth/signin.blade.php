@@ -39,7 +39,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="emailaddress">Email</label>
-                                <input class="form-control" type="text" id="emailaddress" required=""
+                                <input class="form-control" type="email" id="emailaddress" required=""
                                        placeholder="Điền email tại đây" name="email">
                             </div>
 
