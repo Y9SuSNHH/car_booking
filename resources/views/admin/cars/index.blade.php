@@ -44,10 +44,17 @@
             <td>{{ $each->status === 0 ? "Sẵn sàng" : "Bảo trì" }}</td>
             <td>{{ $each->slug }}</td>
             <td>
+<<<<<<< Updated upstream
                 <a href="{{ route("admin.cars.edit", $each )}}" class="btn btn-success">Sửa</a>
             </td>
             <td>
                 <form action="{{ route("admin.cars.destroy", $each) }}" method="post">
+=======
+                <a href="{{ route('admin.cars.edit', $each )}}" class="btn btn-success">Sửa</a>
+            </td>
+            <td>
+                <form action="{{ route('admin.cars.destroy', $each) }}" method="post">
+>>>>>>> Stashed changes
                     @csrf
                     @method('DELETE')
                    <button class="btn btn-danger">Xoá</button>

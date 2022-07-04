@@ -58,7 +58,7 @@ class User extends Model implements AuthenticatableContract
 
     public function getRoleNameAttribute()
     {
-        return UserRoleEnum::getKey($this->role);
+        return UserRoleEnum::getKeyByValue($this->role);
     }
     public function getGenderNameAttribute()
     {

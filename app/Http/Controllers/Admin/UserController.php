@@ -28,12 +28,10 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $query        = $this->model
-            ->clone()
-            ->latest();
+        $query        = $this->model->latest()->clone();
         $selectedRole = $request->get('role');
-        if (!empty($selectedRole) && $selectedRole !== 'Tất cả') {
-            $query->where('role', $request->get('role'));
+        if (isset($selectedRole) && $selectedRole !== 'All') {
+            $query->where('role', $selectedRole);
         }
         $query->with(['files' => function($q) {
             $q->whereIn('type', [
@@ -42,27 +40,39 @@ class UserController extends Controller
             ]);
         }]);
 
-        $data = $query->paginate();
-        $roles = UserRoleEnum::asArray();
+        $data      = $query->paginate();
+        $roles     = UserRoleEnum::asArray();
+        $rolesName = [
+            UserRoleEnum::getKeyByValue(0),
+            UserRoleEnum::getKeyByValue(1),
+            UserRoleEnum::getKeyByValue(2),
+        ];
+
 
         return view("$this->role.$this->table.index", [
             'data'         => $data,
             'roles'        => $roles,
+            'rolesName'    => $rolesName,
             'selectedRole' => $selectedRole,
         ]);
     }
 
+    public function create()
+    {
+        return view("$this->role.$this->table.create");
+    }
+
     public function show($userId)
     {
-        $data = $this->model->select('users.id', 'files.id', 'files.type', 'files.link')
-            ->join("files", 'files.table_id', '=', 'users.id')
-            ->where('files.table', 0)
-            ->where('files.type', 0)
-            ->orwhere('files.type', 1)
-            ->get();
-        return view("$this->role.$this->table.show", [
-            'each' => $data,
-        ]);
+//        $data = $this->model->select('users.id', 'files.id', 'files.type', 'files.link')
+//            ->join("files", 'files.table_id', '=', 'users.id')
+//            ->where('files.table', 0)
+//            ->where('files.type', 0)
+//            ->orwhere('files.type', 1)
+//            ->get();
+//        return view("$this->role.$this->table.show", [
+//            'each' => $data,
+//        ]);
     }
 
 

@@ -6,25 +6,29 @@
             <div class="card">
                 <div class="card-header">
                     <form class="form-horizontal" id="form-filter">
-                        <div class="form-group col-md-4">
-                            <label for="inputState" class="col-form-label" for="role">Role</label>
-                            <select id="inputState" class="form-control select-filter" name="role" id="role">
-                                <option selected>Tất cả</option>
+                        <div class="form-group col-md-2">
+                            <label for="role" class="col-form-label" for="role">Role</label>
+                            <select class="form-control select-filter" name="role" id="role">
+                                <option selected value="All">Tất cả</option>
                                 @foreach($roles as $role => $value)
                                     <option value="{{ $value }}"
                                             @if((string)$value === $selectedRole) selected @endif
                                     >
-                                        {{ $role }}
+                                        {{ $rolesName[$value] }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </form>
+                    <div class="form-group col-md-2">
+                        <a href="{{ route("admin.$table.create") }}" class="btn btn-success">Thêm</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped table-centered mb-0">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th>Thông tin</th>
                             <th>CMND</th>
                             <th>GPLX</th>
@@ -36,6 +40,9 @@
                         <tbody>
                         @foreach($data as $each)
                             <tr>
+                                <td>
+                                    {{$each->id}}
+                                </td>
                                 <td>{{$each->name}} - {{$each->GenderName}}
                                     <br>
                                     <a href="tel:{{$each->phone}}">
@@ -66,6 +73,9 @@
                                 <td>{{$each->RoleName}}</td>
                                 <td class="table-action">
                                     <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                    @if($each->role === 1)
+                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    @endif
                                     <form action="{{ route("admin.$table.destroy", $each)}}" method="post"
                                           class="action-icon">
                                         @csrf

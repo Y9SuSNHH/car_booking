@@ -10,7 +10,7 @@
     <title>Sửa xe</title>
 </head>
 <body>
-    <form action="{{ route('cars.update', $each )}}" method="POST" enctype="multipart/form-data" class="form-control">
+    <form action="{{ route('admin.cars.update', $each )}}" method="POST" enctype="multipart/form-data" class="form-control">
         @method('PUT')
         @csrf
         Tên xe
@@ -90,7 +90,7 @@
            {{ $errors->first('fuel_comsumpiton') }}
          </span>
         @endif
-        <br>      
+        <br>
         <div class="form-floating" >
             <label for="motaxe" >Mô tả</label>
             <textarea class="form-control" name="description">{{ $each->description }}</textarea>
@@ -124,7 +124,7 @@
            {{ $errors->first('price_service') }}
          </span>
         @endif
-        <br> 
+        <br>
         Trạng thái
         <select name="status" class="form-control" value={{ $each->status }} >
             <option value="0">Sẵn sàng</option>
