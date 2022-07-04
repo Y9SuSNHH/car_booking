@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->smallInteger('role')->default(2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
