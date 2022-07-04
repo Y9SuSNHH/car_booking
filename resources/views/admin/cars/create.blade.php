@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <form action="{{ route('cars.store') }}" method="POST" enctype="multipart/form-data" class="form-control">
+    <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data" class="form-control">
         @csrf
         Tên xe
         <input type="text" name="name" class="form-control">

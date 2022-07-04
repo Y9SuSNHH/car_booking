@@ -44,10 +44,10 @@
             <td>{{ $each->status === 0 ? "Sẵn sàng" : "Bảo trì" }}</td>
             <td>{{ $each->slug }}</td>
             <td>
-                <a href="{{ route('cars.edit', $each )}}" class="btn btn-success">Sửa</a>
+                <a href="{{ route("admin.cars.edit", $each )}}" class="btn btn-success">Sửa</a>
             </td>
             <td>
-                <form action="{{ route('cars.destroy', $each) }}" method="post">
+                <form action="{{ route("admin.cars.destroy", $each) }}" method="post">
                     @csrf
                     @method('DELETE')
                    <button class="btn btn-danger">Xoá</button>

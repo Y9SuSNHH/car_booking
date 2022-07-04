@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function() {
     return view('layout_backend.master');
 })->name('welcome');
+Route::group(['middleware' => ['web']], function () {
+
 Route::group(['as'=> 'users.', 'prefix' => 'users',],function(){
     Route::get('/',[UserController::class,'index'])->name('index');
     Route::get('/{user}', [UserController::class, 'show'])->name('show');
@@ -21,4 +23,6 @@ Route::group(['prefix' => 'cars'], function(){
     Route::get('/edit/{cars}', [CarController::class, 'edit'])->name('cars.edit');
     Route::put('/edit/{cars}', [CarController::class, 'update'])->name('cars.update');
     Route::delete('/destroy/{cars}', [CarController::class, 'destroy'])->name('cars.destroy');
+});
+
 });
