@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\FileTableEnum;
 use App\Enums\UserRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 /**
@@ -62,5 +63,11 @@ class User extends Model implements AuthenticatableContract
     public function getGenderNameAttribute()
     {
         return ($this->gender === 1) ? 'Nam' : 'Nữ';
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class, 'table_id')
+            ->where('files.table', FileTableEnum::getValue(strtoupper($this->getTable())));
     }
 }
