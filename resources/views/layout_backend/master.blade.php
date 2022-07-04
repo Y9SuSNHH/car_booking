@@ -40,7 +40,11 @@
                     <div class="col-12">
                         <div class="page-title-box">
                             <h4 class="page-title">
+<<<<<<< HEAD
+{{--                                {{$title}}--}}
+=======
                                 {{$title ?? ''}}
+>>>>>>> e0d2a5ddb6b77cba1f846cebda5553dc3571d423
                             </h4>
                         </div>
                     </div>

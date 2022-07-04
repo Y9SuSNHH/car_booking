@@ -1,10 +1,7 @@
 <?php
 
-
 use App\Http\Controllers\CarController;
-
 use App\Http\Controllers\AuthController;
-
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -30,7 +27,6 @@ Route::group(['prefix' => 'cars'], function(){
     Route::get('/edit/{car}', [CarController::class, 'edit'])->name('cars.edit');
     Route::put('/edit/{car}', [CarController::class, 'update'])->name('cars.update');
     Route::delete('/destroy/{car}', [CarController::class, 'destroy'])->name('cars.destroy');
-
 });
 
 Route::get('/signin', [AuthController::class, 'signin'])->name('signin');

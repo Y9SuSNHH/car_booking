@@ -33,6 +33,6 @@
     <textarea name="address"></textarea>
     sdt
     <input type="text" name="phone" value="">
-    <button type="submit">đăng kí</button>
+    <button type="submit">Đăng kí</button>
 
 </form>
