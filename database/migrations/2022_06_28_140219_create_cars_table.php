@@ -31,6 +31,7 @@ class CreateCarsTable extends Migration
             $table->boolean('status');
             $table->text('slug')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
