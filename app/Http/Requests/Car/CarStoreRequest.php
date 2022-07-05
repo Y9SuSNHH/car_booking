@@ -36,7 +36,6 @@ class CarStoreRequest extends FormRequest
             'price_1_day' => ['required','numeric'],
             'price_insure' => ['required','numeric'],
             'price_service' => ['required','numeric'],
-            'status' => ['required', 'boolean'],
             'slug' => 'nullable',
         ];
     }

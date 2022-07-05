@@ -7,6 +7,7 @@ use App\Enums\CarTypeEnum;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Car
@@ -59,6 +60,7 @@ class Car extends Model
 {
     use Sluggable;
     use HasFactory;
+    use SoftDeletes;
     protected $fillable =  [
         'name',
         'image',

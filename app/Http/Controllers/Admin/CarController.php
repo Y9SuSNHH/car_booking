@@ -28,7 +28,8 @@ class CarController extends Controller
 
     public function index()
     {
-        $data = Car::get();
+        $query = $this->model->clone()->latest();
+        $data  = $query->paginate();
         return view("$this->role.$this->table.index", [
             'data' => $data,
         ]);
@@ -36,10 +37,10 @@ class CarController extends Controller
 
     public function create()
     {
-        $types = CarTypeEnum::getArrayView();
+        $types  = CarTypeEnum::getArrayView();
         $status = CarStatusEnum::getArrayView();
         return view("$this->role.$this->table.create", [
-            'types' => $types,
+            'types'  => $types,
             'status' => $status,
         ]);
     }
@@ -65,8 +66,12 @@ class CarController extends Controller
 
     public function edit(Car $car)
     {
+        $types     = CarTypeEnum::getArrayView();
+        $arrStatus = CarStatusEnum::getArrayView();
         return view("$this->role.$this->table.edit", [
-            'each' => $car
+            'each'      => $car,
+            'types'     => $types,
+            'arrStatus' => $arrStatus,
         ]);
     }
 
@@ -78,9 +83,10 @@ class CarController extends Controller
 
     }
 
-    public function destroy($car)
+    public function destroy($carId)
     {
-        Car::destroy($car);
-        return redirect()->route("$this->role.$this->table.index");
+        Car::destroy($carId);
+
+        return redirect()->back();
     }
 }

@@ -20,14 +20,16 @@ Route::group(['middleware' => ['web']], function() {
     });
 
     Route::group([
+        'as'     => 'users.',
         'prefix' => 'cars',
     ], function() {
-        Route::get('/', [CarController::class, 'index'])->name('cars.index');
-        Route::get('/create', [CarController::class, 'create'])->name('cars.create');
-        Route::post('/create', [CarController::class, 'store'])->name('cars.store');
-        Route::get('/edit/{cars}', [CarController::class, 'edit'])->name('cars.edit');
-        Route::put('/edit/{cars}', [CarController::class, 'update'])->name('cars.update');
-        Route::delete('/destroy/{cars}', [CarController::class, 'destroy'])->name('cars.destroy');
+        Route::get('/', [CarController::class, 'index'])->name('index');
+        Route::get('/create', [CarController::class, 'create'])->name('create');
+        Route::post('/create', [CarController::class, 'store'])->name('store');
+        Route::get('/edit/{car}', [CarController::class, 'edit'])->name('edit');
+        Route::put('/edit/{car}', [CarController::class, 'update'])->name('update');
+        Route::delete('/{car}', [CarController::class, 'destroy'])->name('destroy');
+
     });
 
 });
