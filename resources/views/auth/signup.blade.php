@@ -156,7 +156,7 @@
                                                     <label class="col-md-3 col-form-label"
                                                            for="address2">Tỉnh/TP</label>
                                                     <div class="col-md-9">
-                                                        <input type="email" id="address2" name="address2"
+                                                        <input type="text" id="address2" name="address2"
                                                                class="form-control">
                                                     </div>
                                                 </div>
@@ -192,7 +192,7 @@
                                             <a href="#" class="btn btn-info">Trước</a>
                                         </li>
                                         <li class="next list-inline-item float-right">
-                                            <button class="btn btn-info" id="btnvis" style="visibility: hidden;">Đăng kí</button>
+                                            <button type="submit" class="btn btn-info" id="btnvis" style="visibility: hidden;">Đăng kí</button>
                                             <a href="#" class="btn btn-info" id="a" style="visibility: visible;">
                                                 <span id="submit">Tiếp</span>
                                             </a>

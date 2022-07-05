@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <form class="form-horizontal form-inline" id="form-filter">
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label for="role" class="col-form-label">Role</label>
                             <select class="form-control select-filter" name="role" id="role">
                                 <option selected value="All">Tất cả</option>
@@ -19,7 +19,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label for="address" class="col-form-label">Quận/Huyện</label>
                             <select class="form-control select-filter" name="address" id="address">
                                 <option selected value="All">Tất cả</option>
@@ -32,9 +32,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-2">
-                            <label for="role" class="col-form-label" for="role">Tỉnh/TP</label>
-                            <select class="form-control select-filter" name="role" id="role">
+                        <div class="form-group col-md-3">
+                            <label for="address2" class="col-form-label">Tỉnh/TP</label>
+                            <select class="form-control select-filter" name="address2" id="address2">
                                 <option selected value="All">Tất cả</option>
                                 @foreach($cities as $city)
                                     <option
@@ -100,17 +100,19 @@
                                 <td>{{$each->address2}}</td>
                                 <td>{{$each->RoleName}}</td>
                                 <td class="table-action">
-                                    <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                    <a href="{{ route("admin.$table.show", $each)}}" class="action-icon"> <i class="mdi mdi-eye"></i></a>
                                     @if($each->role === 1)
                                         <a href="javascript: void(0);" class="action-icon"> <i
                                                 class="mdi mdi-pencil"></i></a>
                                     @endif
+                                    @if($each->role !== 0)
                                     <form action="{{ route("admin.$table.destroy", $each)}}" method="post"
                                           class="action-icon" style="margin: 0px;padding: 0px;">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-link action-icon" style="border: 0px;"><i class="mdi mdi-delete"></i></button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

@@ -58,12 +58,10 @@ class UserController extends Controller
 
         $positions = $this->model->clone()
             ->distinct()
-            ->limit(10)
             ->pluck('address');
 
         $cities = $this->model->clone()
             ->distinct()
-            ->limit(10)
             ->pluck('address2');
 
 

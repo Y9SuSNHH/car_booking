@@ -50,13 +50,13 @@ class User extends Model implements AuthenticatableContract
     use SoftDeletes;
 
     protected $fillable=[
-        'email',
         'name',
-        'username',
+        'email',
         'password',
         'gender',
-        'address',
         'phone',
+        'address',
+        'address2',
     ];
 
     public function getRoleNameAttribute()

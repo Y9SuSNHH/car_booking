@@ -39,7 +39,7 @@ class AuthController extends Controller
         $user->name = $data->getName();
         $user->save();
 
-        Auth::login($user);
+        Auth::login($user,true);
 
         if ($checkExist) {
             $role = strtolower(UserRoleEnum::getKey($user->role));
@@ -70,6 +70,7 @@ class AuthController extends Controller
                     'gender'   => $request->gender,
                     'phone'    => $request->phone,
                     'address'  => $request->address,
+                    'address2' => $request->address2,
                     'password' => $password,
                 ]);
         } else {
@@ -78,6 +79,7 @@ class AuthController extends Controller
                 'gender'   => $request->gender,
                 'phone'    => $request->phone,
                 'address'  => $request->address,
+                'address2' => $request->address2,
                 'email'    => $request->email,
                 'password' => $password,
             ]);
