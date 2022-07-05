@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form action="{{route('process.signin')}}" method="post">
+                        <form action="{{route('process_signin')}}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="emailaddress">Email</label>

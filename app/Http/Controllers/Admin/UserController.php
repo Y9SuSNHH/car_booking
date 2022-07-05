@@ -28,10 +28,18 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $query        = $this->model->latest()->clone();
-        $selectedRole = $request->get('role');
+        $query            = $this->model->clone()->latest();
+        $selectedRole     = $request->get('role');
+        $selectedAddress  = $request->get('address');
+        $selectedAddress2 = $request->get('address2');
         if (isset($selectedRole) && $selectedRole !== 'All') {
             $query->where('role', $selectedRole);
+        }
+        if (!empty($selectedAddress) && $selectedAddress !== 'All') {
+            $query->where('address', $selectedAddress);
+        }
+        if (!empty($selectedAddress2) && $selectedAddress2 !== 'All') {
+            $query->where('address2', $selectedAddress2);
         }
         $query->with(['files' => function($q) {
             $q->whereIn('type', [
@@ -48,12 +56,26 @@ class UserController extends Controller
             UserRoleEnum::getKeyByValue(2),
         ];
 
+        $positions = $this->model->clone()
+            ->distinct()
+            ->limit(10)
+            ->pluck('address');
+
+        $cities = $this->model->clone()
+            ->distinct()
+            ->limit(10)
+            ->pluck('address2');
+
 
         return view("$this->role.$this->table.index", [
-            'data'         => $data,
-            'roles'        => $roles,
-            'rolesName'    => $rolesName,
-            'selectedRole' => $selectedRole,
+            'data'             => $data,
+            'roles'            => $roles,
+            'rolesName'        => $rolesName,
+            'selectedRole'     => $selectedRole,
+            'selectedAddress'  => $selectedAddress,
+            'positions'        => $positions,
+            'selectedAddress2' => $selectedAddress2,
+            'cities'           => $cities,
         ]);
     }
 

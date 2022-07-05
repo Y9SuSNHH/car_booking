@@ -5,9 +5,9 @@
 
             <div class="card">
                 <div class="card-header">
-                    <form class="form-horizontal" id="form-filter">
+                    <form class="form-horizontal form-inline" id="form-filter">
                         <div class="form-group col-md-2">
-                            <label for="role" class="col-form-label" for="role">Role</label>
+                            <label for="role" class="col-form-label">Role</label>
                             <select class="form-control select-filter" name="role" id="role">
                                 <option selected value="All">Tất cả</option>
                                 @foreach($roles as $role => $value)
@@ -15,6 +15,32 @@
                                             @if((string)$value === $selectedRole) selected @endif
                                     >
                                         {{ $rolesName[$value] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="address" class="col-form-label">Quận/Huyện</label>
+                            <select class="form-control select-filter" name="address" id="address">
+                                <option selected value="All">Tất cả</option>
+                                @foreach($positions as $position)
+                                    <option
+                                            @if($position === $selectedAddress) selected @endif
+                                    >
+                                        {{ $position }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="role" class="col-form-label" for="role">Tỉnh/TP</label>
+                            <select class="form-control select-filter" name="role" id="role">
+                                <option selected value="All">Tất cả</option>
+                                @foreach($cities as $city)
+                                    <option
+                                        @if($city === $selectedAddress2) selected @endif
+                                    >
+                                        {{ $city }}
                                     </option>
                                 @endforeach
                             </select>

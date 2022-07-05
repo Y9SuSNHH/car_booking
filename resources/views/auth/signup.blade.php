@@ -26,7 +26,7 @@
 
                         <h4 class="header-title mb-3">Wizard With Progress Bar</h4>
 
-                        <form action="{{route('process.signup')}}" method="post">
+                        <form action="{{route('process_signup')}}" method="post">
                             <div id="progressbarwizard">
 
                                 <ul class="nav nav-pills nav-justified form-wizard-header mb-3">
@@ -232,27 +232,6 @@
 <script src="{{asset('js/demo.form-wizard.js')}}"></script>
 <script text="javascript">
     const active = document.getElementById("active-submit");
-    // active.classList.contains('active');
-
-    // const prevBtns = document.querySelectorAll(".prev");
-    // const nextBtns = document.querySelectorAll(".next");
-    // const progress = document.getElementById("bar");
-    // const formSteps = document.querySelectorAll(".tab-pane");
-    // const progressSteps = document.querySelectorAll(".nav-link");
-    //
-    // let formStepsNum = 0;
-    //
-    // nextBtns.forEach((btn) => {
-    //     btn.addEventListener("click", () => {
-    //         formStepsNum++;
-    //     });
-    // });
-    //
-    // prevBtns.forEach((btn) => {
-    //     btn.addEventListener("click", () => {
-    //         formStepsNum--;
-    //     });
-    // });
     function greet() {
         if (active.classList.contains('active') && document.getElementById('customCheck3').checked) {
             document.getElementById("btnvis").style.visibility = 'visible';

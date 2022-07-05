@@ -20,9 +20,9 @@ Route::get('/', function() {
 
 
 Route::get('/signin', [AuthController::class, 'signin'])->name('signin');
-Route::post('/signin', [AuthController::class, 'processSignIn'])->name('process.signin');
+Route::post('/signin', [AuthController::class, 'processSignIn'])->name('process_signin');
 Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
-Route::post('/signup', [AuthController::class, 'processSignUp'])->name('process.signup');
+Route::post('/signup', [AuthController::class, 'processSignUp'])->name('process_signup');
 Route::get('/signout', [AuthController::class, 'signout'])->name('signout');
 Route::get('/auth/redirect/{provider}', function($provider) {
     return Socialite::driver($provider)->redirect();

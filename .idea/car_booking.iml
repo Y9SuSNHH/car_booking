@@ -133,6 +133,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/bensampo/laravel-enum" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hanneskod/classtools" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cviebrock/eloquent-sluggable" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cocur/slugify" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
