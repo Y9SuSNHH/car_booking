@@ -50,14 +50,26 @@ class AuthController extends Controller
 
     public function processSignIn(Request $request)
     {
-        $user = User::query()
-            ->where('email', $request->get('email'))
-            ->firstOrFail();
-        if (!Hash::check($request->get('password'), $user->password)) {
-            return redirect()->route('signup');
+        $request->validate([
+            'email' => 'required|string|',
+            'password' => 'required',
+        ], [
+            'email.required' => 'Email không được phép trống',
+            'email.string' => 'Email phải là kiểu chuỗi',
+            'password.required' => 'Mật khẩu không được trống',
+        ]);
+        try {
+            $user = User::query()
+                ->where('email', $request->get('email'))
+                ->firstOrFail();
+            if (! Hash::check($request->get('password'), $user->password)) {
+                throw new Exception('Invalid password');
+            }
+            $role = strtolower(UserRoleEnum::getKey($user->role));
+            return redirect()->route("$role.welcome");;
+        } catch (Throwable $e) {
+            return redirect()->route('signin')->with('failed', 'Tài khoản hoặc mật khẩu không hợp lệ');
         }
-        $role = strtolower(UserRoleEnum::getKey($user->role));
-        return redirect()->route("$role.welcome");
     }
 
     public function processSignUp(Request $request)

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\CarStatusEnum;
+use App\Enums\CarTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Car\CarStoreRequest;
 use App\Http\Requests\Car\CarUpdateRequest;
@@ -23,25 +25,31 @@ class CarController extends Controller
         View::share('title', ucwords($this->table));
         View::share('table', $this->table);
     }
+
     public function index()
     {
         $data = Car::get();
-        return view("$this->role.$this->table.index",[
+        return view("$this->role.$this->table.index", [
             'data' => $data,
         ]);
     }
 
     public function create()
     {
-        return view("$this->role.$this->table.create");
+        $types = CarTypeEnum::getArrayView();
+        $status = CarStatusEnum::getArrayView();
+        return view("$this->role.$this->table.create", [
+            'types' => $types,
+            'status' => $status,
+        ]);
     }
 
     public function store(CarStoreRequest $request, Car $car)
     {
-        if($request->has('file_upload')){
-            $file = $request->file_upload;
-            $ext = $request->file_upload->extension();
-            $file_name = time().'-'.'product'.'.'.$ext;
+        if ($request->has('file_upload')) {
+            $file      = $request->file_upload;
+            $ext       = $request->file_upload->extension();
+            $file_name = time() . '-' . 'product' . '.' . $ext;
             $file->move(public_path('uploads'), $file_name);
         }
         $request->merge(['image' => $file_name]);
@@ -57,14 +65,14 @@ class CarController extends Controller
 
     public function edit(Car $car)
     {
-        return view("$this->role.$this->table.edit",[
+        return view("$this->role.$this->table.edit", [
             'each' => $car
         ]);
     }
 
     public function update(CarUpdateRequest $request, Car $car)
     {
-        $car->update($request ->validated());
+        $car->update($request->validated());
 
         return redirect()->route("$this->role.$this->table.index");
 

@@ -43,7 +43,7 @@
                                 </td>
                                 <td>{{ $each->name }}</td>
                                 <td>{{ $each->address }}</td>
-                                <td>{{ $each->type }}</td>
+                                <td>{{ $each->TypeName}}</td>
                                 <td>{{ $each->slot }}</td>
                                 <td>{{ $each->transmission === 0 ? "Số tự động" : "Số sàn" }} </td>
                                 <td>{{ $each->fuel === 0 ? "Xăng" : "Dầu"}}</td>
@@ -51,7 +51,7 @@
                                 <td>{{ $each->price_1_day }}</td>
                                 <td>{{ $each->price_insure }}</td>
                                 <td>{{ $each->price_service }}</td>
-                                <td>{{ $each->status === 0 ? "Sẵn sàng" : "Bảo trì" }}</td>
+                                <td>{{ $each->StatusName}}</td>
                                 <td class="table-action">
                                     <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
                                     <a href="{{ route("admin.cars.edit", $each->id )}}" class="action-icon"> <i

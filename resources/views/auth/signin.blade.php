@@ -1,4 +1,3 @@
-
 {{--đăng nhập cùng--}}
 {{--<a href="{{route('auth.redirect','github')}}">github</a>--}}
 {{--<a href="{{route('auth.redirect','google')}}">google</a>--}}
@@ -13,7 +12,7 @@
     <!-- App favicon -->
 {{--    <link rel="shortcut icon" href="assets/images/favicon.ico">--}}
 
-    <!-- App css -->
+<!-- App css -->
     <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/app-modern.min.css')}}" rel="stylesheet" type="text/css" id="light-style"
           disabled="disabled">
@@ -33,14 +32,25 @@
                             <span><img src="assets/images/logo.png" alt="" height="18"></span>
                         </a>
                     </div>
-
                     <div class="card-body p-4">
+                        @if (session()->has('failed'))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {{ session()->get('failed') }}
+                                </ul>
+                            </div>
+                        @endif
                         <form action="{{route('process_signin')}}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="emailaddress">Email</label>
                                 <input class="form-control" type="email" id="emailaddress" required=""
-                                       placeholder="Điền email tại đây" name="email">
+                                       placeholder="Điền email tại đây" name="email" value="{{old('email')}}">
+                                @if ($errors->has('email'))
+                                    <span class="error" style="color: red;">
+                                        {{ $errors->first('email') }}
+                                    </span>
+                                @endif
                             </div>
 
                             <div class="form-group">
@@ -56,6 +66,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if ($errors->has('password'))
+                                    <span class="error" style="color: red;">
+                                        {{ $errors->first('password') }}
+                                    </span>
+                                @endif
                             </div>
 
                             <div class="form-group mb-3">
@@ -72,14 +87,17 @@
                         <div class="text-center mt-4">
                             <p class="text-muted font-16">Đăng nhập bằng</p>
                             <ul class="social-list list-inline mt-3">
-{{--                                <li class="list-inline-item">--}}
-{{--                                    <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>--}}
-{{--                                </li>--}}
+                                {{--                                <li class="list-inline-item">--}}
+                                {{--                                    <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>--}}
+                                {{--                                </li>--}}
                                 <li class="list-inline-item">
-                                    <a href="{{route('auth.redirect','google')}}" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                    <a href="{{route('auth.redirect','google')}}"
+                                       class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a href="{{route('auth.redirect','github')}}" class="social-list-item border-secondary text-secondary"><i class="mdi mdi-github-circle"></i></a>
+                                    <a href="{{route('auth.redirect','github')}}"
+                                       class="social-list-item border-secondary text-secondary"><i
+                                            class="mdi mdi-github-circle"></i></a>
                                 </li>
                             </ul>
                         </div>

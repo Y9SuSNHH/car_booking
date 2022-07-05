@@ -127,15 +127,6 @@
            {{ $errors->first('status') }}
          </span>
         @endif
-        <br>
-        Slug
-        <input type="text" name="slug" class="form-control"  value={{ $each->slug }}>
-        @if ($errors->has('slug'))
-         <span class="error" style="color: red;">
-           {{ $errors->first('slug') }}
-         </span>
-        @endif
-        <br>
         <button class="btn btn-primary">Sửa</button>
       </form>
 </body>

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CarStatusEnum;
+use App\Enums\CarTypeEnum;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -60,7 +62,6 @@ class Car extends Model
     protected $fillable =  [
         'name',
         'image',
-        'brand',
         'address',
         'type',
         'slot',
@@ -72,7 +73,6 @@ class Car extends Model
         'price_insure',
         'price_service',
         'status',
-        'slug',
     ];
 
     public function sluggable(): array
@@ -84,4 +84,13 @@ class Car extends Model
         ];
     }
 
+    public function getStatusNameAttribute()
+    {
+        return CarStatusEnum::getKeyByValue($this->status);
+    }
+
+    public function getTypeNameAttribute()
+    {
+        return CarTypeEnum::getKeyByValue($this->type);
+    }
 }
