@@ -19,7 +19,6 @@
                             <th>#</th>
                             <th>Biển số</th>
                             <th>Tên xe</th>
-                            <th>Nhãn hiệu</th>
                             <th>Địa chỉ</th>
                             <th>Loại xe</th>
                             <th>Số chỗ</th>
@@ -43,7 +42,6 @@
                                          style="max-width: 100px;">
                                 </td>
                                 <td>{{ $each->name }}</td>
-                                <td>{{ $each->brand }}</td>
                                 <td>{{ $each->address }}</td>
                                 <td>{{ $each->type }}</td>
                                 <td>{{ $each->slot }}</td>

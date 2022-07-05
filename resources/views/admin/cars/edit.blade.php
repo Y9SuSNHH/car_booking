@@ -29,14 +29,6 @@
          </span>
         @endif
         <br>
-        Nhãn hiệu
-        <input type="text" name="brand" class="form-control" value={{ $each->brand }}>
-        @if ($errors->has('brand'))
-         <span class="error" style="color: red;">
-           {{ $errors->first('brand') }}
-         </span>
-        @endif
-        <br>
         Địa chỉ
         <input type="text" name="address" class="form-control" value={{ $each->address }}>
         @if ($errors->has('address'))
