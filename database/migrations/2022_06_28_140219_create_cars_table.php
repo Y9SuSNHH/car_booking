@@ -20,6 +20,7 @@ class CreateCarsTable extends Migration
             $table->string('address');
             $table->integer('type')->nullable();
             $table->integer('slot')->nullable();
+            $table->string('fullphoto')->nullable();
             $table->boolean('transmission')->nullable();
             $table->boolean('fuel')->nullable();
             $table->integer('fuel_comsumpiton')->nullable();

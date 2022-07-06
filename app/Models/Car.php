@@ -64,6 +64,7 @@ class Car extends Model
     protected $fillable =  [
         'name',
         'image',
+        'fullphoto',
         'address',
         'type',
         'slot',

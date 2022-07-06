@@ -2,7 +2,6 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data"
@@ -32,7 +31,7 @@
                         <div class="form-row">
                             <div class="form-group col-4">
                                 <label for="photo">Ảnh</label>
-                                <input type="file" name="photo" id="photo" class="form-control-file">
+                                <input type="file" name="file_upload" id="photo" class="form-control-file">
                                 @if ($errors->has('image'))
                                     <span class="valid-feedback">
                                         {{ $errors->first('image') }}

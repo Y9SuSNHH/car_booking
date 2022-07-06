@@ -26,6 +26,7 @@ class CarUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'image' => 'nullable',
+            'fullphoto' => 'nullable',
             'address' =>'required',
             'description' => 'required',
             'type' => 'required',

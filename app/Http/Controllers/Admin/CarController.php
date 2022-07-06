@@ -47,13 +47,14 @@ class CarController extends Controller
 
     public function store(CarStoreRequest $request, Car $car)
     {
-        if (!$request->has('photo')) {
+        if ($request->has('file_upload')) {
             $file      = $request->file_upload;
             $ext       = $request->file_upload->extension();
             $file_name = time() . '-' . 'car' . '.' . $ext;
             $file->move(public_path('uploads'), $file_name);
             $request->merge(['image' => $file_name]);
         }
+        
         $car->create($request->all());
         return redirect()->route("$this->role.$this->table.index");
     }
