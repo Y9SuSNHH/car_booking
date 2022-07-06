@@ -6,7 +6,8 @@
             <div class="card">
                 <div class="card-header">
                     <div class="form-group col-md-2">
-                        filter tên xe
+                        <label for="select-car-name">Tên xe</label>
+                        <select class="form-control" name="select-car-name" id="select-car-name"></select>
                     </div>
                 </div>
                 <div class="card-body">
@@ -41,12 +42,22 @@
                                 <tr>
                                     <td>{{ $each->id }}</td>
                                     <td>
-                                        <img src="{{ asset('uploads/'.$each->image) }}"
-                                             class="img-fluid img-thumbnail p-1"
-                                             style="max-width: 200px;">
+                                        <a id="image" href="{{ asset('uploads/'.$each->image) }}">
+                                            <img src="{{ asset('uploads/'.$each->image) }}"
+                                                 class="img-fluid img-thumbnail p-1"
+                                                 style="max-width: 150px;">
+                                        </a>
+                                        <div class="model-fade" hidden>
+                                            <div class="model-dialog">
+                                                <div class="model-content">
+                                                    <img src="" class="img-responsive" id="popup-image"
+                                                         style="width: 100%;">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>{{ $each->name }}</td>
-                                    <td>{{ $each->address }}</td>
+                                    <td class="address">{{ $each->address }}</td>
                                     <td>{{ $each->TypeName }}</td>
                                     <td>{{ $each->slot }}</td>
                                     <td>{{ $each->transmission === 0 ? "Số tự động" : "Số sàn" }} </td>
@@ -80,3 +91,27 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script src="{{asset('js/jquery.validate.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(async function () {
+            const response = await fetch('{{asset('locations/index.json')}}');
+            let address = await response.json();
+            address = Object.entries(address)
+            address.forEach(local => {
+                console.log(local)
+                let name = local[0]
+                let {code, file_path} = local[1];
+                let codeTxt = $(".address").text()
+                if (code === codeTxt) {
+                    $(".address").text(name)
+                }
+            })
+            $('#image').click(function () {
+                event.preventDefault();
+                $('.modal img'.attr('src', $(this).attr('href')));
+                $('.modal').modal('show');
+            });
+        });
+    </script>
+@endpush

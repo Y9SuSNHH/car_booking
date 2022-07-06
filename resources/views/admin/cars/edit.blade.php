@@ -20,9 +20,11 @@
                         </div>
                         <div class="form-group form-inline">
                             <div class="form-group col-5">
-                                <label for="old_image">Biển số cũ</label>
-                                <img name="old_image" id="old_image" src="{{ asset('uploads/'.$each->image) }}"
-                                     class="img-fluid img-thumbnail p-1" style="max-width: 500px;">
+                                <label>Biển số cũ</label>
+                                <img src="{{ asset('uploads/'.$each->image) }}"
+                                     class="img-fluid img-thumbnail p-1"
+                                     style="max-width: 500px;">
+                                <input type="hidden" name="ole_image" value="{{$each->image}}">
                             </div>
                             <div class="form-group col-7">
                                 <label for="new_image">Đổi biển số mới</label>
@@ -108,42 +110,45 @@
                         <div class="form-group">
                             <label for="description">Mô tả</label>
                             <textarea class="form-control" name="description">{{ $each->description }}</textarea>
-                        @if ($errors->has('description'))
-                            <span class="valid-feedback">
+                            @if ($errors->has('description'))
+                                <span class="valid-feedback">
                                {{ $errors->first('description') }}
                             </span>
-                        @endif
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="price_1_day">Giá thuê 1 ngày</label>
-                            <input type="text" id="price_1_day" name="price_1_day" class="form-control" value="{{ $each->price_1_day }}">
-                        @if ($errors->has('price_1_day'))
-                            <span class="valid-feedback">
+                            <input type="text" id="price_1_day" name="price_1_day" class="form-control"
+                                   value="{{ $each->price_1_day }}">
+                            @if ($errors->has('price_1_day'))
+                                <span class="valid-feedback">
                                {{ $errors->first('price_1_day') }}
                             </span>
-                        @endif
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="price_insure">Giá bảo hiểm</label>
-                            <input type="text" id="price_insure" name="price_insure" class="form-control" value="{{ $each->price_insure }}">
-                        @if ($errors->has('price_insure'))
-                            <span class="valid-feedback">
+                            <input type="text" id="price_insure" name="price_insure" class="form-control"
+                                   value="{{ $each->price_insure }}">
+                            @if ($errors->has('price_insure'))
+                                <span class="valid-feedback">
                                {{ $errors->first('price_insure') }}
                             </span>
-                        @endif
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="price_service">Giá dịch vụ</label>
-                            <input type="text" id="price_insure" name="price_service" class="form-control" value="{{ $each->price_service }}">
-                        @if ($errors->has('price_service'))
-                            <span class="valid-feedback">
+                            <input type="text" id="price_insure" name="price_service" class="form-control"
+                                   value="{{ $each->price_service }}">
+                            @if ($errors->has('price_service'))
+                                <span class="valid-feedback">
                                {{ $errors->first('price_service') }}
                             </span>
-                        @endif
+                            @endif
                         </div>
                         <div class="form-group">
-                            <label for="status">Trạng thái</label>
-                            <select class="form-control select-filter" name="status" id="status">
+                            <label for="arrStatus">Trạng thái</label>
+                            <select class="form-control" name="status" id="arrStatus">
                                 @foreach($arrStatus as $keyStatus => $valueStatus)
                                     <option value="{{ $valueStatus }}"
                                             @if ($valueStatus === $each->status)
@@ -163,6 +168,6 @@
                     </form>
                 </div>
             </div>
-    </div>
+        </div>
     </div>
 @endsection

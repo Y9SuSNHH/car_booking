@@ -25,7 +25,7 @@ class CarStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'nullable',
+            'image' =>  ['required','image'],
             'address' =>'required',
             'description' => 'required',
             'type' => 'required',

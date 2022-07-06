@@ -47,13 +47,13 @@ class CarController extends Controller
 
     public function store(CarStoreRequest $request, Car $car)
     {
-        if ($request->has('file_upload')) {
+        if (!$request->has('photo')) {
             $file      = $request->file_upload;
             $ext       = $request->file_upload->extension();
-            $file_name = time() . '-' . 'product' . '.' . $ext;
+            $file_name = time() . '-' . 'car' . '.' . $ext;
             $file->move(public_path('uploads'), $file_name);
+            $request->merge(['image' => $file_name]);
         }
-        $request->merge(['image' => $file_name]);
         $car->create($request->all());
         return redirect()->route("$this->role.$this->table.index");
     }
@@ -77,6 +77,16 @@ class CarController extends Controller
 
     public function update(CarUpdateRequest $request, Car $car)
     {
+        $image_path = app_path("uploads/{$request->ole_image}");
+        if (!empty($request->new_image)) {
+            unlink($image_path);
+            $file      = $request->new_image;
+            $ext       = $request->new_image->extension();
+            $file_name = time() . '-' . 'car' . '.' . $ext;
+            $file->move(public_path('uploads'), $file_name);
+            $request->merge(['image' => $file_name]);
+        }
+
         $car->update($request->validated());
 
         return redirect()->route("$this->role.$this->table.index");

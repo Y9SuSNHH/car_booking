@@ -18,17 +18,16 @@ class CarController extends Controller
         $this->model = Car::query();
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $data = $this->model->paginate();
-        foreach ($data as $each) {
-            $each->type   = $each->type_name;
-            $each->status = $each->status_name;
-        }
-        $arr['success']    = true;
-        $arr['data']       = $data->getCollection();
-        $arr['pagination'] = $data->linkCollection();
+        $data = $this->model
+            ->where('name','like','%'.$request->get('1').'%')
+            ->get();
+//        foreach ($data as $each) {
+//            $each->type   = $each->type_name;
+//            $each->status = $each->status_name;
+//        }
 
-        return $this->successResponse($arr);
+        return $this->successResponse($data);
     }
 }

@@ -20,7 +20,7 @@ Route::group(['middleware' => ['web']], function() {
     });
 
     Route::group([
-        'as'     => 'users.',
+        'as'     => 'cars.',
         'prefix' => 'cars',
     ], function() {
         Route::get('/', [CarController::class, 'index'])->name('index');
