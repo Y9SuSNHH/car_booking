@@ -129,7 +129,7 @@
                                 <br>
                                 <div class="dropzone">
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple/>
+                                        <input name="fullphoto" type="file" multiple/>
                                     </div>
                                     <div class="dz-message needsclick">
                                         <i class="h1 text-muted dripicons-cloud-upload"></i>
