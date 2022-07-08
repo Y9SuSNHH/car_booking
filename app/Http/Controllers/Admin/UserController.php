@@ -77,11 +77,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        return view("$this->role.$this->table.create");
-    }
-
     public function show($userId)
     {
 //        $data = $this->model->select('users.id', 'files.id', 'files.type', 'files.link')

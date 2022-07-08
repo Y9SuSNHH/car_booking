@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,14 @@ Route::group(['middleware' => ['web']], function() {
         Route::put('/edit/{car}', [CarController::class, 'update'])->name('update');
         Route::delete('/{car}', [CarController::class, 'destroy'])->name('destroy');
 
+    });
+    Route::group([
+        'as'     => 'bills.',
+        'prefix' => 'bills',
+    ], function() {
+        Route::get('/', [BillController::class, 'index'])->name('index');
+        Route::get('/create/{car}', [BillController::class, 'create'])->name('create');
+        Route::post('/create/{car}', [BillController::class, 'store'])->name('store');
     });
 
 });

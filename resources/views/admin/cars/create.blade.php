@@ -96,7 +96,7 @@
                                 @endif
                             </div>
                             <div class="form-group col-4">
-                                <label for="fuel_comsumpiton">Mức tiêu thụ nhiên liệu</label>
+                                <label for="fuel_comsumpiton">Mức tiêu thụ nhiên liệu (L/km)</label>
                                 <input type="number" name="fuel_comsumpiton" id="fuel_comsumpiton" class="form-control"
                                        placeholder="L/km">
                                 @if ($errors->has('fuel_comsumpiton'))

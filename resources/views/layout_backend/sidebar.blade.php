@@ -12,5 +12,11 @@
                 <span> Quản lý xe </span>
             </a>
         </li>
+        <li class="side-nav-item">
+            <a href="{{ route('admin.bills.index') }}" class="side-nav-link">
+                <i class="uil uil-bill"></i>
+                <span> Quản lý hóa đơn </span>
+            </a>
+        </li>
     </ul>
 </div>

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\CarStatusEnum;
 use App\Enums\CarTypeEnum;
+use App\Enums\FileTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Car\CarStoreRequest;
 use App\Http\Requests\Car\CarUpdateRequest;
 use App\Models\Car;
+use App\Models\File;
 use Illuminate\Support\Facades\View;
 
 class CarController extends Controller
@@ -28,10 +30,10 @@ class CarController extends Controller
 
     public function index()
     {
-        $query = $this->model->clone()->latest();
-        $data  = $query->paginate();
+        $query        = $this->model->clone()->latest();
+        $data         = $query->paginate();
         return view("$this->role.$this->table.index", [
-            'data' => $data,
+            'data'         => $data,
         ]);
     }
 
@@ -54,7 +56,7 @@ class CarController extends Controller
             $file->move(public_path('uploads'), $file_name);
             $request->merge(['image' => $file_name]);
         }
-        
+
         $car->create($request->all());
         return redirect()->route("$this->role.$this->table.index");
     }
