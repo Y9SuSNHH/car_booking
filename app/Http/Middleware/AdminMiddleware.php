@@ -5,8 +5,9 @@ namespace App\Http\Middleware;
 use App\Enums\UserRoleEnum;
 use Closure;
 use Illuminate\Http\Request;
+use function dd;
 
-class Adminmiddleware
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,7 +18,6 @@ class Adminmiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        dd(auth()->check());
         if(!auth()->check() || auth()->user()->role !== UserRoleEnum::ADMIN){
             return redirect()->route('signin');
         }

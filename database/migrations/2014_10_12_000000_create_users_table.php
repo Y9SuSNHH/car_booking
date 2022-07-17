@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRoleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('password')->nullable();
-            $table->smallInteger('role')->default(2);
+            $table->smallInteger('role')->default(UserRoleEnum::USER);
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -28,7 +28,6 @@ class CarStoreRequest extends FormRequest
             'image' =>  [
                 'required',
                 'image',
-                'dimensions:width=500,height=500',
             ],
             'fullphoto' => 'nullable',
             'address' =>'required',

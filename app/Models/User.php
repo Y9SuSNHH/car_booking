@@ -50,20 +50,20 @@ class User extends Model implements AuthenticatableContract
     use SoftDeletes;
 
     protected $fillable=[
-        'name',
         'email',
         'password',
-        'gender',
-        'phone',
-        'address',
-        'address2',
     ];
 
-    public function getRoleNameAttribute()
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function getRoleNameAttribute(): bool|int|string
     {
         return UserRoleEnum::getKeyByValue($this->role);
     }
-    public function getGenderNameAttribute()
+    public function getGenderNameAttribute(): string
     {
         return ($this->gender === 1) ? 'Nam' : 'Nữ';
     }

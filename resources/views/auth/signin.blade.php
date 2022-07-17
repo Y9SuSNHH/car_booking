@@ -46,11 +46,6 @@
                                 <label for="emailaddress">Email</label>
                                 <input class="form-control" type="email" id="emailaddress" required=""
                                        placeholder="Điền email tại đây" name="email" value="{{old('email')}}">
-                                @if ($errors->has('email'))
-                                    <span class="error" style="color: red;">
-                                        {{ $errors->first('email') }}
-                                    </span>
-                                @endif
                             </div>
 
                             <div class="form-group">
@@ -66,11 +61,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if ($errors->has('password'))
-                                    <span class="error" style="color: red;">
-                                        {{ $errors->first('password') }}
-                                    </span>
-                                @endif
                             </div>
 
                             <div class="form-group mb-3">

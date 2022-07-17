@@ -49,9 +49,10 @@ class CarController extends Controller
 
     public function store(CarStoreRequest $request, Car $car)
     {
-        if ($request->has('file_upload')) {
-            $file      = $request->file_upload;
-            $ext       = $request->file_upload->extension();
+        dd($request->has('license_plate'));
+        if ($request->has('license_plate')) {
+            $file      = $request->license_plate;
+            $ext       = $request->license_plate->extension();
             $file_name = time() . '-' . 'car' . '.' . $ext;
             $file->move(public_path('uploads'), $file_name);
             $request->merge(['image' => $file_name]);

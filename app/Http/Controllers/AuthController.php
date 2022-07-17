@@ -34,6 +34,7 @@ class AuthController extends Controller
         if (is_null($user)) {
             $user        = new User();
             $user->email = $data->getEmail();
+            $user->role  = UserRoleEnum::USER;
             $checkExist  = false;
         }
         $user->name = $data->getName();
@@ -50,25 +51,18 @@ class AuthController extends Controller
 
     public function processSignIn(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|',
-            'password' => 'required',
-        ], [
-            'email.required' => 'Email không được phép trống',
-            'email.string' => 'Email phải là kiểu chuỗi',
-            'password.required' => 'Mật khẩu không được trống',
-        ]);
         try {
             $user = User::query()
                 ->where('email', $request->get('email'))
                 ->firstOrFail();
             if (! Hash::check($request->get('password'), $user->password)) {
-                throw new Exception('Invalid password');
+                return redirect()->route('signin')->with('failed', 'Sai mật khẩu');
             }
+            Auth::login($user);
             $role = strtolower(UserRoleEnum::getKey($user->role));
-            return redirect()->route("$role.welcome");;
+            return redirect()->route("$role.welcome");
         } catch (Throwable $e) {
-            return redirect()->route('signin')->with('failed', 'Tài khoản hoặc mật khẩu không hợp lệ');
+            return redirect()->route('signin')->with('failed', 'Sai tài khoản hoặc mật khẩu');
         }
     }
 

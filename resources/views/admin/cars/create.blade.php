@@ -3,6 +3,17 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+{{--                <div class="card-header">--}}
+{{--                    @if ($errors->any())--}}
+{{--                        <div class="alert alert-danger">--}}
+{{--                            <ul>--}}
+{{--                                @foreach ($errors->all() as $error)--}}
+{{--                                    <li>{{ $error }}</li>--}}
+{{--                                @endforeach--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
                 <div class="card-body">
                     <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data"
                           class="form-horizontal" id="form-create-post" data-plugin="dropzone" data-previews-container="#file-previews"
@@ -12,31 +23,16 @@
                             <div class="form-group col-6">
                                 <label for="name">Tên xe</label>
                                 <input type="text" name="name" id="name" class="form-control">
-                                @if ($errors->has('name'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('name') }}
-                                    </span>
-                                @endif
                             </div>
                             <div class="form-group select-location col-6">
                                 <label for="select-address">Địa chỉ</label>
                                 <select class="form-control select-address" name="address" id='select-address'></select>
-                                @if ($errors->has('address'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('address') }}
-                                    </span>
-                                @endif
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-4">
-                                <label for="photo">Ảnh</label>
-                                <input type="file" name="file_upload" id="photo" class="form-control-file">
-                                @if ($errors->has('image'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('image') }}
-                                    </span>
-                                @endif
+                                <label for="license_plate">Ảnh</label>
+                                <input type="file" name="license_plate" id="license_plate" class="form-control-file">
                             </div>
                             <div class="form-group col-4">
                                 <label for="type">Loại xe</label>
@@ -50,11 +46,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('type'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('type') }}
-                                    </span>
-                                @endif
                             </div>
                             <div class="form-group col-4">
                                 <label for="slot">Số ghế ngồi</label>
@@ -63,11 +54,6 @@
                                     <option value="5">5 chỗ</option>
                                     <option value="7">7 chỗ</option>
                                 </select>
-                                @if ($errors->has('slot'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('slot') }}
-                                    </span>
-                                @endif
                             </div>
                         </div>
                         <div class="form-row">
@@ -77,11 +63,6 @@
                                     <option value="0">Số tự động</option>
                                     <option value="1">Số sàn</option>
                                 </select>
-                                @if ($errors->has('transmission'))
-                                    <span class="valid-feedback">
-                                         {{ $errors->first('transmission') }}
-                                     </span>
-                                @endif
                             </div>
                             <div class="form-group col-4">
                                 <label for="fuel">Nhiên liệu</label>
@@ -89,21 +70,11 @@
                                     <option value="0">Xăng</option>
                                     <option value="1">Dầu</option>
                                 </select>
-                                @if ($errors->has('fuel'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('fuel') }}
-                                    </span>
-                                @endif
                             </div>
                             <div class="form-group col-4">
                                 <label for="fuel_comsumpiton">Mức tiêu thụ nhiên liệu (L/km)</label>
                                 <input type="number" name="fuel_comsumpiton" id="fuel_comsumpiton" class="form-control"
                                        placeholder="L/km">
-                                @if ($errors->has('fuel_comsumpiton'))
-                                    <span class="valid-feedback">
-                                        {{ $errors->first('fuel_comsumpiton') }}
-                                    </span>
-                                @endif
                             </div>
                         </div>
                         <div class="form-row">
@@ -119,11 +90,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('status'))
-                                    <span class="valid-feedback">
-                                            {{ $errors->first('status') }}
-                                        </span>
-                                @endif
                                 <br>
                                 <br>
                                 <div class="dropzone">
@@ -168,40 +134,20 @@
                                 <div class="form-row">
                                     <label for="car-price_1_day">Giá thuê 1 ngày</label>
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control">
-                                    @if ($errors->has('price_1_day'))
-                                        <span class="valid-feedback">
-                                        {{ $errors->first('price_1_day') }}
-                                    </span>
-                                    @endif
                                 </div>
                                 <div class="form-row">
                                     <label for="car-price_insure">Phí bảo hiểm</label>
                                     <input type="number" name="price_insure" id="price_insure" class="form-control">
-                                    @if ($errors->has('price_insure'))
-                                        <span class="valid-feedback">
-                                         {{ $errors->first('price_insure') }}
-                                     </span>
-                                    @endif
                                 </div>
                                 <div class="form-row">
                                     <label for="car-price_service">Phí dịch vụ</label>
                                     <input type="number" name="price_service" id="price_service" class="form-control">
-                                    @if ($errors->has('price_service'))
-                                        <span class="valid-feedback">
-                                        {{ $errors->first('price_service') }}
-                                    </span>
-                                    @endif
                                 </div>
                                 <br>
                                 <div class="form-row">
                                     <label for="description">Mô tả </label>
                                     <textarea class="form-control" placeholder="Nhập mô tả ở đây.."
                                               name="description" id="description"></textarea>
-                                    @if ($errors->has('description'))
-                                        <span class="valid-feedback">
-                                            {{ $errors->first('description') }}
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
                         </div>
