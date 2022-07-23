@@ -6,10 +6,11 @@ use App\Enums\CarStatusEnum;
 use App\Enums\CarTypeEnum;
 use App\Enums\FileTypeEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Car\CarStoreRequest;
-use App\Http\Requests\Car\CarUpdateRequest;
+use App\Http\Requests\Car\StoreRequest;
+use App\Http\Requests\Car\UpdateRequest;
 use App\Models\Car;
 use App\Models\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
 class CarController extends Controller
@@ -30,11 +31,7 @@ class CarController extends Controller
 
     public function index()
     {
-        $query        = $this->model->clone()->latest();
-        $data         = $query->paginate();
-        return view("$this->role.$this->table.index", [
-            'data'         => $data,
-        ]);
+        return view("$this->role.$this->table.index");
     }
 
     public function create()
@@ -47,15 +44,15 @@ class CarController extends Controller
         ]);
     }
 
-    public function store(CarStoreRequest $request, Car $car)
+    public function store(StoreRequest $request, Car $car)
     {
-        dd($request->has('license_plate'));
-        if ($request->has('license_plate')) {
-            $file      = $request->license_plate;
-            $ext       = $request->license_plate->extension();
-            $file_name = time() . '-' . 'car' . '.' . $ext;
-            $file->move(public_path('uploads'), $file_name);
-            $request->merge(['image' => $file_name]);
+//      dd($request->all());
+        if ($request->has('photo')) {
+            $file      = $request->photo;
+            $ext       = $request->photo->extension();
+            $file_name = time() . '.' . $ext;
+            $path      = Storage::disk('public')->putFile('car_images', $request->photo);
+            $request->merge(['image' => $path]);
         }
 
         $car->create($request->all());
@@ -79,7 +76,7 @@ class CarController extends Controller
         ]);
     }
 
-    public function update(CarUpdateRequest $request, Car $car)
+    public function update(UpdateRequest $request, Car $car)
     {
         $image_path = app_path("uploads/{$request->ole_image}");
         if (!empty($request->new_image)) {

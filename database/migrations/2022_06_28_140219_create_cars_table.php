@@ -15,9 +15,10 @@ class CreateCarsTable extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('image')->nullable();
             $table->string('address');
+            $table->string('address2');
             $table->integer('type')->nullable();
             $table->integer('slot')->nullable();
             $table->boolean('transmission')->nullable();
@@ -28,7 +29,7 @@ class CreateCarsTable extends Migration
             $table->float('price_insure')->nullable();
             $table->float('price_service')->nullable();
             $table->boolean('status');
-            $table->text('slug');
+            $table->text('slug')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

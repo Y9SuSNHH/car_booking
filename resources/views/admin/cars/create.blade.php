@@ -1,22 +1,21 @@
 @extends('layout_backend.master')
+@push('css')
+    <link href="{{ asset('css/summernote-bs4.css') }}" rel="stylesheet" type="text/css"/>
+    <style>
+        .error {
+            color: red !important;
+        }
+    </style>
+@endpush
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-{{--                <div class="card-header">--}}
-{{--                    @if ($errors->any())--}}
-{{--                        <div class="alert alert-danger">--}}
-{{--                            <ul>--}}
-{{--                                @foreach ($errors->all() as $error)--}}
-{{--                                    <li>{{ $error }}</li>--}}
-{{--                                @endforeach--}}
-{{--                            </ul>--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-{{--                </div>--}}
+                <div id="div-error" class="alert alert-danger d-none"></div>
                 <div class="card-body">
-                    <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data"
-                          class="form-horizontal" id="form-create-post" data-plugin="dropzone" data-previews-container="#file-previews"
+                    <form action="{{ route('admin.cars.store') }}" id="form-create" method="POST" enctype="multipart/form-data"
+                          class="form-horizontal" data-plugin="dropzone"
+                          data-previews-container="#file-previews"
                           data-upload-preview-template="#uploadPreviewTemplate">
                         @csrf
                         <div class="form-row">
@@ -24,15 +23,20 @@
                                 <label for="name">Tên xe</label>
                                 <input type="text" name="name" id="name" class="form-control">
                             </div>
-                            <div class="form-group select-location col-6">
-                                <label for="select-address">Địa chỉ</label>
+                            <div class="form-group select-location col-3">
+                                <label for="select-address">Tỉnh/TP</label>
                                 <select class="form-control select-address" name="address" id='select-address'></select>
+                            </div>
+                            <div class="form-group select-location col-3">
+                                <label for="select-address2">Quận/Huyện</label>
+                                <select class="form-control select-address2" name="address2"
+                                        id='select-address2'></select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-4">
-                                <label for="license_plate">Ảnh</label>
-                                <input type="file" name="license_plate" id="license_plate" class="form-control-file">
+                                <label for="photo">Ảnh</label>
+                                <input type="file" name="photo" id="photo" class="form-control-file">
                             </div>
                             <div class="form-group col-4">
                                 <label for="type">Loại xe</label>
@@ -94,7 +98,7 @@
                                 <br>
                                 <div class="dropzone">
                                     <div class="fallback">
-                                        <input name="fullphoto" type="file" multiple/>
+                                        <input name="fullphoto" type="file" multiple>
                                     </div>
                                     <div class="dz-message needsclick">
                                         <i class="h1 text-muted dripicons-cloud-upload"></i>
@@ -112,10 +116,12 @@
                                         <div class="p-2">
                                             <div class="row align-items-center">
                                                 <div class="col-auto">
-                                                    <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+                                                    <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light"
+                                                         alt="">
                                                 </div>
                                                 <div class="col pl-0">
-                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name></a>
+                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold"
+                                                       data-dz-name></a>
                                                     <p class="mb-0" data-dz-size></p>
                                                 </div>
                                                 <div class="col-auto">
@@ -128,19 +134,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-success">Thêm</button>
                             </div>
                             <div class="form-group col-6">
                                 <div class="form-row">
-                                    <label for="car-price_1_day">Giá thuê 1 ngày</label>
+                                    <label for="price_1_day">Giá thuê 1 ngày</label>
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control">
                                 </div>
                                 <div class="form-row">
-                                    <label for="car-price_insure">Phí bảo hiểm</label>
+                                    <label for="price_insure">Phí bảo hiểm</label>
                                     <input type="number" name="price_insure" id="price_insure" class="form-control">
                                 </div>
                                 <div class="form-row">
-                                    <label for="car-price_service">Phí dịch vụ</label>
+                                    <label for="price_service">Phí dịch vụ</label>
                                     <input type="number" name="price_service" id="price_service" class="form-control">
                                 </div>
                                 <br>
@@ -148,6 +153,14 @@
                                     <label for="description">Mô tả </label>
                                     <textarea class="form-control" placeholder="Nhập mô tả ở đây.."
                                               name="description" id="description"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <label for="slug">Slug</label>
+                                    <input type="text" name="slug" id="slug" class="form-control">
+                                </div>
+                                <br>
+                                <div class="form-row float-right">
+                                    <button class="btn btn-success" id="btn-submit">Thêm</button>
                                 </div>
                             </div>
                         </div>
@@ -163,40 +176,123 @@
     <script src="{{asset('js/dropzone.min.js')}}"></script>
     <script src="{{asset('js/component.fileupload.js')}}"></script>
     <script type="text/javascript">
+        async function loadDistrict(parent) {
+            $("#select-address2").empty();
+            const path = $("#select-address option:selected").data('path');
+            const response = await fetch('{{ asset('locations/') }}' + path);
+            const address2 = await response.json();
+            $.each(address2.district, function (index, each) {
+                $("#select-address2").append(`
+                        <option>
+                            ${each.pre} ${each.name}
+                        </option>`);
+            })
+        }
+
+        function generateSlug(name) {
+            $.ajax({
+                url: '{{ route('api.cars.slug.generate') }}',
+                type: 'POST',
+                dataType: 'json',
+                data: {name},
+                success: function (response) {
+                    $("#slug").val(response.data);
+                    $("#slug").trigger("change");
+                },
+                error: function (response) {
+                }
+            });
+        }
+
+        function showError(errors) {
+            let string = '<ul>';
+            if (Array.isArray(errors)) {
+                errors.forEach(function (each) {
+                    each.forEach(function (error) {
+                        string += `<li>${error}</li>`;
+                    });
+                });
+            } else {
+                string += `<li>${errors}</li>`;
+            }
+            string += '</ul>';
+            $("#div-error").html(string);
+            $("#div-error").removeClass("d-none").show();
+            // notifyError(string);
+        }
+
         $(document).ready(async function () {
-            $("#select-city").select2({tags: true});
+            $("#select-address").select2();
             const response = await fetch('{{asset('locations/index.json')}}');
             const address = await response.json();
-            // console.log(address);
             $.each(address, function (index, each) {
                 $("#select-address").append(`
-                <option value='${each.code}' data-path='${each.file_path}}'>
+                <option value='${each.code}' data-path='${each.file_path}'>
                     ${index}
-                </option>`)
+                </option>`);
             })
-            {{--$("#select-name").select2({--}}
-            {{--    tag: true,--}}
-            {{--    ajax: {--}}
-            {{--        url: '{{route('api.cars')}}',--}}
-            {{--        data: function (params) {--}}
-            {{--            var queryParameters = {--}}
-            {{--                q: params.term--}}
-            {{--            }--}}
 
-            {{--            return queryParameters;--}}
-            {{--        },--}}
-            {{--        processResults: function (data) {--}}
-            {{--            return {--}}
-            {{--                results: $.map(data.data, function (item) {--}}
-            {{--                    return {--}}
-            {{--                        text: item.name,--}}
-            {{--                        id: item.id--}}
-            {{--                    }--}}
-            {{--                })--}}
-            {{--            };--}}
-            {{--        }--}}
-            {{--    },--}}
-            {{--});--}}
+            $("#select-address").change(function () {
+                loadDistrict();
+            });
+            $("#select-address2").select2();
+            await loadDistrict();
+
+            $(document).on('change', '#name', function () {
+                const name = $("#name").val();
+                generateSlug(name);
+            })
+
+            $("#slug").change(function () {
+                $("#btn-submit").attr('disabled', true);
+                $.ajax({
+                    url: '{{ route('api.cars.slug.check') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {slug: $(this).val()},
+                    success: function (response) {
+                        if (response.success) {
+                            $("#btn-submit").attr('disabled', false);
+                        }
+                    }
+                });
+            })
+
+            $("#form-create").validate({
+                rules: {
+                    name: {
+                        required: true
+                    }
+                },
+                submitHandler: function(form) {
+                    const obj = $("#form-create");
+                    const formData = new FormData(obj[0]);
+                    $.ajax({
+                        url: obj.attr('action'),
+                        type: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        cache: false,
+                        enctype: 'multipart/form-data',
+                        success:  function (response) {
+                                // form.submit();
+                        },
+                        error:  function (response) {
+                            let errors;
+                            if (response.responseJSON.errors) {
+                                errors = Object.values(response.responseJSON.errors);
+                                showError(errors);
+                            } else {
+                                errors = response.responseJSON.message;
+                                showError(errors);
+                            }
+                        },
+                    });
+                }
+            });
         });
     </script>
 @endpush

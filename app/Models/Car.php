@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Enums\CarStatusEnum;
 use App\Enums\CarTypeEnum;
+use App\Enums\FileTableEnum;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -66,6 +68,7 @@ class Car extends Model
         'image',
         'fullphoto',
         'address',
+        'address2',
         'type',
         'slot',
         'transmission',
@@ -95,5 +98,10 @@ class Car extends Model
     public function getTypeNameAttribute()
     {
         return CarTypeEnum::getKeyByValue($this->type);
+    }
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class, 'table_id')
+            ->where('files.table', FileTableEnum::getValue(strtoupper($this->getTable())));
     }
 }

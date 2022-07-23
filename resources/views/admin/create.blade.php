@@ -195,13 +195,13 @@
                         {{--    "<button class='btn btn-link action-icon'><i class='dripicons-trash'></i></button></form>";--}}
 
                         $('#table-data').append($('<tr>')
-                                .append($('<td>').append(each.id))
-                                .append($('<td>').append(image))
-                                .append($('<td>').append(info))
-                                .append($('<td>').append(type))
-                                .append($('<td>').append(fuel))
-                                .append($('<td>').append(price))
-                                .append($('<td>').append(status))
+                            .append($('<td>').append(each.id))
+                            .append($('<td>').append(image))
+                            .append($('<td>').append(info))
+                            .append($('<td>').append(type))
+                            .append($('<td>').append(fuel))
+                            .append($('<td>').append(price))
+                            .append($('<td>').append(status))
                             // .append($('<td>').append(action))
                         );
                         $(document).on('click', '#btn-form-create-bill-' + each.id, function (event) {
