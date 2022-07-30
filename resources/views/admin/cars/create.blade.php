@@ -13,7 +13,8 @@
             <div class="card">
                 <div id="div-error" class="alert alert-danger d-none"></div>
                 <div class="card-body">
-                    <form action="{{ route('admin.cars.store') }}" id="form-create" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('admin.cars.store') }}" id="form-create" method="POST"
+                          enctype="multipart/form-data"
                           class="form-horizontal" data-plugin="dropzone"
                           data-previews-container="#file-previews"
                           data-upload-preview-template="#uploadPreviewTemplate">
@@ -35,10 +36,6 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-4">
-                                <label for="photo">Ảnh</label>
-                                <input type="file" name="photo" id="photo" class="form-control-file">
-                            </div>
-                            <div class="form-group col-4">
                                 <label for="type">Loại xe</label>
                                 <select name="type" id="type" class="form-control select-filter">
                                     @foreach($types as $key => $value)
@@ -59,8 +56,6 @@
                                     <option value="7">7 chỗ</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group col-4">
                                 <label for="transmission">Truyền động</label>
                                 <select name="transmission" id="transmission" class="form-control">
@@ -68,6 +63,8 @@
                                     <option value="1">Số sàn</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-4">
                                 <label for="fuel">Nhiên liệu</label>
                                 <select name="fuel" id="fuel" class="form-control">
@@ -80,9 +77,7 @@
                                 <input type="number" name="fuel_comsumpiton" id="fuel_comsumpiton" class="form-control"
                                        placeholder="L/km">
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <label for="car-status">Trạng thái</label>
                                 <select class="form-control select-filter" name="status" id="car-status">
                                     @foreach($status as $key => $value)
@@ -94,72 +89,48 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <br>
-                                <br>
-                                <div class="dropzone">
-                                    <div class="fallback">
-                                        <input name="fullphoto" type="file" multiple>
-                                    </div>
-                                    <div class="dz-message needsclick">
-                                        <i class="h1 text-muted dripicons-cloud-upload"></i>
-                                        <h3>Drop files here or click to upload.</h3>
-                                        <span class="text-muted font-13">(This is just a demo dropzone. Selected files are
-                                    <strong>not</strong> actually uploaded.)</span>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-4">
+                                <div class="form-group">
+                                    <label for="photo">Ảnh</label>
+                                    <img id="pic" style="max-width: 300px; max-height:200px;"/>
+                                    <input type="file" name="photo" id="photo" class="form-control-file"
+                                           oninput="pic.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
-
-                                <div class="dropzone-previews mt-3" id="file-previews"></div>
-
-                                <!-- file preview template -->
-                                <div class="d-none" id="uploadPreviewTemplate">
-                                    <div class="card mt-1 mb-0 shadow-none border">
-                                        <div class="p-2">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto">
-                                                    <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light"
-                                                         alt="">
-                                                </div>
-                                                <div class="col pl-0">
-                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold"
-                                                       data-dz-name></a>
-                                                    <p class="mb-0" data-dz-size></p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <!-- Button -->
-                                                    <a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
-                                                        <i class="dripicons-cross"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="fullphoto">Ảnh chi tiết</label>
+                                    <input type="file" name="fullphoto[]" id="fullphoto" class="form-control-file"
+                                           multiple onchange="preview_image();">
+                                    <div id="image_preview"></div>
                                 </div>
                             </div>
-                            <div class="form-group col-6">
-                                <div class="form-row">
-                                    <label for="price_1_day">Giá thuê 1 ngày</label>
-                                    <input type="number" name="price_1_day" id="price_1_day" class="form-control">
+                            <div class="form-group col-4">
+                                <div class="form-group">
+                                    <label for="slug">Slug</label>
+                                    <input type="text" name="slug" id="slug" class="form-control">
                                 </div>
-                                <div class="form-row">
-                                    <label for="price_insure">Phí bảo hiểm</label>
-                                    <input type="number" name="price_insure" id="price_insure" class="form-control">
-                                </div>
-                                <div class="form-row">
-                                    <label for="price_service">Phí dịch vụ</label>
-                                    <input type="number" name="price_service" id="price_service" class="form-control">
-                                </div>
-                                <br>
-                                <div class="form-row">
+                                <div class="form-group">
                                     <label for="description">Mô tả </label>
                                     <textarea class="form-control" placeholder="Nhập mô tả ở đây.."
                                               name="description" id="description"></textarea>
                                 </div>
-                                <div class="form-row">
-                                    <label for="slug">Slug</label>
-                                    <input type="text" name="slug" id="slug" class="form-control">
+                            </div>
+                            <div class="form-group col-4">
+                                <div class="form-group">
+                                    <label for="price_1_day">Giá thuê 1 ngày</label>
+                                    <input type="number" name="price_1_day" id="price_1_day" class="form-control">
                                 </div>
-                                <br>
-                                <div class="form-row float-right">
+                                <div class="form-group">
+                                    <label for="price_insure">Phí bảo hiểm</label>
+                                    <input type="number" name="price_insure" id="price_insure" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="price_service">Phí dịch vụ</label>
+                                    <input type="number" name="price_service" id="price_service" class="form-control">
+                                </div>
+                                <div class="form-group float-right">
                                     <button class="btn btn-success" id="btn-submit">Thêm</button>
                                 </div>
                             </div>
@@ -175,6 +146,7 @@
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script src="{{asset('js/dropzone.min.js')}}"></script>
     <script src="{{asset('js/component.fileupload.js')}}"></script>
+    <script src="{{asset('js/image-uploader.min.js')}}"></script>
     <script type="text/javascript">
         async function loadDistrict(parent) {
             $("#select-address2").empty();
@@ -218,7 +190,48 @@
             string += '</ul>';
             $("#div-error").html(string);
             $("#div-error").removeClass("d-none").show();
-            // notifyError(string);
+            notifyError(string);
+        }
+
+        function preview_image() {
+            var total_file = document.getElementById("fullphoto").files.length;
+            for (var i = 0; i < total_file; i++) {
+                $('#image_preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' style='max-width: 300px; max-height:200px;'>");
+            }
+        }
+
+        function submitForm() {
+            const obj = $("#form-create");
+            const formData = new FormData(obj[0]);
+            $.ajax({
+                url: obj.attr('action'),
+                type: 'POST',
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false,
+                async: false,
+                cache: false,
+                enctype: 'multipart/form-data',
+                success: function () {
+                    if (response.success) {
+                        $("#div-error").hide();
+                        notifySuccess('Đã thêm xe mới thành công');
+                    } else {
+                        showError(response.message);
+                    }
+                },
+                error: function (response) {
+                    let errors;
+                    if (response.responseJSON.errors) {
+                        errors = Object.values(response.responseJSON.errors);
+                        showError(errors);
+                    } else {
+                        errors = response.responseJSON.message;
+                        showError(errors);
+                    }
+                },
+            });
         }
 
         $(document).ready(async function () {
@@ -264,33 +277,8 @@
                         required: true
                     }
                 },
-                submitHandler: function(form) {
-                    const obj = $("#form-create");
-                    const formData = new FormData(obj[0]);
-                    $.ajax({
-                        url: obj.attr('action'),
-                        type: 'POST',
-                        dataType: 'json',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        async: false,
-                        cache: false,
-                        enctype: 'multipart/form-data',
-                        success:  function (response) {
-                                // form.submit();
-                        },
-                        error:  function (response) {
-                            let errors;
-                            if (response.responseJSON.errors) {
-                                errors = Object.values(response.responseJSON.errors);
-                                showError(errors);
-                            } else {
-                                errors = response.responseJSON.message;
-                                showError(errors);
-                            }
-                        },
-                    });
+                submitHandler: function () {
+                    submitForm();
                 }
             });
         });

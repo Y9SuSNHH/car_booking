@@ -60,6 +60,36 @@
                             </thead>
                             <tbody></tbody>
                         </table>
+                        <div class="modal fade" id="popup-images" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myCenterModalLabel">Toàn bộ ảnh xe</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                            </ol>
+                                            <div class="carousel-inner" role="listbox">
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselExampleIndicators"
+                                               role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Sau</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselExampleIndicators"
+                                               role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Trước</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="form-create-bill" class="modal fade bd-example-modal-lg"
                              tabindex="-1" role="dialog">
                             <div class="modal-dialog modal-lg" role="document">
@@ -161,6 +191,35 @@
             })
         }
 
+        function getImage(carId) {
+            $.ajax({
+                url: '{{ route('api.files.cars.carImage') }}/' + carId,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (response) {
+                    if (response.data.length !== 0) {
+                        $.each(response.data, function (index, each) {
+                            let image_url = "{{asset('storage/')}}" + '/' + each.link;
+                            let li, image;
+                            if (index === 0) {
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
+                                image = "<div class='carousel-item active'>" +
+                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
+                            } else {
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
+                                image = "<div class='carousel-item'>" +
+                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
+                            }
+                            $('.carousel-indicators').append(li);
+                            $('.carousel-inner').append(image);
+                        })
+                    }else{
+                        notifyInfo('Xe này chưa có ảnh chi tiết');
+                    }
+                }
+            });
+        }
+
         $(document).ready(async function () {
             //crawl data
             $.ajax({
@@ -170,10 +229,10 @@
                 success: function (response) {
                     response.data.data.forEach(function (each) {
                         let image_url = "{{asset('storage/')}}" + '/' + each.image;
-                        let image = "<a href='#' data-target='#popup-image-" + each.image + "' data-toggle='modal'>"
+                        let image = "<button type='button' id='btn-popup-images-" + each.id + "' data-toggle='modal' data-target='#popup-images' class='btn btn-link btn-rounded'>"
                             + "<img src='" + image_url
                             + "' class='img-fluid img-thumbnail p-1'"
-                            + "style='max-width: 150px;'> </a>";
+                            + "style='max-width: 300px; max-height:200px;'> </button>";
                         let address = "- " + each.address + "<br>- " + each.address2;
                         let info = "- " + each.name + "<br>" + address;
                         let transmission = each.transmission ? "<span class='badge badge-primary'>Số tự động</span>" : "<span class='badge badge-info'>Số sàn</span>";
@@ -209,17 +268,16 @@
                             route_bill_store = route_bill_store.replace('id', each.id);
                             $("#action-bill-store").attr("action", route_bill_store);
                         });
+                        $(document).on('click', '#btn-popup-images-' + each.id, function () {
+                            $('.carousel-indicators').empty();
+                            $('.carousel-inner').empty();
+                            getImage(each.id);
+                        });
                     });
                     renderPagination(response.data.pagination);
                 },
-                error: function (response) {
-                    $.toast({
-                        heading: 'Import Error',
-                        text: response.responseJSON.message,
-                        showHideTransition: 'slide',
-                        position: 'bottom-right',
-                        icon: 'error'
-                    })
+                error: function () {
+                    notifyError();
                 }
             })
 

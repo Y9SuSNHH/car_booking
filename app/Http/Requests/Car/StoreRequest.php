@@ -37,7 +37,6 @@ class StoreRequest extends FormRequest
             ],
             'fullphoto'        => [
                 'nullable',
-                'image',
             ],
             'address'          => [
                 'required',

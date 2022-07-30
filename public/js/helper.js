@@ -13,3 +13,33 @@ function renderPagination(links) {
             .append(`<a class="page-link" >${each.label}</a>`));
     })
 }
+
+function notifySuccess(message = '') {
+    $.toast({
+        heading: 'Success',
+        text: message,
+        showHideTransition: 'slide',
+        position: 'bottom-right',
+        icon: 'success'
+    });
+}
+
+function notifyError(message = '') {
+    $.toast({
+        heading: 'Error',
+        text: message,
+        showHideTransition: 'slide',
+        position: 'bottom-right',
+        icon: 'error'
+    });
+}
+
+function notifyInfo(message = '') {
+    $.toast({
+        heading: 'Info',
+        text: message,
+        showHideTransition: 'slide',
+        position: 'bottom-right',
+        icon: 'info'
+    });
+}

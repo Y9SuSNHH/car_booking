@@ -4,17 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\CarStatusEnum;
 use App\Enums\CarTypeEnum;
+use App\Enums\FileTableEnum;
 use App\Enums\FileTypeEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ResponseTrait;
 use App\Http\Requests\Car\StoreRequest;
 use App\Http\Requests\Car\UpdateRequest;
 use App\Models\Car;
 use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Throwable;
 
 class CarController extends Controller
 {
+    use ResponseTrait;
 
     private object $model;
     private string $table;
@@ -44,19 +48,32 @@ class CarController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request, Car $car)
+    public function store(StoreRequest $request)
     {
-//      dd($request->all());
-        if ($request->has('photo')) {
-            $file      = $request->photo;
-            $ext       = $request->photo->extension();
-            $file_name = time() . '.' . $ext;
-            $path      = Storage::disk('public')->putFile('car_images', $request->photo);
-            $request->merge(['image' => $path]);
-        }
+        try {
+            if ($request->has('photo')) {
+                $path      = Storage::disk('public')->putFile('car_images', $request->photo);
+                $request->merge(['image' => $path]);
+                $car = new Car($request->except(['photo','fullphoto']));
+                $car->save();
+            }
+            if ($request->has("fullphoto")) {
+                $files = $request->file("fullphoto");
+                foreach ($files as $file) {
+                    $path      = Storage::disk('public')->putFile('car_images', $file);
+                    File::create([
+                        'table'    => FileTableEnum::CARS,
+                        'table_id' => $car->id,
+                        'type'     => FileTypeEnum::CAR_IMAGE,
+                        'link'     => $path,
+                    ]);
+                }
+            }
+            return $this->successResponse();
 
-        $car->create($request->all());
-        return redirect()->route("$this->role.$this->table.index");
+        } catch (Throwable $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     public function show($id)

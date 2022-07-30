@@ -32,7 +32,6 @@ class CarController extends Controller
 
         $query->with(['files' => function($q) {
             $q->whereIn('type', [
-                FileTypeEnum::LICENSE_PLATE,
                 FileTypeEnum::CAR_IMAGE,
             ]);
         }]);
@@ -52,6 +51,7 @@ class CarController extends Controller
         $arr['pagination'] = $data->linkCollection();
 
         return $this->successResponse($arr);
+//        return $this->errorResponse($arr);
     }
 
     public function generateSlug(GenerateSlugRequest $request): JsonResponse
