@@ -49,7 +49,12 @@ class User extends Model implements AuthenticatableContract
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable=[
+    protected $fillable = [
+        'name',
+        'gender',
+        'phone',
+        'address2',
+        'address',
         'email',
         'password',
     ];
@@ -63,6 +68,7 @@ class User extends Model implements AuthenticatableContract
     {
         return UserRoleEnum::getKeyByValue($this->role);
     }
+
     public function getGenderNameAttribute(): string
     {
         return ($this->gender === 1) ? 'Nam' : 'Nữ';

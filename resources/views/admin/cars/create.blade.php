@@ -216,7 +216,6 @@
                 success: function () {
                     if (response.success) {
                         $("#div-error").hide();
-                        notifySuccess('Đã thêm xe mới thành công');
                     } else {
                         showError(response.message);
                     }

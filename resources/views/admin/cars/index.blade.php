@@ -118,7 +118,7 @@
                                                             class="form-check form-check-inline custom-control custom-radio custom-control-inline">
                                                             <input class="custom-control-input"
                                                                    type="radio"
-                                                                   name="inlineRadioOptions"
+                                                                   name="gender"
                                                                    id="genderMale"
                                                                    value="1" checked>
                                                             <label class="custom-control-label"
@@ -128,7 +128,7 @@
                                                             class="form-check form-check-inline custom-control custom-radio custom-control-inline">
                                                             <input class="custom-control-input"
                                                                    type="radio"
-                                                                   name="inlineRadioOptions"
+                                                                   name="gender"
                                                                    id="genderFemale"
                                                                    value="0">
                                                             <label class="custom-control-label"
@@ -153,6 +153,48 @@
                                                     <label for="select-address2">Quận/Huyện</label>
                                                     <select class="form-control select-address2" name="address2"
                                                             id='select-address2'></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>Căn cước công dân</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input type="file" name="identity[]" id="identity"
+                                                           class="form-control-file"
+                                                           oninput="identity1.src=window.URL.createObjectURL(this.files[0])">
+                                                    <img id="identity1"
+                                                         style="max-width: 300px; max-height:200px;"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="file" name="identity[]"
+                                                           class="form-control-file"
+                                                           oninput="identity2.src=window.URL.createObjectURL(this.files[0])">
+                                                    <img id="identity2"
+                                                         style="max-width: 300px; max-height:200px;"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>Bằng lái xe</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input type="file" name="license_car[]" id="identity"
+                                                           class="form-control-file"
+                                                           oninput="license_car1.src=window.URL.createObjectURL(this.files[0])">
+                                                    <img id="license_car1"
+                                                         style="max-width: 300px; max-height:200px;"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="file" name="license_car[]"
+                                                           class="form-control-file"
+                                                           oninput="license_car2.src=window.URL.createObjectURL(this.files[0])">
+                                                    <img id="license_car2"
+                                                         style="max-width: 300px; max-height:200px;"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,37 +233,7 @@
             })
         }
 
-        function getImage(carId) {
-            $.ajax({
-                url: '{{ route('api.files.cars.carImage') }}/' + carId,
-                type: 'GET',
-                dataType: 'JSON',
-                success: function (response) {
-                    if (response.data.length !== 0) {
-                        $.each(response.data, function (index, each) {
-                            let image_url = "{{asset('storage/')}}" + '/' + each.link;
-                            let li, image;
-                            if (index === 0) {
-                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
-                                image = "<div class='carousel-item active'>" +
-                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
-                            } else {
-                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
-                                image = "<div class='carousel-item'>" +
-                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
-                            }
-                            $('.carousel-indicators').append(li);
-                            $('.carousel-inner').append(image);
-                        })
-                    }else{
-                        notifyInfo('Xe này chưa có ảnh chi tiết');
-                    }
-                }
-            });
-        }
-
-        $(document).ready(async function () {
-            //crawl data
+        function crawlData() {
             $.ajax({
                 url: '{{route('api.cars')}}',
                 dataType: 'json',
@@ -280,6 +292,39 @@
                     notifyError();
                 }
             })
+        }
+
+        function getImage(carId) {
+            $.ajax({
+                url: '{{ route('api.files.cars.carImage') }}/' + carId,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (response) {
+                    if (response.data.length !== 0) {
+                        $.each(response.data, function (index, each) {
+                            let image_url = "{{asset('storage/')}}" + '/' + each.link;
+                            let li, image;
+                            if (index === 0) {
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
+                                image = "<div class='carousel-item active'>" +
+                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
+                            } else {
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
+                                image = "<div class='carousel-item'>" +
+                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
+                            }
+                            $('.carousel-indicators').append(li);
+                            $('.carousel-inner').append(image);
+                        })
+                    } else {
+                        notifyInfo('Xe này chưa có ảnh chi tiết');
+                    }
+                }
+            });
+        }
+
+        $(document).ready(async function () {
+            crawlData();
 
             $(document).on('click', '#pagination > li > a', function (event) {
                 event.preventDefault();

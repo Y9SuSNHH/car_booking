@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CarStatusEnum;
 use App\Enums\UserRoleEnum;
 use App\Http\Requests\Auth\ProcessSignUpRequest;
+use App\Models\Bill;
+use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +17,11 @@ use Exception;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+        return view('auth.index');
+    }
+
     public function signin()
     {
         return view('auth.signin');
@@ -40,7 +48,7 @@ class AuthController extends Controller
         $user->name = $data->getName();
         $user->save();
 
-        Auth::login($user,true);
+        Auth::login($user, true);
 
         if ($checkExist) {
             $role = strtolower(UserRoleEnum::getKey($user->role));
@@ -55,7 +63,7 @@ class AuthController extends Controller
             $user = User::query()
                 ->where('email', $request->get('email'))
                 ->firstOrFail();
-            if (! Hash::check($request->get('password'), $user->password)) {
+            if (!Hash::check($request->get('password'), $user->password)) {
                 return redirect()->route('signin')->with('failed', 'Sai mật khẩu');
             }
             Auth::login($user);

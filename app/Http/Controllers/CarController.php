@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\FileTypeEnum;
 use App\Http\Requests\Car\CheckSlugRequest;
+use App\Http\Requests\Car\FilterRequest;
 use App\Http\Requests\Car\GenerateSlugRequest;
 use App\Models\Car;
 use Cviebrock\EloquentSluggable\Services\SlugService;
@@ -23,7 +24,7 @@ class CarController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $query        = $this->model->clone()->oldest();
+        $query        = $this->model->clone()->latest();
         $selectedName = $request->get('name');
 
         if (!empty($selectedName) && $selectedName !== 'All') {
@@ -71,4 +72,18 @@ class CarController extends Controller
         return $this->successResponse();
     }
 
+    public function list(FilterRequest $request): JsonResponse
+    {
+        try {
+            session([
+            'address' => $request->address,
+            'address2' => $request->address2,
+            'date_start' => $request->date_start,
+            'date_end'   => $request->date_end,
+        ]);
+            return $this->successResponse();
+        } catch (Throwable $e) {
+            return $this->errorResponse();
+        }
+    }
 }
