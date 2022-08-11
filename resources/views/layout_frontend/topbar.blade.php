@@ -43,7 +43,7 @@
                             <a class="dropdown-item" href="#">Action</a>
                             <a class="dropdown-item" href="#">Another action</a>
                             <a href="{{ route('signout') }}" class="dropdown-item">
-                                <i class="mdi mdi-logout"></i>
+                                <i class="now-ui-icons sport_user-run"></i>
                                 <span>Đăng xuất</span>
                             </a>
                         </div>

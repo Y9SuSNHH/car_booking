@@ -6,14 +6,10 @@ use Illuminate\View\Component;
 
 class Car extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public object $car;
+    public function __construct($car)
     {
-        //
+        $this->car = $car;
     }
 
     /**

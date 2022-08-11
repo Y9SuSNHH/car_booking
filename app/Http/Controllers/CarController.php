@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\FileTypeEnum;
 use App\Http\Requests\Car\CheckSlugRequest;
-use App\Http\Requests\Car\FilterRequest;
+use App\Http\Requests\Car\ListCarRequest;
 use App\Http\Requests\Car\GenerateSlugRequest;
 use App\Models\Car;
 use Cviebrock\EloquentSluggable\Services\SlugService;
@@ -31,11 +31,13 @@ class CarController extends Controller
             $query->where('name', $selectedName);
         }
 
-        $query->with(['files' => function($q) {
-            $q->whereIn('type', [
-                FileTypeEnum::CAR_IMAGE,
-            ]);
-        }]);
+        $query->with([
+            'files' => function ($q) {
+                $q->whereIn('type', [
+                    FileTypeEnum::CAR_IMAGE,
+                ]);
+            }
+        ]);
 
 //        $names = $this->model->clone()
 //            ->distinct()
@@ -59,7 +61,7 @@ class CarController extends Controller
     {
         try {
             $name = $request->get('name');
-            $slug  = SlugService::createSlug(Car::class, 'slug', $name);
+            $slug = SlugService::createSlug(Car::class, 'slug', $name);
 
             return $this->successResponse($slug);
         } catch (Throwable $e) {
@@ -72,15 +74,14 @@ class CarController extends Controller
         return $this->successResponse();
     }
 
-    public function list(FilterRequest $request): JsonResponse
+    public function list(ListCarRequest $request): JsonResponse
     {
         try {
             session([
-            'address' => $request->address,
-            'address2' => $request->address2,
-            'date_start' => $request->date_start,
-            'date_end'   => $request->date_end,
-        ]);
+                'address'    => $request->address,
+                'date_start' => $request->date_start,
+                'date_end'   => $request->date_end,
+            ]);
             return $this->successResponse();
         } catch (Throwable $e) {
             return $this->errorResponse();

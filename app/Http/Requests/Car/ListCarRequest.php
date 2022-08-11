@@ -4,7 +4,7 @@ namespace App\Http\Requests\Car;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FilterRequest extends FormRequest
+class ListCarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,6 @@ class FilterRequest extends FormRequest
     {
         return [
             'address' => [
-                'required',
-                'string',
-            ],
-            'address2' => [
                 'required',
                 'string',
             ],

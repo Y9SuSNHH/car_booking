@@ -12,7 +12,6 @@
     <!-- CSS Files -->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('css/now-ui-kit.css')}}" rel="stylesheet"/>
-    <link href="{{asset('css/app-modern.min.css')}}" rel="stylesheet" type="text/css" id="light-style">
 </head>
 <body class="sections-page">
 <div class="wrapper">
@@ -29,51 +28,37 @@
                                 <h5 class="description">CÙNG BẠN TRÊN MỌI HÀNH TRÌNH</h5>
                             </div>
                             <div class="col-md-10 ml-auto mr-auto">
-                                <div class="container-fluid">
+                                <div class="card card-raised card-form-horizontal card-plain" data-background-color="">
                                     <div class="card-body">
-                                        <form action="{{route('api.cars.list')}}" class="form-horizontal"
-                                              id="form-filter">
-                                            <div class="form-row justify-content-center">
+                                        <form action="{{route('api.cars.list')}}" class="form-group"
+                                              id="form-list-car">
+                                            <div class="col-md-8 ml-auto mr-auto">
                                                 <div id="div-error" class="alert alert-danger d-none"></div>
                                             </div>
-                                            <div class="form-row justify-content-center">
-                                                <div class="col-md-4">
-                                                    <div class="form-group select2">
-                                                        <label for="select-address"><h5>Tỉnh/TP</h5></label>
-                                                        <select class="form-control" data-style="btn btn-info btn-round"
-                                                                name="address"
-                                                                id='select-address'></select>
-                                                    </div>
+                                            <div class="row">
+                                                <div class="col-md-4 form-group">
+                                                    <label for="address">Tỉnh/TP</label>
+                                                    <select class="form-control" name="address"
+                                                            id="address">
+                                                        <option selected value="All" class="text-black">Tất cả</optionTất cả</option>
+                                                        @foreach($addressCars as $addressCar)
+                                                            <option value="{{$addressCar}}" class="text-black">
+                                                                {{ $addressCar }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group select2">
-                                                        <label for="select-address2"><h5>Quận/Huyện </h5></label>
-                                                        <select class="form-control select-address2" name="address2"
-                                                                id='select-address2'></select>
-                                                    </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="date_start">Ngày bắt đầu</label>
+                                                    <input type="date" name="date_start" id="date_start"
+                                                           class="form-control">
                                                 </div>
-                                            </div>
-                                            <br>
-                                            <div class="form-row justify-content-center">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="date_start"><h5>Ngày bắt đầu</h5></label>
-                                                        <input type="text" name="date_start" id="date_start"
-                                                               class="form-control date" data-toggle="date-picker"
-                                                               data-single-date-picker="true">
-                                                    </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="date_end">Ngày kết thúc</label>
+                                                    <input type="date" name="date_end" id="date_end"
+                                                           class="form-control">
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="date_end"><h5>Ngày kết thúc</h5></label>
-                                                        <input type="text" name="date_end" id="date_end"
-                                                               class="form-control date" data-toggle="date-picker"
-                                                               data-single-date-picker="true">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="form-row">
+                                                <br>
                                                 <div class="col-md-3 ml-auto mr-auto">
                                                     <button class="btn btn-success btn-round btn-block">
                                                         Tìm kiếm
@@ -91,44 +76,15 @@
         </div>
     </div>
 </div>
-<script src="{{asset('js/vendor.min.js')}}"></script>
-<script src="{{asset('js/app.min.js')}}"></script>
 <script src="{{asset('js/jquery.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{asset('js/popper.min.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script src="{{asset('js/moment.min.js')}}"></script>
+<script src="{{asset('js/now-ui-kit.js')}}"></script>
 <script src="{{asset('js/jquery.validate.js')}}"></script>
 <script type="text/javascript">
-    async function loadDistrict(parent) {
-        $("#select-address2").empty();
-        const path = $("#select-address option:selected").data('path');
-        const response = await fetch('{{ asset('locations/') }}' + path);
-        const address2 = await response.json();
-        $.each(address2.district, function (index, each) {
-            $("#select-address2").append(`
-                        <option>
-                            ${each.pre} ${each.name}
-                        </option>`);
-        })
-    }
-
     $(document).ready(async function () {
-        $("#select-address").select2();
-        const response = await fetch('{{asset('locations/index.json')}}');
-        const address = await response.json();
-        $.each(address, function (index, each) {
-            $("#select-address").append(`
-                <option value='${each.code}' data-path='${each.file_path}'>
-                    ${index}
-                </option>`);
-        })
-
-        $("#select-address").change(function () {
-            loadDistrict();
-        });
-        $("#select-address2").select2();
-        await loadDistrict();
-
-
-        $("#form-filter").validate({
+        $("#form-list-car").validate({
             // rules: {
             //     name: {
             //         required: true
@@ -142,7 +98,7 @@
                     data: $(form).serialize(),
                     success: function (response) {
                         $("#div-error").hide();
-                        window.location  = "{{route('user.index')}}";
+                        window.location = "{{route('user.index')}}";
                     },
                     error: function (response) {
                         const errors = Object.values(response.responseJSON.errors);
@@ -160,6 +116,8 @@
             }
         });
     });
+
+
 </script>
 </body>
 </html>

@@ -8,6 +8,10 @@ use App\Http\Requests\Auth\ProcessSignUpRequest;
 use App\Models\Bill;
 use App\Models\Car;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,22 +21,28 @@ use Exception;
 
 class AuthController extends Controller
 {
-    public function index()
+    public function index(): Factory|View|Application
     {
-        return view('auth.index');
+        $addressCars = Car::query()->clone()
+            ->groupBy('address')
+            ->pluck('address');
+
+        return view('auth.index', [
+            'addressCars' => $addressCars,
+        ]);
     }
 
-    public function signin()
+    public function signin(): Factory|View|Application
     {
         return view('auth.signin');
     }
 
-    public function signup()
+    public function signup(): Factory|View|Application
     {
         return view('auth.signup');
     }
 
-    public function callback($provider)
+    public function callback($provider): RedirectResponse
     {
         $data       = Socialite::driver($provider)->user();
         $user       = User::query()
@@ -57,7 +67,7 @@ class AuthController extends Controller
         return redirect()->route('signup');
     }
 
-    public function processSignIn(Request $request)
+    public function processSignIn(Request $request): RedirectResponse
     {
         try {
             $user = User::query()
@@ -74,7 +84,7 @@ class AuthController extends Controller
         }
     }
 
-    public function processSignUp(Request $request)
+    public function processSignUp(Request $request): RedirectResponse
     {
         $password = Hash::make($request->password);
         if (auth()->check()) {
@@ -102,7 +112,7 @@ class AuthController extends Controller
         return redirect()->route("user.welcome");
     }
 
-    public function signout(Request $request)
+    public function signout(Request $request): RedirectResponse
     {
         Auth::logout();
 

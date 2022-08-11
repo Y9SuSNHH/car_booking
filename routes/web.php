@@ -14,12 +14,9 @@ use Laravel\Socialite\Facades\Socialite;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function() {
-    return view('layout_backend.master');
-})->name('welcome');
 
 
-Route::get('/index', [AuthController::class, 'index'])->name('index');
+Route::get('/', [AuthController::class, 'index'])->name('index');
 Route::get('/signin', [AuthController::class, 'signin'])->name('signin');
 Route::post('/signin', [AuthController::class, 'processSignIn'])->name('process_signin');
 Route::get('/signup', [AuthController::class, 'signup'])->name('signup');

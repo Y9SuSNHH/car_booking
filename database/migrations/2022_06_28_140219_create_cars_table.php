@@ -29,7 +29,7 @@ class CreateCarsTable extends Migration
             $table->float('price_insure')->nullable();
             $table->float('price_service')->nullable();
             $table->boolean('status');
-            $table->text('slug')->unique();
+            $table->string('slug')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

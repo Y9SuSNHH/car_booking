@@ -3,44 +3,47 @@
     <link href="{{asset('css/select2.min.css')}}" rel="stylesheet" type="text/css" id="light-style">
 @endpush
 @section('content')
-    <form>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="form-group select2">
-                    <label for="select-address">Tỉnh/TP</label>
-                    <select class="form-control" data-style="btn btn-info btn-round"
-                            name="address"
-                            id='select-address'></select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group select2">
-                    <label for="select-address2">Quận/Huyện </label>
-                    <select class="form-control select-address2" name="address2"
-                            id='select-address2'></select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="date_start">Ngày bắt đầu</label>
-                    <input type="text" name="date_start" id="date_start"
-                           class="form-control date" data-toggle="date-picker"
-                           data-single-date-picker="true">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="date_end">Ngày kết thúc</label>
-                    <input type="text" name="date_end" id="date_end"
-                           class="form-control date" data-toggle="date-picker"
-                           data-single-date-picker="true">
-                </div>
-            </div>
-        </div>
-    </form>
     <div class="row">
         <div class="col-md-3">
             <div class="collapse-panel">
+                <div class="card-header">
+                    <form action="{{route('api.cars.list')}}" class="form-group"
+                          id="form-list-car">
+                        <div class="row">
+                            <div class="col-md-12 ml-auto mr-auto">
+                                <label for="address">Tỉnh/TP</label>
+                                <select class="form-control" name="address"
+                                        id="address">
+                                    <option selected value="All" class="text-black">Tất cả</option>
+                                    @foreach($addressCars as $addressCar)
+                                        <option value="{{$addressCar}}" class="text-black"
+                                                @if ($addressCar === session()->get('date_end'))
+                                                    selected
+                                            @endif>
+                                            {{ $addressCar }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 ml-auto mr-auto">
+                                <label for="date_start">Ngày bắt đầu</label>
+                                <input type="date" name="date_start" id="date_start"
+                                       class="form-control" value="{{session()->get('date_end')}}">
+                            </div>
+                            <div class="col-md-12 ml-auto mr-auto">
+                                <label for="date_end">Ngày kết thúc</label>
+                                <input type="date" name="date_end" id="date_end"
+                                       class="form-control" value="{{session()->get('date_end')}}">
+                            </div>
+                            <br>
+                            <div class="col-md-8 ml-auto mr-auto">
+                                <button class="btn btn-success btn-round btn-block">
+                                    Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="card-body">
                     <div class="card card-refine card-plain">
                         <h4 class="card-title">
@@ -92,8 +95,8 @@
             <div class="row">
                 <div class="col-md-10 ml-auto mr-auto">
                     <div class="row">
-                        @foreach($list as $each)
-                            <x-car :data="$each"></x-car>
+                        @foreach($cars as $car)
+                            <x-car :car="$car"></x-car>
                         @endforeach
                     </div>
                 </div>
@@ -107,42 +110,9 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{asset('js/vendor.min.js')}}"></script>
-    <script src="{{asset('js/app.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
-        async function loadDistrict(parent) {
-            $("#select-address2").empty();
-            const path = $("#select-address option:selected").data('path');
-            const response = await fetch('{{ asset('locations/') }}' + path);
-            const address2 = await response.json();
-            $.each(address2.district, function (index, each) {
-                $("#select-address2").append(`
-                        <option>
-                            ${each.pre} ${each.name}
-                        </option>`);
-            })
-        }
-
         $(document).ready(async function () {
-            $("#select-address").select2();
-            const response = await fetch('{{asset('locations/index.json')}}');
-            const address = await response.json();
-            $.each(address, function (index, each) {
-                $("#select-address").append(`
-                <option value='${each.code}' data-path='${each.file_path}'>
-                    ${index}
-                </option>`);
-            })
-
-            $("#select-address").change(function () {
-                loadDistrict();
-            });
-            $("#select-address2").select2();
-            await loadDistrict();
-
-
-            $("#form-filter").validate({
+            $("#form-list-car").validate({
                 // rules: {
                 //     name: {
                 //         required: true
