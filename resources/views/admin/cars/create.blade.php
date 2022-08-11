@@ -239,7 +239,7 @@
             const address = await response.json();
             $.each(address, function (index, each) {
                 $("#select-address").append(`
-                <option value='${each.code}' data-path='${each.file_path}'>
+                <option value='${index}' data-path='${each.file_path}'>
                     ${index}
                 </option>`);
             })

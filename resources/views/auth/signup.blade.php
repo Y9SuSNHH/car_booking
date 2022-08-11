@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <h4 class="header-title mb-3">Wizard With Progress Bar</h4>
+                        <h4 class="header-title mb-3">Đăng kí tài khoản - {{config('app.name')}} </h4>
 
                         <form action="{{route('process_signup')}}" method="post">
                             <div id="progressbarwizard">
@@ -34,20 +34,20 @@
                                         <a href="#account-2" data-toggle="tab"
                                            class="nav-link rounded-0 pt-2 pb-2 active">
                                             <i class="mdi mdi-account-circle mr-1"></i>
-                                            <span class="d-none d-sm-inline">Account</span>
+                                            <span class="d-none d-sm-inline">Tài khoản</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#profile-tab-2" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
                                             <i class="mdi mdi-face-profile mr-1"></i>
-                                            <span class="d-none d-sm-inline">Profile</span>
+                                            <span class="d-none d-sm-inline">Thông tin</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#finish-2" data-toggle="tab" id="active-submit"
                                            class="nav-link rounded-0 pt-2 pb-2">
                                             <i class="mdi mdi-checkbox-marked-circle-outline mr-1"></i>
-                                            <span class="d-none d-sm-inline">Finish</span>
+                                            <span class="d-none d-sm-inline">Xong</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -145,18 +145,17 @@
                                                 </div>
                                                 <div class="form-group row mb-3">
                                                     <label class="col-md-3 col-form-label"
-                                                           for="address">Quận/Huyện</label>
+                                                           for="select-address">Tỉnh/TP</label>
                                                     <div class="col-md-9">
-                                                        <input type="text" id="address" name="address"
-                                                               class="form-control">
+                                                        <select class="form-control select-address" name="address"
+                                                                id='select-address'></select>
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group row mb-3">
                                                     <label class="col-md-3 col-form-label"
-                                                           for="select-address2">Tỉnh/TP</label>
+                                                           for="select-address2">Quận/Huyện</label>
                                                     <div class="col-md-9">
-                                                        <select class="form-control select-address" name="address2"
+                                                        <select class="form-control select-address2" name="address2"
                                                                 id='select-address2'></select>
                                                     </div>
                                                 </div>
@@ -250,16 +249,35 @@
         }
     }
 
+    async function loadDistrict(parent) {
+        $("#select-address2").empty();
+        const path = $("#select-address option:selected").data('path');
+        const response = await fetch('{{ asset('locations/') }}' + path);
+        const address2 = await response.json();
+        $.each(address2.district, function (index, each) {
+            $("#select-address2").append(`
+                        <option>
+                            ${each.pre} ${each.name}
+                        </option>`);
+        })
+    }
+
     $(document).ready(async function () {
+        $("#select-address").select2();
         const response = await fetch('{{asset('locations/index.json')}}');
         const address = await response.json();
-        // console.log(address);
         $.each(address, function (index, each) {
-            $("#select-address2").append(`
-                <option value='${each.code}' data-path='${each.file_path}}'>
+            $("#select-address").append(`
+                <option value='${each.code}' data-path='${each.file_path}'>
                     ${index}
-                </option>`)
+                </option>`);
         })
+
+        $("#select-address").change(function () {
+            loadDistrict();
+        });
+        $("#select-address2").select2();
+        await loadDistrict();
     });
 
 </script>
