@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\File;
 
-class FileController extends Controller
+class   FileController extends Controller
 {
     use ResponseTrait;
     private object $model;

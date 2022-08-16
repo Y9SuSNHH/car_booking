@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -15,8 +16,12 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
+Route::get('/test', function (){
+    return view('test');
+})->name('test');
 
 Route::get('/', [AuthController::class, 'index'])->name('index');
+Route::post('/test-func', [TestController::class, 'testFunc'])->name('test.func');
 Route::get('/signin', [AuthController::class, 'signin'])->name('signin');
 Route::post('/signin', [AuthController::class, 'processSignIn'])->name('process_signin');
 Route::get('/signup', [AuthController::class, 'signup'])->name('signup');

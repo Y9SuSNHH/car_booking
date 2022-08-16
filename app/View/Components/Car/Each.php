@@ -1,15 +1,15 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Car;
 
 use Illuminate\View\Component;
 
-class Car extends Component
+class Each extends Component
 {
-    public object $car;
-    public function __construct($car)
+//    public object $each;
+    public function __construct()
     {
-        $this->car = $car;
+//        dd($each);
     }
 
     /**
@@ -19,6 +19,6 @@ class Car extends Component
      */
     public function render()
     {
-        return view('components.car');
+        return view('components.car.each');
     }
 }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top" data-background-color="black">
+<nav class="navbar navbar-expand-lg fixed-top p-0" data-background-color="black">
     <div class="container">
         <div class="navbar-translate">
             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -43,7 +43,7 @@
                             <a class="dropdown-item" href="#">Action</a>
                             <a class="dropdown-item" href="#">Another action</a>
                             <a href="{{ route('signout') }}" class="dropdown-item">
-                                <i class="now-ui-icons sport_user-run"></i>
+                                <i class="mdi mdi-logout mr-1"></i>
                                 <span>Đăng xuất</span>
                             </a>
                         </div>

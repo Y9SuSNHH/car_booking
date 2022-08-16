@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\Bill\BillStatusEnum;
 use App\Enums\CarStatusEnum;
+use App\Enums\FileTableEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Car;
@@ -10,24 +12,23 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomePageController extends Controller
 {
     public function index(Request $request): Factory|View|Application
     {
-//        dd(session()->get('date_start'));
+        $address    = session()->get('address');
         $date_start = date('Y-m-d', strtotime(session()->get('date_start')));
-        //lấy ra xe đang được thuê (cần được a long giải cứu)
-        // vẫn bị lặp car_id cần along lấy ra car_id mới nhất những cái bị lặp
-        $filter = Bill::query()->clone()
-            ->where('date_end', '>', $date_start)
-            ->pluck('car_id');
-        //dùng $filter để lấy ra xe đang rảnh
-
+        $date_end   = date('Y-m-d', strtotime(session()->get('date_end')));
         $cars = Car::query()->clone()
-            ->where('status', '=', CarStatusEnum::READY)
-            ->whereNotIn('id', $filter)
-            ->get();
+            ->where('address', $address)
+            ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end, $address) {
+                $query->where(function ($q) use ($date_start, $date_end) {
+                    $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND  CAST('$date_end' AS DATE)");
+                    $q->orwhereRaw("date_end   BETWEEN  CAST('$date_start' AS DATE) AND CAST('$date_end' AS DATE)");
+                });
+            })->paginate(6);
 
         $addressCars = Car::query()->clone()
             ->groupBy('address')
@@ -38,5 +39,20 @@ class HomePageController extends Controller
             'cars'        => $cars,
             'addressCars' => $addressCars,
         ]);
+    }
+
+    public function storeBill(Request $request, $carId)
+    {
+//        $bill = Bill::query()->get();
+
+        $bill = Bill::create([
+            "user_id"     => auth()->user()->id,
+            "car_id"      => $carId,
+            "date_start"  => session()->get('date_start'),
+            "date_end"    => session()->get('date_end'),
+            "total_price" => 123,
+            "status"      => BillStatusEnum::PENDING,
+        ]);
+        return redirect()->back();
     }
 }

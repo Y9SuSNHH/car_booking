@@ -8,9 +8,31 @@ function convertDateToDateTime(date) {
 }
 
 function renderPagination(links) {
+    let last = links.length - 2;
     links.forEach(function (each) {
-        $('#pagination').append($('<li>').attr('class', `page-item ${each.active ? 'active' : ''}`)
-            .append(`<a class="page-link" >${each.label}</a>`));
+        let disable = '';
+        let link = '';
+        if (each.label === "&laquo; Previous") {
+            if (links[1].active === true) {
+                disable = 'disabled';
+            }
+            each.label = '‹';
+            each.url += '" rel="prev" aria-label="« Previous';
+        } else if (each.label === "Next &raquo;") {
+            if (links[last].active === true) {
+                disable = 'disabled';
+            }
+            each.label = '›';
+            each.url += '" rel="next" aria-label="Next »';
+        }
+        if (each.active) {
+            $('#pagination').append($('<li>').attr('class', `page-item active ${disable}`)
+                .attr('aria-current', 'page')
+                .append(`<span class="page-link">${each.label}</span>`));
+        } else {
+            $('#pagination').append($('<li>').attr('class', `page-item ${disable}`)
+                .append(`<a class="page-link" href="${each.url}">${each.label}</a>`));
+        }
     })
 }
 

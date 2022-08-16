@@ -230,8 +230,7 @@
 <!-- bundle -->
 <script src="{{asset('js/vendor.min.js')}}"></script>
 <script src="{{asset('js/app.min.js')}}"></script>
-<script src="{{asset('js/demo.form-wizard.js')}}"></script>
-<script src="{{asset('js/component.fileupload.js')}}"></script>
+<script src="{{asset('js/pages/demo.form-wizard.js')}}"></script>
 <script text="javascript">
     const active = document.getElementById("active-submit");
 
@@ -268,7 +267,7 @@
         const address = await response.json();
         $.each(address, function (index, each) {
             $("#select-address").append(`
-                <option value='${each.code}' data-path='${each.file_path}'>
+                <option value='${index}' data-path='${each.file_path}'>
                     ${index}
                 </option>`);
         })

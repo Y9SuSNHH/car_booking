@@ -52,15 +52,15 @@ class CarController extends Controller
     {
         try {
             if ($request->has('photo')) {
-                $path      = Storage::disk('public')->putFile('car_images', $request->photo);
+                $path = Storage::disk('public')->putFile('car_images', $request->photo);
                 $request->merge(['image' => $path]);
-                $car = new Car($request->except(['photo','fullphoto']));
+                $car = new Car($request->except(['photo', 'fullphoto']));
                 $car->save();
             }
             if ($request->has("fullphoto")) {
                 $files = $request->file("fullphoto");
                 foreach ($files as $file) {
-                    $path      = Storage::disk('public')->putFile('car_images', $file);
+                    $path = Storage::disk('public')->putFile('car_images', $file);
                     File::create([
                         'table'    => FileTableEnum::CARS,
                         'table_id' => $car->id,
@@ -82,14 +82,17 @@ class CarController extends Controller
     }
 
 
-    public function edit(Car $car)
+    public function edit($carId)
     {
-        $types     = CarTypeEnum::getArrayView();
-        $arrStatus = CarStatusEnum::getArrayView();
+        $each   = Car::query()->find($carId);
+        $types  = CarTypeEnum::getArrayView();
+        $slots  = [4, 5, 7];
+        $status = CarStatusEnum::getArrayView();
         return view("$this->role.$this->table.edit", [
-            'each'      => $car,
-            'types'     => $types,
-            'arrStatus' => $arrStatus,
+            'each'   => $each,
+            'types'  => $types,
+            'slots'  => $slots,
+            'status' => $status,
         ]);
     }
 

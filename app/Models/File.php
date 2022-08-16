@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\FileTableEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\File
@@ -41,4 +43,9 @@ class File extends Model
         'link',
     ];
 
+//    public function cars(): HasMany
+//    {
+//        return $this->hasMany(Car::class, 'table_id')
+//            ->where('files.table', strtoupper(FileTableEnum::getKey(FileTableEnum::CARS)));
+//    }
 }

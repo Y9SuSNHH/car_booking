@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/app-modern.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('css/now-ui-kit.css')}}" rel="stylesheet"/>
 </head>
 <body class="sections-page">
@@ -40,9 +41,12 @@
                                                     <label for="address">Tỉnh/TP</label>
                                                     <select class="form-control" name="address"
                                                             id="address">
-                                                        <option selected value="All" class="text-black">Tất cả</optionTất cả</option>
+                                                        <option selected value="All" class="text-black">Tất cả</option>
                                                         @foreach($addressCars as $addressCar)
-                                                            <option value="{{$addressCar}}" class="text-black">
+                                                            <option value="{{$addressCar}}" class="text-black"
+                                                                    @if ($addressCar === session()->get('address'))
+                                                                        selected
+                                                                @endif>
                                                                 {{ $addressCar }}
                                                             </option>
                                                         @endforeach
@@ -51,11 +55,15 @@
                                                 <div class="col-md-4 form-group">
                                                     <label for="date_start">Ngày bắt đầu</label>
                                                     <input type="date" name="date_start" id="date_start"
+                                                           min="{{now()->addDays()->toDateString()}}"
+                                                           value="{{session()->get('date_start')}}"
                                                            class="form-control">
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="date_end">Ngày kết thúc</label>
                                                     <input type="date" name="date_end" id="date_end"
+                                                           min="{{now()->addDays(2)->toDateString()}}"
+                                                           value="{{session()->get('date_end')}}"
                                                            class="form-control">
                                                 </div>
                                                 <br>
@@ -78,7 +86,7 @@
 </div>
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script src="{{asset('js/vendor.js')}}"></script>
 <script src="{{asset('js/moment.min.js')}}"></script>
 <script src="{{asset('js/now-ui-kit.js')}}"></script>
 <script src="{{asset('js/jquery.validate.js')}}"></script>
@@ -96,7 +104,7 @@
                     type: 'GET',
                     dataType: 'json',
                     data: $(form).serialize(),
-                    success: function (response) {
+                    success: function () {
                         $("#div-error").hide();
                         window.location = "{{route('user.index')}}";
                     },

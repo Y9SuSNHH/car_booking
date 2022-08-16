@@ -1,6 +1,5 @@
 @extends('layout_backend.master')
 @push('css')
-    <link href="{{ asset('css/summernote-bs4.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         .error {
             color: red !important;
@@ -12,7 +11,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div id="div-error" class="alert alert-danger d-none"></div>
-                <div class="card-body">
+                <div class="card-body" >
                     <form action="{{ route('admin.cars.store') }}" id="form-create" method="POST"
                           enctype="multipart/form-data"
                           class="form-horizontal" data-plugin="dropzone"
@@ -41,7 +40,7 @@
                                     @foreach($types as $key => $value)
                                         <option value="{{ $value }}"
                                                 @if ($loop->first)
-                                                selected
+                                                    selected
                                             @endif>
                                             {{ $key}}
                                         </option>
@@ -83,7 +82,7 @@
                                     @foreach($status as $key => $value)
                                         <option value="{{ $value }}"
                                                 @if ($loop->first)
-                                                selected
+                                                    selected
                                             @endif>
                                             {{ $key}}
                                         </option>
@@ -144,9 +143,7 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('js/jquery.validate.js')}}"></script>
-    <script src="{{asset('js/dropzone.min.js')}}"></script>
-    <script src="{{asset('js/component.fileupload.js')}}"></script>
-    <script src="{{asset('js/image-uploader.min.js')}}"></script>
+    <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
     <script type="text/javascript">
         async function loadDistrict(parent) {
             $("#select-address2").empty();
@@ -190,7 +187,6 @@
             string += '</ul>';
             $("#div-error").html(string);
             $("#div-error").removeClass("d-none").show();
-            notifyError(string);
         }
 
         function preview_image() {
@@ -213,9 +209,12 @@
                 async: false,
                 cache: false,
                 enctype: 'multipart/form-data',
-                success: function () {
+                success: function (response) {
                     if (response.success) {
                         $("#div-error").hide();
+                        notifySuccess('Thêm xe mới');
+                        $("#image_preview").empty();
+                        obj[0].reset();
                     } else {
                         showError(response.message);
                     }

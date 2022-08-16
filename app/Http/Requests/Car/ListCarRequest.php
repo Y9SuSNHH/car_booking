@@ -31,7 +31,7 @@ class ListCarRequest extends FormRequest
             'date_start' => [
                 'required',
                 'date',
-                'after:yesterday',
+                'after:today',
             ],
             'date_end' => [
                 'required',

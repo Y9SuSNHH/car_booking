@@ -90,12 +90,12 @@ class Car extends Model
         ];
     }
 
-    public function getStatusNameAttribute()
+    public function getStatusNameAttribute(): bool|int|string
     {
         return CarStatusEnum::getKeyByValue($this->status);
     }
 
-    public function getTypeNameAttribute()
+    public function getTypeNameAttribute(): bool|int|string
     {
         return CarTypeEnum::getKeyByValue($this->type);
     }
@@ -104,4 +104,36 @@ class Car extends Model
         return $this->hasMany(File::class, 'table_id')
             ->where('files.table', FileTableEnum::getValue(strtoupper($this->getTable())));
     }
+
+    public function getFuelNameAttribute(): string
+    {
+        $fuelName = '';
+        if($this->fuel === 0){
+            $fuelName = 'Xăng';
+        }else if($this->fuel === 1) {
+            $fuelName = 'Dầu';
+        }
+        return $fuelName;
+    }
+    public function getTransmissionNameAttribute(): string
+    {
+        $transmissionName = '';
+        if($this->fuel === 0){
+            $transmissionName = 'Số tự động';
+        }else if($this->fuel === 1) {
+            $transmissionName = 'Số sàn';
+        }
+        return $transmissionName;
+    }
+
+    public function bills(): HasMany
+    {
+        return $this->hasMany(Bill::class);
+    }
+    public function filed(): HasMany
+    {
+        return $this->hasMany(File::class, 'table_id')
+            ->where('files.table', FileTableEnum::getValue(strtoupper($this->getTable())));
+    }
+
 }

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -11,11 +12,13 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
+{{--    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>--}}
+    <link href="{{asset('css/icons.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/app-modern.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('css/now-ui-kit.css')}}" rel="stylesheet"/>
     @stack('css')
 </head>
-<body class="ecommerce-page">
+<body class="index-page">
 <!-- Navbar -->
 @include('layout_frontend.topbar')
 <!-- End Navbar -->
@@ -24,6 +27,7 @@
     <div class="main">
         <div class="section">
             <div class="container">
+                <h2 class="section-title">Xe bạn đã tìm kiếm</h2>
                 @yield('content')
             </div>
         </div>
@@ -33,8 +37,8 @@
 <!--   Core JS Files   -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<script src="{{asset('js/moment.min.js')}}"></script>   
+<script src="{{asset('js/vendor.js')}}"></script>
+<script src="{{asset('js/moment.min.js')}}"></script>
 <script src="{{asset('js/now-ui-kit.js')}}"></script>
 @stack('js')
 </body>

@@ -7,9 +7,12 @@ use App\Http\Requests\Car\CheckSlugRequest;
 use App\Http\Requests\Car\ListCarRequest;
 use App\Http\Requests\Car\GenerateSlugRequest;
 use App\Models\Car;
+use App\Models\File;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class CarController extends Controller
 {
@@ -83,6 +86,23 @@ class CarController extends Controller
                 'date_end'   => $request->date_end,
             ]);
             return $this->successResponse();
+        } catch (Throwable $e) {
+            return $this->errorResponse();
+        }
+    }
+
+    public function each($carId)
+    {
+        try {
+            $query = $this->model->clone();
+            $query->where('id', $carId);
+            $query->with([
+                'filed' => function ($q) use ($carId) {
+                    $q->where('table_id', $carId);
+                }
+            ]);
+            $each = $query->get();
+            return $this->successResponse($each);
         } catch (Throwable $e) {
             return $this->errorResponse();
         }
