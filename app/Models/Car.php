@@ -130,10 +130,5 @@ class Car extends Model
     {
         return $this->hasMany(Bill::class);
     }
-    public function filed(): HasMany
-    {
-        return $this->hasMany(File::class, 'table_id')
-            ->where('files.table', FileTableEnum::getValue(strtoupper($this->getTable())));
-    }
 
 }

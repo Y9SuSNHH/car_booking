@@ -97,7 +97,7 @@ class CarController extends Controller
             $query = $this->model->clone();
             $query->where('id', $carId);
             $query->with([
-                'filed' => function ($q) use ($carId) {
+                'files' => function ($q) use ($carId) {
                     $q->where('table_id', $carId);
                 }
             ]);
