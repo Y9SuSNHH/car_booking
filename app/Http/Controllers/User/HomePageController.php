@@ -21,7 +21,7 @@ class HomePageController extends Controller
         $address    = session()->get('address');
         $date_start = date('Y-m-d', strtotime(session()->get('date_start')));
         $date_end   = date('Y-m-d', strtotime(session()->get('date_end')));
-        $cars = Car::query()->clone()
+        $cars       = Car::query()->clone()
             ->where('address', $address)
             ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end, $address) {
                 $query->where(function ($q) use ($date_start, $date_end) {
@@ -43,14 +43,12 @@ class HomePageController extends Controller
 
     public function storeBill(Request $request, $carId)
     {
-//        $bill = Bill::query()->get();
-
         $bill = Bill::create([
             "user_id"     => auth()->user()->id,
             "car_id"      => $carId,
             "date_start"  => session()->get('date_start'),
             "date_end"    => session()->get('date_end'),
-            "total_price" => 123,
+            "total_price" => $request->get('total_price'),
             "status"      => BillStatusEnum::PENDING,
         ]);
         return redirect()->back();

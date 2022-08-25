@@ -25,26 +25,26 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-8 ml-auto mr-auto text-center">
-                                <h1 class="title">KEVINOTO</h1>
-                                <h5 class="description">CÙNG BẠN TRÊN MỌI HÀNH TRÌNH</h5>
-                            </div>
-                            <div class="col-md-10 ml-auto mr-auto">
                                 <div class="card card-raised card-form-horizontal card-plain" data-background-color="">
                                     <div class="card-body">
+                                        <h2 class="text-center title">KEVINOTO</h2>
+                                        <h4 class="text-center description">CÙNG BẠN TRÊN MỌI HÀNH TRÌNH</h4>
                                         <form action="{{route('api.cars.list')}}" class="form-group"
                                               id="form-list-car">
                                             <div class="col-md-8 ml-auto mr-auto">
                                                 <div id="div-error" class="alert alert-danger d-none"></div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row text-white">
                                                 <div class="col-md-4 form-group">
                                                     <label for="address">Tỉnh/TP</label>
                                                     <select class="form-control" name="address"
                                                             id="address">
-                                                        <option selected value="All" class="text-black">Tất cả</option>
                                                         @foreach($addressCars as $addressCar)
                                                             <option value="{{$addressCar}}" class="text-black"
                                                                     @if ($addressCar === session()->get('address'))
+                                                                        selected
+                                                                    @endif
+                                                                    @if ($loop->first)
                                                                         selected
                                                                 @endif>
                                                                 {{ $addressCar }}
@@ -58,6 +58,9 @@
                                                            min="{{now()->addDays()->toDateString()}}"
                                                            value="{{session()->get('date_start')}}"
                                                            class="form-control">
+                                                    {{--                                            <input type="text" class="form-control"--}}
+                                                    {{--                                                   name="date_start" id="date_start"--}}
+                                                    {{--                                                   data-provide="datepicker" data-date-autoclose="true">--}}
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="date_end">Ngày kết thúc</label>
@@ -66,9 +69,10 @@
                                                            value="{{session()->get('date_end')}}"
                                                            class="form-control">
                                                 </div>
-                                                <br>
-                                                <div class="col-md-3 ml-auto mr-auto">
-                                                    <button class="btn btn-success btn-round btn-block">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 ml-auto mr-auto text-center">
+                                                    <button class="btn btn-success btn-round mt-4">
                                                         Tìm kiếm
                                                     </button>
                                                 </div>
@@ -84,14 +88,23 @@
         </div>
     </div>
 </div>
+</div>
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/vendor.js')}}"></script>
+<script src="{{asset('js/app.js')}}"></script>
 <script src="{{asset('js/moment.min.js')}}"></script>
 <script src="{{asset('js/now-ui-kit.js')}}"></script>
 <script src="{{asset('js/jquery.validate.js')}}"></script>
 <script type="text/javascript">
     $(document).ready(async function () {
+        // let     today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        // $("#date_start").datepicker({
+        //     startDate: "dateToday"
+        // })
+        // $('#date_start').datepicker({
+        //     startDate: new Date() + 2,
+        // });
         $("#form-list-car").validate({
             // rules: {
             //     name: {

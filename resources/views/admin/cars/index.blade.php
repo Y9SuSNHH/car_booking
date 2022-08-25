@@ -528,7 +528,7 @@
                         $(document).on('click', '#btn-modal-each-car-' + each.id, function () {
                             $('.carousel-indicators').empty();
                             $('.carousel-inner').empty();
-                            getImage(each.id);
+                            carShow(each.id);
                         });
                     });
                     renderPagination(response.data.pagination);
@@ -539,31 +539,34 @@
             })
         }
 
-        function getImage(carId) {
+        function carShow(carId) {
             $.ajax({
-                url: '{{ route('api.files.cars.carImage') }}/' + carId,
+                url: '{{ route('api.cars.show') }}/' + carId,
                 type: 'GET',
                 dataType: 'JSON',
                 success: function (response) {
-                    if (response.data.length !== 0) {
-                        $.each(response.data, function (index, each) {
-                            let image_url = "{{asset('storage/')}}" + '/' + each.link;
-                            let li, image;
-                            if (index === 0) {
-                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
-                                image = "<div class='carousel-item active'>" +
-                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
-                            } else {
+                    $.each(response.data, function (index, each) {
+                        let image_url = "{{asset('storage/')}}" + '/' + each.image;
+                        let li, image;
+                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
+                        image = "<div class='carousel-item active'>" +
+                            "<img class='d-block img-fluid' src='" + image_url + "'>";
+                        $('.carousel-indicators').append(li);
+                        $('.carousel-inner').append(image);
+                        if (each.files.length !== 0) {
+                            $.each(each.files, function (index, each) {
+                                index += 1;
+                                let image_url = "{{asset('storage/')}}" + '/' + each.link;
                                 li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
                                 image = "<div class='carousel-item'>" +
                                     "<img class='d-block img-fluid' src='" + image_url + "'>";
-                            }
-                            $('.carousel-indicators').append(li);
-                            $('.carousel-inner').append(image);
-                        })
-                    } else {
-                        notifyInfo('Xe này chưa có ảnh chi tiết');
-                    }
+                                $('.carousel-indicators').append(li);
+                                $('.carousel-inner').append(image);
+                            })
+                        } else {
+                            notifyInfo('Xe này chưa có ảnh chi tiết');
+                        }
+                    })
                 }
             });
         }

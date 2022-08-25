@@ -21,13 +21,13 @@ use Exception;
 
 class AuthController extends Controller
 {
-    public function index(): Factory|View|Application
+    public function welcome(): Factory|View|Application
     {
         $addressCars = Car::query()->clone()
             ->groupBy('address')
             ->pluck('address');
 
-        return view('auth.index', [
+        return view('welcome', [
             'addressCars' => $addressCars,
         ]);
     }

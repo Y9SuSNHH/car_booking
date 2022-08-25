@@ -60,6 +60,23 @@ class CarController extends Controller
 //        return $this->errorResponse($arr);
     }
 
+    public function show($carId)
+    {
+        try {
+            $query = $this->model->clone();
+            $query->where('id', $carId);
+            $query->with([
+                'files' => function ($q) use ($carId) {
+                    $q->where('table_id', $carId);
+                }
+            ]);
+            $each = $query->get();
+            return $this->successResponse($each);
+        } catch (Throwable $e) {
+            return $this->errorResponse();
+        }
+    }
+
     public function generateSlug(GenerateSlugRequest $request): JsonResponse
     {
         try {
@@ -91,20 +108,4 @@ class CarController extends Controller
         }
     }
 
-    public function each($carId)
-    {
-        try {
-            $query = $this->model->clone();
-            $query->where('id', $carId);
-            $query->with([
-                'files' => function ($q) use ($carId) {
-                    $q->where('table_id', $carId);
-                }
-            ]);
-            $each = $query->get();
-            return $this->successResponse($each);
-        } catch (Throwable $e) {
-            return $this->errorResponse();
-        }
-    }
 }
