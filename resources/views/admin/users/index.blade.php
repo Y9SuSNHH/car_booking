@@ -20,7 +20,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="address" class="col-form-label">Quận/Huyện</label>
+                            <label for="address" class="col-form-label">Tỉnh/TP</label>
                             <select class="form-control select-filter" name="address" id="address">
                                 <option selected value="All">Tất cả</option>
                                 @foreach($positions as $position)
@@ -33,7 +33,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="address2" class="col-form-label">Tỉnh/TP</label>
+                            <label for="address2" class="col-form-label">Quận/Huyện</label>
                             <select class="form-control select-filter" name="address2" id="address2">
                                 <option selected value="All">Tất cả</option>
                                 @foreach($cities as $city)

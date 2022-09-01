@@ -15,11 +15,20 @@
             </a>
         </li>
         <li class="side-nav-item">
-            <a href="{{ route('admin.bills.index') }}" class="side-nav-link">
+            <a href="javascript: void(0);" class="side-nav-link">
                 <i class="uil uil-bill"></i>
                 <span class="badge badge-info badge-pill float-right"></span>
                 <span> Quản lý hóa đơn </span>
+                <span class="menu-arrow"></span>
             </a>
+            <ul class="side-nav-second-level mm-collapse" aria-expanded="false" style="height: 0px;">
+                <li>
+                    <a href="{{ route('admin.bills.index') }}">Danh sách hoá đơn</a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.cars.search')}}">Tạo hoá đơn</a>
+                </li>
+            </ul>
         </li>
     </ul>
     <div class="clearfix"></div>

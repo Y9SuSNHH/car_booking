@@ -12,6 +12,7 @@ use App\Http\Requests\Car\StoreRequest;
 use App\Http\Requests\Car\UpdateRequest;
 use App\Models\Car;
 use App\Models\File;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Throwable;
@@ -33,9 +34,12 @@ class CarController extends Controller
         View::share('table', $this->table);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view("$this->role.$this->table.index");
+        $search      = $request->all();
+        return view("$this->role.$this->table.index", [
+            "search"      => $search,
+        ]);
     }
 
     public function create()
@@ -119,5 +123,15 @@ class CarController extends Controller
         Car::destroy($carId);
 
         return redirect()->back();
+    }
+
+    public function search()
+    {
+        $addressCars = Car::query()->clone()
+            ->groupBy('address')
+            ->pluck('address');
+        return view("$this->role.$this->table.search",[
+            "addressCars" => $addressCars,
+        ]);
     }
 }

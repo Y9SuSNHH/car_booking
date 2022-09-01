@@ -26,16 +26,20 @@ class BillController extends Controller
 
     public function index()
     {
-        $query = $this->model->clone()->latest();
+        $query = $this->model->clone()
+            ->with('user')
+            ->with('car')
+            ->latest();
         $data  = $query->paginate();
+//        dd($data);
         return view("$this->role.$this->table.index", [
-            'data' => $data,
+            'data'        => $data,
         ]);
     }
 
     public function create(Request $request, Car $car)
     {
-        $user = User::create($request->except(['identity','license_car']));
+        $user = User::create($request->except(['identity', 'license_car']));
         return 1;
     }
 
