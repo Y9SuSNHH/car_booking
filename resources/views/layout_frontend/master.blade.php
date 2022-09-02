@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width"/>
 
     <link href="{{asset('css/icons.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/nucleo-icons.css')}}" rel="stylesheet"/>
     <link href="{{asset('css/app-modern.css')}}" rel="stylesheet"/>
     <link href="{{asset('css/paper-kit.css_v=2.1.0.css')}}" rel="stylesheet"/>
     <link href="{{asset('css/demo.css')}}" rel="stylesheet"/>
