@@ -28,7 +28,7 @@ class HomePageController extends Controller
                     $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND  CAST('$date_end' AS DATE)");
                     $q->orwhereRaw("date_end   BETWEEN  CAST('$date_start' AS DATE) AND CAST('$date_end' AS DATE)");
                 });
-            })->paginate(6);
+            })->paginate(9);
 
         $addressCars = Car::query()->clone()
             ->groupBy('address')

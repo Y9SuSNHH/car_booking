@@ -1,20 +1,32 @@
-<div class="col-lg-6 col-md-6" onclick="modalEachCar('{{$car->id}}')"
+<div class="col-md-4 mt-1 mb-1" onclick="modalEachCar('{{$car->id}}')"
      id="btn-modal-each-car-{{$car->id}}" data-toggle="modal" data-target="#modal-each-car">
-    <div class="card card-product card-plain" style="box-shadow: 0px 5px 25px 0px rgb(0 0 0 / 20%);">
-        <a class="text-decoration-none" data-toggle="modal" data-target="#car-modal">
-            <div class="card-image">
-                <img class="img rounded w-100" src="{{ asset('storage') . '/'. $car->image}}" style="height:200px">
+    <div class="card card-blog" style="box-shadow: 0px 5px 25px 0px rgb(0 0 0 / 20%);">
+        <div class="card-image">
+            <a href="#">
+                {{--                    <img class="img img-raised" src="{{ asset('storage') . '/'. $car->image}}">--}}
+                <img class="img img-raised" src="https://picsum.photos/640/480">
+            </a>
+        </div>
+        <div class="card-body">
+            <h6 class="card-category text-success">
+                <i class="mdi mdi-cash-usd-outline" aria-hidden="true"></i> {{$car->price_1_day}}K
+            </h6>
+            <h5 class="card-title">
+                {{Str::limit($car->name, 20, '...')}}
+            </h5>
+            <p class="card-description">
+                @if($car->fuel === 0)
+                    <span class="badge badge-success">{{$car->FuelName}}</span>
+                @else
+                    <span class="badge badge-secondary">{{$car->FuelName}}</span>
+                @endif
+                <span class="badge badge-info">{{$car->TransmissionName}}</span>
+            </p>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="dripicons-location" aria-hidden="true"></i> {{$car->address2}}
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">
-                    {{Str::limit($car->name, 20, '...')}}
-                    <span class="text-success font-weight-bold float-right">{{$car->price_1_day}}K</span>
-                </h5>
-                <span class="badge badge-default">{{$car->FuelName}}</span>
-                <span class="badge badge-success">{{$car->TransmissionName}}</span>
-                <br>
-                <i class="now-ui-icons location_pin"> {{$car->address2}}</i>
-            </div>
-        </a>
+        </div>
     </div>
 </div>

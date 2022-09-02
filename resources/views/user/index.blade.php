@@ -1,88 +1,339 @@
 @extends('layout_frontend.master')
 @section('content')
-    <div class="row">
-        <div class="col-md-3">
-            <div class="collapse-panel">
-                <div class="card-header">
-                    <form action="{{route('api.cars.list')}}" class="form-group"
-                          id="form-list-car">
-                        <div class="row">
-                            <div class="col-md-12 ml-auto mr-auto">
-                                <label for="address">Tỉnh/TP</label>
-                                <select class="form-control" name="address"
-                                        id="address">
-                                    @foreach($addressCars as $addressCar)
-                                        <option value="{{$addressCar}}" class="text-black"
-                                                @if ($addressCar === session()->get('address'))
-                                                    selected
-                                                @endif
-                                                @if ($loop->first)
-                                                    selected
-                                            @endif>
-                                            {{ $addressCar }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-12 ml-auto mr-auto">
-                                <label for="date_start">Ngày bắt đầu</label>
-                                <input type="date" name="date_start" id="date_start"
-                                       min="{{now()->addDays()->toDateString()}}"
-                                       class="form-control" value="{{session()->get('date_start')}}">
-                            </div>
-                            <div class="col-md-12 ml-auto mr-auto">
-                                <label for="date_end">Ngày kết thúc</label>
-                                <input type="date" name="date_end" id="date_end"
-                                       min="{{now()->addDays(2)->toDateString()}}"
-                                       class="form-control" value="{{session()->get('date_end')}}">
-                            </div>
-                            <br>
-                            <div class="col-md-8 ml-auto mr-auto">
-                                <button class="btn btn-success btn-round btn-block">
-                                    Tìm kiếm
-                                </button>
-                            </div>
+    <div class="section section-blog">
+        <div class="container">
+            <h3 class="section-title">Xe bạn đã tìm kiếm</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-refine">
+                        <div class="card-header">
+                            <form action="{{route('api.cars.list')}}" class="form-group"
+                                  id="form-list-car">
+                                <div class="card-body">
+                                    <div class="form-group label-floating">
+                                        <select class="form-control select-address" name="address"
+                                                id='select-address'></select>
+                                    </div>
+                                    <div class="form-group label-floating">
+                                        <input type="text" id="date_start" name="date_start" class="form-control"
+                                               data-provide="datepicker" data-date-format="dd-mm-yyyy"
+                                               data-date-autoclose="true" placeholder="Ngày bắt đầu"
+                                               data-date-start-date="{{date_format(date_create(now()->addDays()),"d-m-Y")}}">
+                                    </div>
+                                    <div class="form-group label-floating">
+                                        <input type="text" id="date_end" name="date_end" class="form-control"
+                                               data-provide="datepicker" data-date-format="dd-mm-yyyy"
+                                               data-date-autoclose="true" placeholder="Ngày kết thúc"
+                                               data-date-start-date="{{date_format(date_create(now()->addDays(2)),"d-m-Y")}}"
+                                            style="color:#6c757d;">
+                                    </div>
+                                    <div class="form-group label-floating">
+                                        <button class="btn btn-danger" type="submit">
+                                            <i class="mdi mdi-magnify search-icon"></i> Tìm kiếm
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-                <div class="card-body">
-                    <div class="card card-refine card-plain">
-                        <h4 class="card-title">
-                            Refine
-                            <button class="btn btn-default btn-icon btn-neutral pull-right" rel="tooltip"
-                                    title="" data-original-title="Reset Filter">
-                                <i class="arrows-1_refresh-69 now-ui-icons"></i>
-                            </button>
-                        </h4>
-                        <div class="card-header" role="tab" id="headingOne">
-                            <h6 class="mb-0">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                   aria-expanded="true" aria-controls="collapseOne">
-                                    Price Range
-                                    <i class="now-ui-icons arrows-1_minimal-down"></i>
-                                </a>
-                            </h6>
-                        </div>
-                        <div id="collapseOne" class="collapse show" role="tabpanel"
-                             aria-labelledby="headingOne">
-                            <div class="card-body">
-                                            <span id="price-left" class="price-left pull-left"
-                                                  data-currency="€">€42</span>
-                                <span id="price-right" class="price-right pull-right"
-                                      data-currency="€">€880</span>
-                                <div class="clearfix"></div>
-                                <div id="sliderRefine"
-                                     class="slider slider-refine noUi-target noUi-ltr noUi-horizontal">
-                                    <div class="noUi-base">
-                                        <div class="noUi-origin" style="left: 1.37931%;">
-                                            <div class="noUi-handle noUi-handle-lower" data-handle="0"
-                                                 style="z-index: 5;"></div>
+                        <div class="card-body">
+                            <div class="panel-group" id="accordion" aria-multiselectable="true" aria-expanded="true">
+                                <div class="card-header card-collapse" role="tab" id="priceRanger">
+                                    <h5 class="mb-0 panel-title">
+                                        <a class="" data-toggle="collapse" data-parent="#accordion" href="#priceRange"
+                                           aria-expanded="true" aria-controls="collapseOne">
+                                            Price Range
+                                            <i class="nc-icon nc-minimal-down"></i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="priceRange" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
+                                     aria-expanded="true">
+                                    <div class="card-body">
+                                        <div id="sliderDouble"
+                                             class="slider slider-info noUi-target noUi-ltr noUi-horizontal noUi-background">
+                                            <div class="noUi-base">
+                                                <div class="noUi-origin" style="left: 20%;">
+                                                    <div class="noUi-handle noUi-handle-lower" data-handle="0"
+                                                         style="z-index: 5;"></div>
+                                                </div>
+                                                <div class="noUi-connect" style="left: 20%; right: 20%;"></div>
+                                                <div class="noUi-origin" style="left: 80%;">
+                                                    <div class="noUi-handle noUi-handle-upper" data-handle="1"
+                                                         style="z-index: 4;"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="noUi-connect"
-                                             style="left: 1.37931%; right: 2.29885%;"></div>
-                                        <div class="noUi-origin" style="left: 97.7011%;">
-                                            <div class="noUi-handle noUi-handle-upper" data-handle="1"
-                                                 style="z-index: 4;"></div>
+                                    </div>
+                                </div>
+                                <div class="card-header card-collapse" role="tab" id="clothingGear">
+                                    <h5 class="mb-0 panel-title">
+                                        <a class="" data-toggle="collapse" data-parent="#accordion" href="#clothing"
+                                           aria-expanded="true" aria-controls="collapseSecond">
+                                            Clothing
+                                            <i class="nc-icon nc-minimal-down"></i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="clothing" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="card-body">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="" checked="">
+                                                Blazers
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Casual Shirts
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Formal Shirts
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Jeans
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Polos
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Pyjamas
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Shorts
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Trousers
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-header card-collapse" role="tab" id="designer">
+                                    <h5 class="mb-0 panel-title">
+                                        <a class="" data-toggle="collapse" data-parent="#accordion"
+                                           href="#refineDesigner" aria-expanded="true" aria-controls="collapseThree">
+                                            Designer
+                                            <i class="nc-icon nc-minimal-down"></i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="refineDesigner" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="card-body">
+
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="" checked="">
+                                                All
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Acne Studio
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Alex Mill
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Alexander McQueen
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Alfred Dunhill
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                AMI
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Berena
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Berluti
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Burberry Prorsum
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Berluti
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Calvin Klein
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Club Monaco
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Dolce &amp; Gabbana
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Gucci
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Kolor
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Lanvin
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Loro Piana
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Massimo Alba
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-header card-collapse" role="tab" id="color">
+                                    <h5 class="mb-0 panel-title">
+                                        <a class="" data-toggle="collapse" data-parent="#accordion" href="#colorMaker"
+                                           aria-expanded="true" aria-controls="collapseTree">
+                                            Colour
+                                            <i class="nc-icon nc-minimal-down"></i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="colorMaker" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="card-body">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="" checked="">
+                                                All
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Blue
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Brown
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Gray
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Green
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Neutrals
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                Purple
+                                                <span class="form-check-sign"></span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -90,116 +341,111 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-10 ml-auto mr-auto">
+                <div class="col-md-9">
                     <div class="row">
                         @foreach($cars as $car)
                             <x-car.list :car="$car"></x-car.list>
                         @endforeach
                     </div>
-                </div>
-                <div class="col-md-3 ml-auto mr-auto">
-                    <ul class="pagination">
-                        {{$cars->links()}}
-                    </ul>
+                    <div class="row">
+                        <div class="float-right">
+                            <nav>
+                                <ul class="pagination">
+                                    {{$cars->links()}}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modal-each-car" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-full-width">
-            <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">X</button>
-            <div class="modal-dialog modal-full-width" role="document">
-                <div class="modal-content bg-transparent text-dark shadow-none">
-                    <div class="modal-body">
+    <div id="modal-each-car" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">X</button>
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content bg-transparent text-dark shadow-none">
+                <div class="modal-body row">
+                    <div class="col-8 ml-auto">
                         <div class="row">
-                            <div class="col-md-6 ml-auto">
-                                <div class="row">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <div id="carouselExampleIndicators" class="carousel slide"
-                                                 data-ride="carousel">
-                                                <ol class="carousel-indicators">
-                                                </ol>
-                                                <div class="carousel-inner" role="listbox">
-                                                </div>
-                                                <a class="carousel-control-prev"
-                                                   href="#carouselExampleIndicators"
-                                                   role="button" data-slide="prev">
+                            <div class="card">
+                                <div id="carouselExampleIndicators" class="carousel slide"
+                                     data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                    </ol>
+                                    <div class="carousel-inner" role="listbox">
+                                    </div>
+                                    <a class="carousel-control-prev"
+                                       href="#carouselExampleIndicators"
+                                       role="button" data-slide="prev">
                                                                     <span class="carousel-control-prev-icon"
                                                                           aria-hidden="true"></span>
-                                                    <span class="sr-only">Sau</span>
-                                                </a>
-                                                <a class="carousel-control-next"
-                                                   href="#carouselExampleIndicators"
-                                                   role="button" data-slide="next">
+                                        <span class="sr-only">Sau</span>
+                                    </a>
+                                    <a class="carousel-control-next"
+                                       href="#carouselExampleIndicators"
+                                       role="button" data-slide="next">
                                                                     <span class="carousel-control-next-icon"
                                                                           aria-hidden="true"></span>
-                                                    <span class="sr-only">Trước</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <span class="sr-only">Trước</span>
+                                    </a>
                                 </div>
-                                <div class="row" style="color: black !important">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <strong class="category">ĐẶC ĐIỂM</strong>
-                                                </div>
-                                                <div class="col-3 p-0">
-                                                    <div class="feed-line">
-                                                        <i class="mdi mdi-seatbelt"></i>
-                                                        <span>Số ghế: </span>
-                                                        <span id="slot"></span>
-                                                    </div>
-                                                    <br>
-                                                    <div class="feed-line">
-                                                        <i class="mdi mdi-engine"></i>
-                                                        <span>Nhiên liệu: </span>
-                                                        <span id="fuel"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="feed-line">
-                                                        <i class="mdi mdi-car-shift-pattern"></i>
-                                                        <span>Truyền động: </span>
-                                                        <span id="transmission"></span>
-                                                    </div>
-                                                    <br>
-                                                    <div class="feed-line">
-                                                        <i class="mdi mdi-fuel"></i>
-                                                        <span>Mức tiêu thụ nhiên liệu: </span>
-                                                        <span id="fuel_comsumpiton"></span>
-                                                        <span>L/Km</span>
-                                                    </div>
-                                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong class="category">ĐẶC ĐIỂM</strong>
+                                        </div>
+                                        <div class="col-3 p-0">
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-seatbelt"></i>
+                                                <span>Số ghế: </span>
+                                                <span id="slot"></span>
                                             </div>
                                             <br>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <strong class="category">MÔ TẢ</strong>
-                                                </div>
-                                                <div class="col-9">
-                                                    <span id="description"></span>
-                                                </div>
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-engine"></i>
+                                                <span>Nhiên liệu: </span>
+                                                <span id="fuel"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-car-shift-pattern"></i>
+                                                <span>Truyền động: </span>
+                                                <span id="transmission"></span>
+                                            </div>
+                                            <br>
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-fuel"></i>
+                                                <span>Mức tiêu thụ nhiên liệu: </span>
+                                                <span id="fuel_comsumpiton"></span>
+                                                <span>L/Km</span>
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong class="category">MÔ TẢ</strong>
+                                        </div>
+                                        <div class="col-9">
+                                            <span id="description"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row" style="color: black !important">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <strong class="category">ĐIỀU KHOẢN</strong>
-                                                </div>
-                                                <div class="col-9">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong class="category">ĐIỀU KHOẢN</strong>
+                                        </div>
+                                        <div class="col-9">
                                                 <span>
                                                     1. Giấy tờ thuê xe (bản gốc)
                                                         <br>
@@ -244,65 +490,65 @@
                                                         <br>
                                                         Trân trọng cảm ơn, chúc quý khách hàng có những chuyến đi tuyệt vời !
                                                 </span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 mr-auto pl-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form id="form-each-car">
-                                            <div class="row">
-                                                <div class="col-8 ml-auto mr-auto">
-                                                    <h3 class="text-center">
+                        </div>
+                    </div>
+                    <div class="col-4 mr-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="form-each-car">
+                                    <div class="row">
+                                        <div class="col-8 ml-auto mr-auto">
+                                            <h3 class="text-center">
                                                     <span class="text-success font-weight-bold"><span
                                                             class="price_1_day"></span>K</span>
-                                                        <small class="text-muted">/ngày</small>
-                                                    </h3>
-                                                </div>
-                                                <div class="col-6 ml-auto mr-auto">
-                                                    <label for="date_start" class="font-weight-bold">Ngày bắt
-                                                        đầu</label>
-                                                    <input type="date" class="form-control"
-                                                           min="{{now()->addDays()->toDateString()}}"
-                                                           value="{{session()->get('date_start')}}" disabled>
-                                                </div>
-                                                <div class="col-6 ml-auto mr-auto">
-                                                    <label for="date_end" class="font-weight-bold">Ngày kết thúc</label>
-                                                    <input type="date" class="form-control"
-                                                           min="{{now()->addDays(2)->toDateString()}}"
-                                                           value="{{session()->get('date_end')}}" disabled>
-                                                </div>
-                                                <br>
-                                                <div class="col-12 ml-auto mr-auto mt-2 ">
-                                                    <div class="alert alert-warning show mb-0 p-0">
-                                                        <p class="mb-0">
-                                                            <small> Thời gian nhận xe
-                                                                <span class="float-right">05:00-22:00</span>
-                                                            </small>
-                                                        </p>
-                                                        <p class="mb-0">
-                                                            <small> Thời gian trả xe
-                                                                <span class="float-right">17:00-21:00 </span>
-                                                            </small>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 ml-auto mr-auto">
-                                                    <strong>Địa điểm nhận xe</strong>
-                                                    <h6>
-                                                        <i class="now-ui-icons location_compass-05"> <span
-                                                                id="address2"></span></i>
-                                                    </h6>
-                                                    <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
-                                                        cụ
-                                                        thể sẽ được hiển thị sau khi đặt cọc</small>
-                                                </div>
-                                                <div class="col-12 ml-auto mr-auto">
-                                                    <strong>Giới hạn số km</strong><br>
-                                                    <span>
+                                                <small class="text-muted">/ngày</small>
+                                            </h3>
+                                        </div>
+                                        <div class="col-6 ml-auto mr-auto">
+                                            <label for="date_start" class="font-weight-bold">Ngày bắt
+                                                đầu</label>
+                                            <input type="date" class="form-control"
+                                                   min="{{now()->addDays()->toDateString()}}"
+                                                   value="{{session()->get('date_start')}}" disabled>
+                                        </div>
+                                        <div class="col-6 ml-auto mr-auto">
+                                            <label for="date_end" class="font-weight-bold">Ngày kết thúc</label>
+                                            <input type="date" class="form-control"
+                                                   min="{{now()->addDays(2)->toDateString()}}"
+                                                   value="{{session()->get('date_end')}}" disabled>
+                                        </div>
+                                        <br>
+                                        <div class="col-12 ml-auto mr-auto mt-2 ">
+                                            <div class="alert alert-warning show mb-0 p-0">
+                                                <p class="mb-0">
+                                                    <small> Thời gian nhận xe
+                                                        <span class="float-right">05:00-22:00</span>
+                                                    </small>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <small> Thời gian trả xe
+                                                        <span class="float-right">17:00-21:00 </span>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Địa điểm nhận xe</strong>
+                                            <h6>
+                                                <i class="now-ui-icons location_compass-05"> <span
+                                                        id="address2"></span></i>
+                                            </h6>
+                                            <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
+                                                cụ
+                                                thể sẽ được hiển thị sau khi đặt cọc</small>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Giới hạn số km</strong><br>
+                                            <span>
                                                     <small>
                                                         Tối đa
                                                     <strong>300</strong>
@@ -311,16 +557,16 @@
                                                     /km vượt giới hạn.
                                                     </small>
                                                 </span>
-                                                </div>
-                                                <div class="col-12 ml-auto mr-auto">
-                                                    <strong>Bảo hiểm</strong><br>
-                                                    <span>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Bảo hiểm</strong><br>
+                                            <span>
                                                     <small>Chuyến đi được bảo hiểm bởi MIC Tìm hiểu thêm</small>
                                                 </span>
-                                                </div>
-                                                <div class="col-12 ml-auto mr-auto">
-                                                    <strong>Chi tiết giá</strong><br>
-                                                    <span>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Chi tiết giá</strong><br>
+                                            <span>
                                                     Đơn giá thuê<i class="mdi mdi-information-outline"
                                                                    data-toggle="tooltip" data-placement="top" title=""
                                                                    data-container="body" data-animation="true"
@@ -329,8 +575,8 @@
                                                     <span class="float-right"><span
                                                             class="font-weight-bold"><span class="price_1_day"></span> </span> / ngày</span>
                                                 </span>
-                                                    <br>
-                                                    <span>
+                                            <br>
+                                            <span>
                                                     Phí dịch vụ<i class="mdi mdi-information-outline"
                                                                   data-toggle="tooltip" data-placement="top" title=""
                                                                   data-container="body" data-animation="true"
@@ -340,8 +586,8 @@
                                                             class="font-weight-bold"><span
                                                                 id="price_service"></span> </span> / ngày</span>
                                                 </span>
-                                                    <br>
-                                                    <span>
+                                            <br>
+                                            <span>
                                                     Phí bảo hiểm<i class="mdi mdi-information-outline"
                                                                    data-toggle="tooltip" data-placement="top" title=""
                                                                    data-container="body" data-animation="true"
@@ -351,14 +597,14 @@
                                                             class="font-weight-bold"><span
                                                                 id="price_insure"></span> </span> / ngày</span>
                                                 </span>
-                                                    <hr/>
-                                                    <span>
+                                            <hr/>
+                                            <span>
                                                     Tổng phí thuê xe
                                                     <span class="float-right font-weight-bold"><span id="price"></span> x <span
                                                             id="total-date"></span> ngày</span>
                                                 </span>
-                                                    <hr/>
-                                                    <span class="font-weight-bold">
+                                            <hr/>
+                                            <span class="font-weight-bold">
                                                     Tổng cộng
                                                     <span class="float-right">
                                                         <input type="number" name="total_price" id="total-price"
@@ -367,17 +613,15 @@
                                                         <span id="total-price-html"></span>đ
                                                     </span>
                                                 </span>
-                                                </div>
-                                                <div class="col-8 ml-auto mr-auto">
-                                                    <div class="text-center">
-                                                        <button class="btn btn-success justify-content-center">ĐẶT XE
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="col-8 ml-auto mr-auto">
+                                            <div class="text-center">
+                                                <button class="btn btn-success justify-content-center">ĐẶT XE
+                                                </button>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -398,6 +642,26 @@
             return date_diff / 1000 / 60 / 60 / 24;
         }
 
+        function conditionalDateEnd() {
+            $('#date_start').on('change', function () {
+                let date_start = $("#date_start").val();
+                date_start = date_start.split("-");
+                date_start[0] = (+date_start[0]) + (+1);
+                let date_end = date_start.join("-");
+
+                $("#date_end").removeAttr('data-date-start-date');
+                $('#date_end').attr('data-date-start-date', date_end);
+                $('#date_end').datepicker("refresh");
+            });
+        }
+        function loadAddress() {
+            $("#select-address").select2();
+            let address = '<option selected value="">Tỉnh/TP</option>';
+            @foreach ($addressCars as $each)
+                address += `<option>{{$each}}</option>`;
+            @endforeach
+            $("#select-address").append(address);
+        }
         function carShow(carId) {
             $.ajax({
                 url: '{{ route('api.cars.show') }}/' + carId,
@@ -414,7 +678,7 @@
                         $('.carousel-inner').append(image);
                         $("#address2").html(each.address2);
                         $("#slot").html(each.slot);
-                        $("#fuel").html(each.fuel ? "Dầu" : "Xăng");
+                        $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
                         $("#transmission").html(each.transmission ? "Số tự động" : "Số sàn");
                         $("#fuel_comsumpiton").html(each.fuel_comsumpiton);
                         $("#description").html(each.description);
@@ -424,7 +688,7 @@
                         let price = (each.price_1_day * 1000) + each.price_insure + each.price_service
                         $("#price").html(price);
                         $("#total-date").html(getDateDiff());
-                        $("#total-price-html").html(getDateDiff()* price);
+                        $("#total-price-html").html(getDateDiff() * price);
                         $("#total-price").val(getDateDiff() * price);
                         if (each.files.length !== 0) {
                             $.each(each.files, function (index, each) {
@@ -454,6 +718,9 @@
         }
 
         $(document).ready(async function () {
+            loadAddress();
+            conditionalDateEnd();
+
             $("#modal-each-car").on('hide.bs.modal', function () {
                 $('#form-each-car').prop('action', '');
                 $('#form-each-car').prop('method', '');

@@ -1,64 +1,40 @@
-<nav class="navbar navbar-expand-lg fixed-top p-0" data-background-color="black">
+<nav class="navbar navbar-expand-lg fixed-top nav-down bg-dark">
     <div class="container">
         <div class="navbar-translate">
-            <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#example-navbar-primary" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{route('welcome')}}">{{ config('app.name') }}</a>
+            </div>
+            <button class="navbar-toggler navbar-burger" type="button" data-toggle="collapse"
+                    data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-bar"></span>
+                <span class="navbar-toggler-bar"></span>
+                <span class="navbar-toggler-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{route('welcome')}}"><h5>KEVINOTO</h5></a>
         </div>
-        <div class="collapse navbar-collapse" id="example-navbar-primary"
-             data-nav-image="./assets/img/blurred-image-1.jpg">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route('welcome')}}">
-                        Home
-                    </a>
-                </li>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        About Us
-                    </a>
+                    <a class="nav-link" href="{{route('welcome')}}" data-scroll="true">Trang chủ</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Contact Us
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
                 @auth
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="now-ui-icons users_single-02"></i>
-                            <p>
-                                {{auth()->user()->name}}
-                            </p>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a href="{{ route('signout') }}" class="dropdown-item">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)"
+                           data-toggle="dropdown">{{auth()->user()->name}}</a>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-danger">
+                            <a class="dropdown-item" href="sections.html#headers">
                                 <i class="mdi mdi-logout mr-1"></i>
-                                <span>Đăng xuất</span>
+                                Đăng xuất
                             </a>
-                        </div>
+                        </ul>
                     </li>
                 @endauth
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('signin')}}">
-                            Đăng nhập
-                        </a>
+                        <a class="nav-link" href="{{route('signin')}}" data-scroll="true">Đăng nhập</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('signup')}}">
-                            Đăng kí
-                        </a>
+                        <a class="nav-link" href="{{route('signup')}}" data-scroll="true">Đăng kí</a>
                     </li>
                 @endguest
             </ul>

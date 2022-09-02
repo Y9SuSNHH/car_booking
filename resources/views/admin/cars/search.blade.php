@@ -49,7 +49,7 @@
         // $(document).on('change', '#date_start', function() {
         // });
 
-        $(document).ready(async function () {
+        function conditionalDateEnd() {
             $('#date_start').on('change', function () {
                 let date_start = $("#date_start").val();
                 date_start = date_start.split("-");
@@ -60,7 +60,18 @@
                 $('#date_end').attr('data-date-start-date', date_end);
                 $('#date_end').datepicker("refresh");
             });
-
+        }
+        function loadAddress() {
+            $("#select-address").select2();
+            let address = '<option selected value="">Tỉnh/TP</option>';
+            @foreach ($addressCars as $each)
+                address += `<option>{{$each}}</option>`;
+            @endforeach
+            $("#select-address").append(address);
+        }
+        $(document).ready(async function () {
+            conditionalDateEnd();
+            loadAddress();
             $('#modal-car-search').modal('show')
             $("#select-address").select2();
             @foreach ($addressCars as $each)
