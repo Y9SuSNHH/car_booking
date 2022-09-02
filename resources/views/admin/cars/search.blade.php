@@ -21,15 +21,13 @@
                                 <label for="date_start">Ngày bắt đầu</label>
                                 <input type="text" id="date_start" name="date_start" class="form-control"
                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                       data-date-autoclose="true"
-                                       data-date-start-date="{{date_format(date_create(now()->addDays()),"d-m-Y")}}">
+                                       data-date-autoclose="true">
                             </div>
                             <div class="col-md-12 ml-auto mr-auto">
                                 <label for="date_end">Ngày kết thúc</label>
                                 <input type="text" id="date_end" name="date_end" class="form-control"
                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                       data-date-autoclose="true"
-                                       data-date-start-date="{{date_format(date_create(now()->addDays(2)),"d-m-Y")}}">
+                                       data-date-autoclose="true">
                             </div>
                         </div>
 
@@ -50,15 +48,17 @@
         // });
 
         function conditionalDateEnd() {
+            let setStartDate = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
+            $('#date_start').datepicker('setStartDate', setStartDate);
+
             $('#date_start').on('change', function () {
                 let date_start = $("#date_start").val();
                 date_start = date_start.split("-");
                 date_start[0] = (+date_start[0]) + (+1);
                 let date_end = date_start.join("-");
 
-                $("#date_end").removeAttr('data-date-start-date');
-                $('#date_end').attr('data-date-start-date', date_end);
-                $('#date_end').datepicker("refresh");
+                $('#date_end').datepicker('setDate','');
+                $('#date_end').datepicker('setStartDate', date_end);
             });
         }
         function loadAddress() {
