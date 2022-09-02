@@ -51,7 +51,7 @@ class CarController extends Controller
                     });
             }
 
-            $data = $query->paginate(3);
+            $data = $query->paginate(10);
 
             foreach ($data as $each) {
                 $each->append('status_name');

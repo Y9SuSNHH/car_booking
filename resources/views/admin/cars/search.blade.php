@@ -8,7 +8,7 @@
                     <h4 class="modal-title" id="mySmallModalLabel">Tìm xe</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <form action="{{route('api.cars.list')}}" class="form-group"
+                <form action="{{route('admin.cars.index')}}" class="form-group"
                       id="form-cars-list">
                     <div class="modal-body">
                         <div class="row">
@@ -46,7 +46,21 @@
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script type="text/javascript">
+        // $(document).on('change', '#date_start', function() {
+        // });
+
         $(document).ready(async function () {
+            $('#date_start').on('change', function () {
+                let date_start = $("#date_start").val();
+                date_start = date_start.split("-");
+                date_start[0] = (+date_start[0]) + (+1);
+                let date_end = date_start.join("-");
+
+                $("#date_end").removeAttr('data-date-start-date');
+                $('#date_end').attr('data-date-start-date', date_end);
+                $('#date_end').datepicker("refresh");
+            });
+
             $('#modal-car-search').modal('show')
             $("#select-address").select2();
             @foreach ($addressCars as $each)
@@ -55,35 +69,6 @@
                 {{$each}}
             </option>`);
             @endforeach
-            $("#form-cars-list").validate({
-                submitHandler: function (form) {
-                    $.ajax({
-                        url: $(form).attr('action'),
-                        type: 'GET',
-                        dataType: 'json',
-                        data: $(form).serialize(),
-                        success: function () {
-                            console.log($(form).serialize());
-                            let data = $(form).serialize();
-                            let route_car_index = '{{route("admin.cars.index","data")}}'
-                            route_car_index = route_car_index.replace('data', data);
-                            window.location = route_car_index;
-                        },
-                        error: function (response) {
-                            console.log($(form).serialize());
-                            const errors = Object.values(response.responseJSON.errors);
-                            let string = '<ul>';
-                            errors.forEach(function (each) {
-                                each.forEach(function (error) {
-                                    string += `<li>${error}</li>`;
-                                });
-                            });
-                            string += '</ul>';
-                            notifyError(string);
-                        },
-                    });
-                }
-            });
         });
     </script>
 @endpush

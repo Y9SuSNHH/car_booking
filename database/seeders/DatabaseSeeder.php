@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Car;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
+         User::factory(100)->create();
+         Car::factory(500)->create();
     }
 }

@@ -7,28 +7,20 @@
                     <div class="row">
                         <div class="col-xl-8">
                             <form class="form-horizontal form-inline" id="form-filter">
-                                <div class="form-group col-md-3">
-                                    <label for="select-car-name">Tên xe</label>
-                                    <select class="form-control" name="select-car-name" id="select-car-name">
-                                        <option selected value="All">Tất cả</option>
-                                        {{--                                        @foreach($names as $name)--}}
-                                        {{--                                            <option--}}
-                                        {{--                                                @if($name === $selectedName) selected @endif--}}
-                                        {{--                                            >--}}
-                                        {{--                                                {{ $name }}--}}
-                                        {{--                                            </option>--}}
-                                        {{--                                        @endforeach--}}
+                                <div class="form-group col-md-4">
+                                    <label for="select-name">Tên xe</label>
+                                    <select class="form-control select-filter" name="name" id='select-name'>
                                     </select>
                                 </div>
+                                <input type="text" hidden name="address" value="{{$search['address']}}">
+                                <input type="text" hidden name="date_start" value="{{$search['date_start']}}">
+                                <input type="text" hidden name="date_end" value="{{$search['date_start']}}">
                             </form>
                         </div>
                         <div class="col-xl-4">
                             <nav class="float-right">
                                 <ul class="pagination pagination-rounded mb-0">
-                                    <nav>
-                                        <ul class="pagination" id="pagination">
-                                        </ul>
-                                    </nav>
+                                    {{$data->links()}}
                                 </ul>
                             </nav>
                         </div>
@@ -43,14 +35,13 @@
                     <div class="tab-content" style="overflow-y: auto !important;">
                         <div class="tab-pane show active" id="responsive-preview">
                             <div class="table-responsive">
-                                <table id="table-data" class="table mb-0">
+                                <table id="table-data" class="table table-striped table-centered mb-0   ">
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Biển số</th>
                                         <th scope="col">Thông tin xe</th>
-                                        <th scope="col">Loại xe</th>
-                                        <th scope="col">Nhiên liệu</th>
+                                        <th scope="col">Đặc điểm</th>
                                         <th scope="col">
                                             Giá thuê 1 ngày
                                             <br>
@@ -62,7 +53,72 @@
                                         <th scope="col">Xử lý</th>
                                     </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                    @foreach($data as $each)
+                                        <tr>
+                                            <td>{{$each->id}}</td>
+                                            <td>
+                                                <button type="button" id="btn-modal-each-car-{{$each->id}}"
+                                                        data-toggle='modal' data-target='#modal-each-car'
+                                                        class='btn btn-link btn-rounded'>
+                                                    <img src="{{asset("storage/"). $each->image}}"
+                                                         class="img-fluid img-thumbnail p-1"
+                                                         style="max-width: 300px; max-height:200px;">
+                                                </button>
+                                            </td>
+                                            <td>
+                                                {{$each->name}}
+                                                <br>
+                                                {{$each->address2}} - {{$each->address}}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-warning-lighten">{{$each->type}} </span>
+                                                -
+                                                <span class="badge badge-warning-lighten">{{$each->slot}} chỗ</span>
+                                                <br>
+                                                @if ($each->transmission === 0)
+                                                    <span class="badge badge-primary">Số tự động</span>
+                                                @else
+                                                    <span class="badge badge-info">Số sàn</span>
+                                                @endif
+                                                <br>
+                                                @if ($each->fuel === 0)
+                                                    <span class="badge badge-dark-lighten">Dầu - {{$each->fuel_comsumpiton}} L/km</span>
+                                                @else
+                                                    <span class="badge badge-success-lighten">Xăng - {{$each->fuel_comsumpiton}} L/km</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-success">{{$each->price_1_day}} K</span>
+                                                <br>
+                                                <span
+                                                    class="badge badge-secondary">{{$each->price_insure}} - {{$each->price_service}}</span>
+                                                <br>
+                                                <span
+                                                    class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>
+                                            </td>
+                                            <td>
+                                                @if ($each->status === 0)
+                                                    <i class="mdi mdi-circle text-success"></i>
+                                                @else
+                                                    <i class="mdi mdi-circle text-warning"></i>
+                                                @endif
+                                                {{$each->StatusName}}
+                                            </td>
+                                            <td>
+                                                <a href="{{route("admin.cars.edit",$each->id)}}" class='action-icon'><i
+                                                        class='mdi mdi-pencil'></i></a>
+                                                <form action="{{route("admin.cars.destroy",$each->id)}}" method="post"
+                                                      class="action-icon" style="margin: 0px;padding: 0px;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-link action-icon"><i
+                                                            class='mdi mdi-delete'></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -465,73 +521,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script type="text/javascript">
-        function crawlData() {
-            $.ajax({
-                url: '{{route('api.cars',$search)}}',
-                dataType: 'json',
-                data: {page: {{ request()->get('page') ?? 1 }}},
-                success: function (response) {
-                    response.data.data.forEach(function (each) {
-                        let image_url = "{{asset('storage/')}}" + '/' + each.image;
-                        let image = "<button type='button' id='btn-modal-each-car-" + each.id + "' data-toggle='modal' data-target='#modal-each-car' class='btn btn-link btn-rounded'>"
-                            + "<img src='" + image_url
-                            + "' class='img-fluid img-thumbnail p-1'"
-                            + "style='max-width: 300px; max-height:200px;'> </button>";
-                        let address = "- " + each.address + "<br>- " + each.address2;
-                        let info = "- " + each.name + "<br>" + address;
-                        let transmission = each.transmission ? "<span class='badge badge-primary'>Số tự động</span>" : "<span class='badge badge-info'>Số sàn</span>";
-                        let type = each.type + "<br>" +
-                            "<span class='badge badge-warning'>" + each.slot + " chỗ</span>"
-                            + "<br>" + transmission;
-                        let fuel = each.fuel ? "<span class='badge badge-secondary'>Dầu</span>" : "<span class='badge badge-success'>Xăng</span>" + "<br>" + each.fuel_comsumpiton + " L/km";
-                        let price = each.price_1_day + "đ<br>" + each.price_insure + 'đ - ' + each.price_service
-                            + "đ<br>" + convertDateToDateTime(each.created_at);
-                        let status_ready;
-                        @if (isset($search['address']) && isset($search['date_start']) && isset($search['date_end']))
-                            status_ready = "<button type='button' id='btn-modal-form-create-bill-" + each.id + "' data-toggle='modal' data-target='#modal-form-create-bill' class='btn btn-outline-info'><i class='uil-money-bill'></i></button>";
-                        @else
-                            status_ready = "<span class='badge badge-success-lighten'>" + each.status_name + "</span>";
-                        @endif
-                        let status_maintenance = "<span class='badge badge-warning-lighten'>" + each.status_name + "</span>";
-                        let status = each.status ? status_maintenance : status_ready;
-                        let route_car_edit = '{{route("admin.cars.edit","id")}}';
-                        route_car_edit = route_car_edit.replace('id', each.id);
-                        let route_car_destroy = '{{route("admin.cars.destroy","id")}}';
-                        route_car_destroy = route_car_destroy.replace('id', each.id);
-                        let action = "<a href='" + route_car_edit + "' class='action-icon'><i class='mdi mdi-pencil'></i></a>";
-                        action += "<form action='" + route_car_destroy + "' method='post' class='action-icon' id='form-car-delete' style='margin: 0px;padding: 0px;''>";
-                        action += `@csrf @method('DELETE')`;
-                        action += "<button class='btn btn-link action-icon''><i class='mdi mdi-delete'></i></button>";
-                        action += "</form>";
-                        $('#table-data').append($('<tr>')
-                            .append($('<th scope="row">').append(each.id))
-                            .append($('<td>').append(image))
-                            .append($('<td>').append(info))
-                            .append($('<td>').append(type))
-                            .append($('<td>').append(fuel))
-                            .append($('<td>').append(price))
-                            .append($('<td>').append(status))
-                            .append($('<td class="table-action">').append(action))
-                        );
-                        $(document).on('click', '#btn-modal-form-create-bill-' + each.id, function (event) {
-                            let route_bill_store = '{{route('admin.bills.store',"id")}}';
-                            route_bill_store = route_bill_store.replace('id', each.id);
-                            $("#action-bill-store").attr("action", route_bill_store);
-                        });
-                        $(document).on('click', '#btn-modal-each-car-' + each.id, function () {
-                            $('.carousel-indicators').empty();
-                            $('.carousel-inner').empty();
-                            carShow(each.id);
-                        });
-                    });
-                    renderPagination(response.data.pagination);
-                },
-                error: function () {
-                    notifyError();
-                }
-            })
-        }
-
         function carShow(carId) {
             $.ajax({
                 url: '{{ route('api.cars.show') }}/' + carId,
@@ -564,9 +553,30 @@
             });
         }
 
-        $(document).ready(async function () {
-            crawlData();
+        function loadNames() {
+            $("#select-name").select2();
+            let name = '<option selected value="All">Tất cả</option>';
+            let selected = '';
+            @foreach($names as $name)
+                @if($name === $search['name'])
+                selected = 'selected';
+            @else
+                selected = '';
+            @endif
+                name += "<option " + selected + `>{{$name}}</option>`;
+            @endforeach
+            $("#select-name").append(name);
+        }
 
+        function filter() {
+            $(".select-filter").change(function () {
+                $("#form-filter").submit();
+            });
+        }
+
+        $(document).ready(async function () {
+            loadNames();
+            filter();
             $(document).on('click', '#pagination > li > a', function (event) {
                 event.preventDefault();
                 let page = $(this).text();

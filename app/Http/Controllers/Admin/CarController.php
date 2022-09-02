@@ -36,9 +36,44 @@ class CarController extends Controller
 
     public function index(Request $request)
     {
-        $search      = $request->all();
+        $search['address']    = $request->get('address');
+        $search['date_start'] = $request->get('date_start');
+        $search['date_end']   = $request->get('date_end');
+        $search['name']       = $request->get('name');
+
+        $query = $this->model->clone()->latest();
+
+        if (!empty($search['name']) && $search['name'] !== 'All') {
+            $query->where('name', $search['name']);
+        }
+
+        if (!empty($search['address']) && !empty($search['date_start']) && !empty($search['date_end'])) {
+            $address    = $search['address'];
+            $date_start = date('Y-m-d', strtotime($search['date_start']));
+            $date_end   = date('Y-m-d', strtotime($search['date_end']));
+
+            $query->where('address', $address)
+                ->where('status', CarStatusEnum::READY)
+                ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end, $address) {
+                    $query->where(function ($q) use ($date_start, $date_end) {
+                        $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND CAST('$date_end' AS DATE)");
+                        $q->orwhereRaw("date_end   BETWEEN CAST('$date_start' AS DATE)  AND CAST('$date_end' AS DATE)");
+                    });
+                });
+        }
+        $names = $query->pluck('name');
+
+        $data = $query->paginate(10);
+
+        foreach ($data as $each) {
+            $each->append('status_name');
+            $each->type = $each->TypeName;
+        }
+
         return view("$this->role.$this->table.index", [
-            "search"      => $search,
+            "data"   => $data,
+            "search" => $search,
+            "names"  => $names,
         ]);
     }
 
@@ -130,7 +165,7 @@ class CarController extends Controller
         $addressCars = Car::query()->clone()
             ->groupBy('address')
             ->pluck('address');
-        return view("$this->role.$this->table.search",[
+        return view("$this->role.$this->table.search", [
             "addressCars" => $addressCars,
         ]);
     }

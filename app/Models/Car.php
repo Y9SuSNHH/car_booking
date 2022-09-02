@@ -57,6 +57,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $address2
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Bill[] $bills
+ * @property-read int|null $bills_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
+ * @property-read int|null $files_count
+ * @property-read string $fuel_name
+ * @property-read string|int|bool $status_name
+ * @property-read string $transmission_name
+ * @property-read string|int|bool $type_name
+ * @method static \Illuminate\Database\Eloquent\Builder|Car findSimilarSlugs(string $attribute, array $config, string $slug)
+ * @method static \Illuminate\Database\Query\Builder|Car onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Car whereAddress2($value)
+ * @method static \Illuminate\Database\Query\Builder|Car withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Car withUniqueSlugConstraints(\Illuminate\Database\Eloquent\Model $model, string $attribute, array $config, string $slug)
+ * @method static \Illuminate\Database\Query\Builder|Car withoutTrashed()
  */
 class Car extends Model
 {
@@ -66,7 +81,6 @@ class Car extends Model
     protected $fillable =  [
         'name',
         'image',
-        'fullphoto',
         'address',
         'address2',
         'type',

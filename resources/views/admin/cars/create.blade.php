@@ -118,15 +118,15 @@
                             </div>
                             <div class="form-group col-4">
                                 <div class="form-group">
-                                    <label for="price_1_day">Giá thuê 1 ngày</label>
+                                    <label for="price_1_day">Giá thuê 1 ngày(x1000đ)</label>
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="price_insure">Phí bảo hiểm</label>
+                                    <label for="price_insure">Phí bảo hiểm(x1000đ)</label>
                                     <input type="number" name="price_insure" id="price_insure" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="price_service">Phí dịch vụ</label>
+                                    <label for="price_service">Phí dịch vụ(x1000đ)</label>
                                     <input type="number" name="price_service" id="price_service" class="form-control">
                                 </div>
                                 <div class="form-group float-right">

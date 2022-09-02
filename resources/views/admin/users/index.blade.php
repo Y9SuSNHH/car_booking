@@ -2,7 +2,6 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-
             <div class="card">
                 <div class="card-header">
                     <form class="form-horizontal form-inline" id="form-filter">
@@ -123,12 +122,14 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <nav>
-                            <ul class="pagination pagination-rounded mb-0">
-                                {{$data->links()}}
-                            </ul>
-                        </nav>
                     </div>
+                </div>
+                <div class="card-footer">
+                    <nav class="float-right">
+                        <ul class="pagination pagination-rounded mb-0">
+                            {{$data->links()}}
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
