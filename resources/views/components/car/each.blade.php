@@ -11,9 +11,9 @@
             <h6 class="card-category text-success">
                 <i class="mdi mdi-cash-usd-outline" aria-hidden="true"></i> {{$car->price_1_day}}K
             </h6>
-            <h5 class="card-title">
-                {{Str::limit($car->name, 20, '...')}}
-            </h5>
+            <h6 class="card-title">
+                {{Str::limit($car->name, 22, '...')}}
+            </h6>
             <p class="card-description">
                 @if($car->fuel === 0)
                     <span class="badge badge-success">{{$car->FuelName}}</span>

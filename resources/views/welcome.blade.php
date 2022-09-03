@@ -17,7 +17,7 @@
                     <div class="col-md-10 ml-auto mr-auto">
                         <div class="card card-raised card-form-horizontal no-transition">
                             <div class="card-body">
-                                <form action="{{route('api.cars.list')}}" class="form-group"
+                                <form action="{{route('api.cars.find')}}" class="form-group"
                                       id="form-list-car">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -30,14 +30,16 @@
                                             <div class="form-group">
                                                 <input type="text" id="date_start" name="date_start" class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                                       data-date-autoclose="true" placeholder="Ngày bắt đầu">
+                                                       data-date-autoclose="true" placeholder="Ngày bắt đầu"
+                                                       value="{{session()->get('date_start')}}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <input type="text" id="date_end" name="date_end" class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                                       data-date-autoclose="true" placeholder="Ngày kết thúc">
+                                                       data-date-autoclose="true" placeholder="Ngày kết thúc"
+                                                       value="{{session()->get('date_end')}}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -63,7 +65,12 @@
             $("#select-address").select2();
             let address = '<option selected value="">Tỉnh/TP</option>';
             @foreach ($addressCars as $each)
-                address += `<option>{{$each}}</option>`;
+                @if ($each === session()->get('address'))
+                selected = 'selected';
+            @else
+                selected = '';
+            @endif
+                address += "<option " + selected + `>{{$each}}</option>`;
             @endforeach
             $("#select-address").append(address);
         }

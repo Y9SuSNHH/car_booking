@@ -99,7 +99,7 @@ class CarController extends Controller
         return $this->successResponse();
     }
 
-    public function list(ListCarRequest $request): JsonResponse
+    public function find(ListCarRequest $request): JsonResponse
     {
         try {
             session([

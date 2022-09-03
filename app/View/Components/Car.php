@@ -19,6 +19,6 @@ class Car extends Component
      */
     public function render()
     {
-        return view('components.car.list');
+        return view('components.car.each');
     }
 }
