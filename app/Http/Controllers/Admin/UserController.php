@@ -49,12 +49,8 @@ class UserController extends Controller
         }]);
 
         $data      = $query->paginate();
-        $roles     = UserRoleEnum::asArray();
-        $rolesName = [
-            UserRoleEnum::getKeyByValue(0),
-            UserRoleEnum::getKeyByValue(1),
-            UserRoleEnum::getKeyByValue(2),
-        ];
+
+        $roles     = UserRoleEnum::getArrayView();
 
         $positions = $this->model->clone()
             ->distinct()
@@ -68,7 +64,6 @@ class UserController extends Controller
         return view("$this->role.$this->table.index", [
             'data'             => $data,
             'roles'            => $roles,
-            'rolesName'        => $rolesName,
             'selectedRole'     => $selectedRole,
             'selectedAddress'  => $selectedAddress,
             'positions'        => $positions,

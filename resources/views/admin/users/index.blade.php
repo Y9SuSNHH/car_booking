@@ -13,11 +13,12 @@
                                     <option value="{{ $value }}"
                                             @if((string)$value === $selectedRole) selected @endif
                                     >
-                                        {{ $rolesName[$value] }}
+                                        {{ $role }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="form-group col-md-4">
                             <label for="address" class="col-form-label">Tỉnh/TP</label>
                             <select class="form-control select-filter" name="address" id="address">
