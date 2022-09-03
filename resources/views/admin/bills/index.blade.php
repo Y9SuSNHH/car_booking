@@ -4,6 +4,34 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
+                    <div class="row">
+                        <form class="form-horizontal form-inline" id="form-filter">
+                            <div class="form-group col-md-4">
+                                <label for="select-name-user">Tên người dùng</label>
+                                <select class="form-control select-filter" name="name_user" id='select-name-user'>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="select-name-car">Tên xe</label>
+                                <select class="form-control select-filter" name="name_user" id='select-name-car'>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="select-status">Trạng thái</label>
+                                <select class="form-control select-filter" name="status" id='select-status'>
+                                    <option value="All" selected>Tất cả</option>
+                                    @foreach($status as $key => $value)
+                                        <option value="{{$key}}"
+                                                @if((string)$key === $filter['status'])
+                                                    selected
+                                            @endif>
+                                            {{$value}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="header-title">
@@ -54,15 +82,7 @@
                                                 {{ number_format($each->total_price) }} đ
                                             </td>
                                             <td>
-                                                @if($each->status === 0)
-                                                    <i class="mdi mdi-circle text-warning"></i>
-                                                @elseif($each->status === 1)
-                                                    <i class="mdi mdi-circle text-info"></i>
-                                                @elseif($each->status === 2)
-                                                    <i class="mdi mdi-circle text-danger"></i>
-                                                @elseif($each->status === 3)
-                                                    <i class="mdi mdi-circle text-success"></i>
-                                                @endif
+                                                <i class="mdi mdi-circle text-{{$each->GenerateStatus}}"></i>
                                                 {{$each->StatusName}}
                                             </td>
                                             <td class="table-action">
@@ -101,3 +121,32 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script type="text/javascript">
+        function loadNames() {
+            $("#select-name-user").select2();
+            let name = '<option selected value="All">Tất cả</option>';
+            let selected = '';
+            @foreach($names as $name)
+                @if($name === $filter['name_user'])
+                selected = 'selected';
+            @else
+                selected = '';
+            @endif
+                name += "<option " + selected + `>{{$name}}</option>`;
+            @endforeach
+            $("#select-name-user").append(name);
+        }
+
+        function filter() {
+            $(".select-filter").change(function () {
+                $("#form-filter").submit();
+            });
+        }
+
+        $(document).ready(async function () {
+            loadNames();
+            filter();
+        });
+    </script>
+@endpush

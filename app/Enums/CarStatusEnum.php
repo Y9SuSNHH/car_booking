@@ -22,8 +22,8 @@ final class CarStatusEnum extends Enum
         ];
     }
 
-    public static function getKeyByValue($value)
+    public static function getValueByKey($key): string
     {
-        return array_search($value, self::getArrayView(), true);
+        return self::getArrayView()[$key];
     }
 }

@@ -60,6 +60,8 @@ class CarController extends Controller
                     });
                 });
         }
+        $names  = $query->pluck('name');
+        $status = CarStatusEnum::getArrayView();
         if (!empty($search['filter']['name']) && $search['filter']['name'] !== 'All') {
             $query->where('name', $search['filter']['name']);
         }
@@ -67,8 +69,6 @@ class CarController extends Controller
             $query->where('status', $search['filter']['status']);
         }
 
-        $names  = $query->pluck('name');
-        $status = CarStatusEnum::getArrayView();
         $data   = $query->paginate(10);
 
         foreach ($data as $each) {

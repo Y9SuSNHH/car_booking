@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Bill\BillStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Car;
@@ -26,35 +27,33 @@ class BillController extends Controller
 
     public function index(Request $request)
     {
-        $filter['car_name']        = $request->get('car_name');
-        $filter['user_name']       = $request->get('user_name');
-        $filter['user_start_name'] = $request->get('user_start_name');
-        $filter['user_end_name']   = $request->get('user_end_name');
+        $filter['name_user'] = $request->get('name_user');
+        $filter['name_car']  = $request->get('name_car');
+        $filter['status']    = $request->get('status');
 
         $query = $this->model->clone();
 
-//        if (!empty($filter['car_name']) && $filter['car_name'] !== 'All') {
-//            $query->where('name', $filter['car_name']);
-//        }
-//        if (!empty($filter['user_name']) && $filter['user_name'] !== 'All') {
-//            $query->where('name', $filter['user_name']);
-//        }
-//        if (!empty($filter['car_name']) && $filter['car_name'] !== 'All') {
-//            $query->where('name', $filter['user_start_name']);
-//        }
-//        if (!empty($filter['car_name']) && $filter['car_name'] !== 'All') {
-//            $query->where('name', $filter['user_start_name']);
-//        }
-//        $query->with([
-//            'user' => function ($q) {
-//                $q->select('name');
-//            }
-//        ]);
-        $query->with('user');
+        $status = BillStatusEnum::getArrayView();
+        if (isset($filter['status']) && $filter['status'] !== 'All') {
+            $query->where('status', $filter['status']);
+        }
+        if (!empty($filter['name_user']) && $filter['name_user'] !== 'All') {
+            $name = $filter['name_user'];
+            $query->whereHas('user', function ($q) use ($name) {
+                $q->where('users.name', $name);
+            });
+        } else {
+            $query->with('user');
+        }
+        $names = User::query()->pluck('name');
         $query->with('car');
         $data = $query->latest()->paginate(10);
+
         return view("$this->role.$this->table.index", [
-            'data' => $data,
+            'data'   => $data,
+            'filter' => $filter,
+            'names'  => $names,
+            'status' => $status,
         ]);
     }
 

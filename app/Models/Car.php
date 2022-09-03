@@ -107,7 +107,7 @@ class Car extends Model
 
     public function getStatusNameAttribute(): bool|int|string
     {
-        return CarStatusEnum::getKeyByValue($this->status);
+        return CarStatusEnum::getValueByKey($this->status);
     }
 
     public function getTypeNameAttribute(): bool|int|string
