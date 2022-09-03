@@ -78,7 +78,8 @@ class Car extends Model
     use Sluggable;
     use HasFactory;
     use SoftDeletes;
-    protected $fillable =  [
+
+    protected $fillable = [
         'name',
         'image',
         'address',
@@ -113,6 +114,7 @@ class Car extends Model
     {
         return CarTypeEnum::getKeyByValue($this->type);
     }
+
     public function files(): HasMany
     {
         return $this->hasMany(File::class, 'table_id')
@@ -122,19 +124,20 @@ class Car extends Model
     public function getFuelNameAttribute(): string
     {
         $fuelName = '';
-        if($this->fuel === 0){
+        if ($this->fuel === 0) {
             $fuelName = 'Xăng';
-        }else if($this->fuel === 1) {
+        } else if ($this->fuel === 1) {
             $fuelName = 'Dầu';
         }
         return $fuelName;
     }
+
     public function getTransmissionNameAttribute(): string
     {
         $transmissionName = '';
-        if($this->fuel === 0){
+        if ($this->fuel === 0) {
             $transmissionName = 'Số tự động';
-        }else if($this->fuel === 1) {
+        } else if ($this->fuel === 1) {
             $transmissionName = 'Số sàn';
         }
         return $transmissionName;
@@ -145,4 +148,14 @@ class Car extends Model
         return $this->hasMany(Bill::class);
     }
 
+    public function isFind(array $find): int
+    {
+        $i = 0;
+        foreach ($find as $key => $value) {
+            if ($value === null) {
+                $i += 1;
+            }
+        }
+        return $i;
+    }
 }

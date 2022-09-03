@@ -24,7 +24,6 @@ Route::group([
     'prefix' => 'cars',
 ], static function() {
     Route::get('/', [CarController::class, 'index'])->name('index');
-    Route::get('/search', [CarController::class, 'search'])->name('search');
     Route::get('/create', [CarController::class, 'create'])->name('create');
     Route::post('/create', [CarController::class, 'store'])->name('store');
     Route::get('/edit/{car}', [CarController::class, 'edit'])->name('edit');
@@ -37,6 +36,7 @@ Route::group([
     'prefix' => 'bills',
 ], static function() {
     Route::get('/', [BillController::class, 'index'])->name('index');
+    Route::get('/findCars', [CarController::class, 'findCars'])->name('find.cars');
     Route::get('/create/{car}', [BillController::class, 'create'])->name('create');
     Route::post('/create/{car}', [BillController::class, 'store'])->name('store');
 });

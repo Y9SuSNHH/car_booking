@@ -5,19 +5,34 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-4">
                             <form class="form-horizontal form-inline" id="form-filter">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-8">
                                     <label for="select-name">Tên xe</label>
                                     <select class="form-control select-filter" name="name" id='select-name'>
                                     </select>
                                 </div>
-                                <input type="text" hidden name="address" value="{{$search['address']}}">
-                                <input type="text" hidden name="date_start" value="{{$search['date_start']}}">
-                                <input type="text" hidden name="date_end" value="{{$search['date_start']}}">
+                                <div class="form-group col-sm-4">
+                                    <label for="select-status">Trạng thái</label>
+                                    <select class="form-control select-filter" name="status" id='select-status'>
+                                        <option value="All" selected>Tất cả</option>
+                                        @foreach($status as $key => $value)
+                                            <option value="{{$key}}"
+                                                    @if((string)$key === $search['filter']['status'])
+                                                        selected
+                                                @endif>
+                                                {{$value}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <input type="text" hidden name="address" value="{{$search['find']['address']}}">
+                                <input type="text" hidden name="date_start" value="{{$search['find']['date_start']}}">
+                                <input type="text" hidden name="date_end" value="{{$search['find']['date_start']}}">
                             </form>
                         </div>
-                        <div class="col-xl-4">
+                        <div class="col-xl-8">
+                            <br>
                             <nav class="float-right">
                                 <ul class="pagination pagination-rounded mb-0">
                                     {{$data->links()}}
@@ -98,12 +113,20 @@
                                                     class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>
                                             </td>
                                             <td>
-                                                @if ($each->status === 0)
-                                                    <i class="mdi mdi-circle text-success"></i>
-                                                @else
-                                                    <i class="mdi mdi-circle text-warning"></i>
+                                                @if ($idFind === 0)
+                                                    <button type='button'
+                                                            id='btn-modal-form-create-bill-" + each.id + "'
+                                                            data-toggle='modal' data-target='#modal-form-create-bill'
+                                                            class='btn btn-outline-info'><i class='uil-money-bill'></i>
+                                                    </button>
+                                                @elseif($idFind === 3)
+                                                    @if ($each->status === 0)
+                                                        <i class="mdi mdi-circle text-success"></i>
+                                                    @else
+                                                        <i class="mdi mdi-circle text-warning"></i>
+                                                    @endif
+                                                    {{$each->StatusName}}
                                                 @endif
-                                                {{$each->StatusName}}
                                             </td>
                                             <td>
                                                 <a href="{{route("admin.cars.edit",$each->id)}}" class='action-icon'><i
@@ -558,7 +581,7 @@
             let name = '<option selected value="All">Tất cả</option>';
             let selected = '';
             @foreach($names as $name)
-                @if($name === $search['name'])
+                @if($name === $search['filter']['name'])
                 selected = 'selected';
             @else
                 selected = '';
@@ -567,6 +590,21 @@
             @endforeach
             $("#select-name").append(name);
         }
+
+        {{--function loadStatus() {--}}
+        {{--    $("#select-status").select2();--}}
+        {{--    let status = '<option selected value="All">Tất cả</option>';--}}
+        {{--    let selected = '';--}}
+        {{--    @foreach($status as $key => $value)--}}
+        {{--        @if($key === $search['filter']['status'])--}}
+        {{--        selected = 'selected';--}}
+        {{--    @else--}}
+        {{--        selected = '';--}}
+        {{--    @endif--}}
+        {{--        status += `<option value='{{$key}}' ` + selected + `>{{$value}}</option>`;--}}
+        {{--    @endforeach--}}
+        {{--    $("#select-status").append(status);--}}
+        {{--}--}}
 
         function filter() {
             $(".select-filter").change(function () {

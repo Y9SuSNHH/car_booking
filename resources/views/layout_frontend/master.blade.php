@@ -40,7 +40,6 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="{{asset('js/vendor/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/app.min.js')}}"></script>
 <script src="{{asset('js/vendor.js')}}"></script>
 <script src="{{asset('js/paper-kit_v=2.1.0.js')}}"></script>

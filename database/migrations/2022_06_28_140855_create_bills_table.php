@@ -27,7 +27,7 @@ class CreateBillsTable extends Migration
             $table->float('total_price');
             $table->smallInteger('status');
             $table->timestamps();
-            
+            $table->softDeletes();
         });
     }
 

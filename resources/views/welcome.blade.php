@@ -28,7 +28,8 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <input type="text" id="date_start" name="date_start" class="form-control"
+                                                <input type="text" id="date_start" name="date_start"
+                                                       class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" placeholder="Ngày bắt đầu"
                                                        value="{{session()->get('date_start')}}">
@@ -64,6 +65,7 @@
         function loadAddress() {
             $("#select-address").select2();
             let address = '<option selected value="">Tỉnh/TP</option>';
+            let selected = '';
             @foreach ($addressCars as $each)
                 @if ($each === session()->get('address'))
                 selected = 'selected';
@@ -85,7 +87,7 @@
                 date_start[0] = (+date_start[0]) + (+1);
                 let date_end = date_start.join("-");
 
-                $('#date_end').datepicker('setDate','');
+                $('#date_end').datepicker('setDate', '');
                 $('#date_end').datepicker('setStartDate', date_end);
             });
         }
@@ -108,7 +110,7 @@
                         data: $(form).serialize(),
                         success: function () {
                             $("#div-error").hide();
-                            window.location = "{{route('user.index')}}";
+                            window.location = "{{route('user.index')}}" + '?' + $(form).serialize();
                         },
                         error: function (response) {
                             const errors = Object.values(response.responseJSON.errors);

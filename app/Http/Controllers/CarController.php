@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\CarStatusEnum;
 use App\Enums\FileTypeEnum;
 use App\Http\Requests\Car\CheckSlugRequest;
-use App\Http\Requests\Car\ListCarRequest;
+use App\Http\Requests\Car\FindCarRequest;
 use App\Http\Requests\Car\GenerateSlugRequest;
 use App\Models\Car;
 use App\Models\File;
@@ -99,14 +99,9 @@ class CarController extends Controller
         return $this->successResponse();
     }
 
-    public function find(ListCarRequest $request): JsonResponse
+    public function find(FindCarRequest $request): JsonResponse
     {
         try {
-            session([
-                'address'    => $request->address,
-                'date_start' => $request->date_start,
-                'date_end'   => $request->date_end,
-            ]);
             return $this->successResponse();
         } catch (Throwable $e) {
             return $this->errorResponse();

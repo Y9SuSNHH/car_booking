@@ -8,8 +8,8 @@
                     <h4 class="modal-title" id="mySmallModalLabel">Tìm xe</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <form action="{{route('admin.cars.index')}}" class="form-group"
-                      id="form-cars-list">
+                <form action="{{route('api.cars.find')}}" class="form-group"
+                      id="form-list-car">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12 ml-auto mr-auto">
@@ -30,7 +30,6 @@
                                        data-date-autoclose="true">
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
@@ -44,9 +43,6 @@
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script type="text/javascript">
-        // $(document).on('change', '#date_start', function() {
-        // });
-
         function conditionalDateEnd() {
             let setStartDate = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
             $('#date_start').datepicker('setStartDate', setStartDate);
@@ -70,16 +66,34 @@
             $("#select-address").append(address);
         }
         $(document).ready(async function () {
-            conditionalDateEnd();
-            loadAddress();
             $('#modal-car-search').modal('show')
-            $("#select-address").select2();
-            @foreach ($addressCars as $each)
-            $("#select-address").append(`
-            <option>
-                {{$each}}
-            </option>`);
-            @endforeach
+            loadAddress();
+            conditionalDateEnd();
+
+            $("#form-list-car").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'GET',
+                        dataType: 'json',
+                        data: $(form).serialize(),
+                        success: function () {
+                            window.location = "{{route('admin.cars.index')}}" + '?' + $(form).serialize();
+                        },
+                        error: function (response) {
+                            const errors = Object.values(response.responseJSON.errors);
+                            let string = '<ul>';
+                            errors.forEach(function (each) {
+                                each.forEach(function (error) {
+                                    string += `<li>${error}</li>`;
+                                });
+                            });
+                            string += '</ul>';
+                            notifyError(string);
+                        },
+                    });
+                }
+            });
         });
     </script>
 @endpush

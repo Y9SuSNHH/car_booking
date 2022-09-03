@@ -11,14 +11,14 @@ use BenSampo\Enum\Enum;
  */
 final class CarStatusEnum extends Enum
 {
-    public const READY = 0;
+    public const READY       = 0;
     public const MAINTENANCE = 1;
 
     public static function getArrayView(): array
     {
         return [
-            'Sẵn sàng'  => self::READY,
-            'Bảo dưỡng' => self::MAINTENANCE,
+            self::READY       => 'Sẵn sàng',
+            self::MAINTENANCE => 'Bảo dưỡng',
         ];
     }
 

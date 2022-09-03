@@ -8,6 +8,7 @@ use App\Enums\FileTableEnum;
 use App\Enums\FileTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ResponseTrait;
+use App\Http\Requests\Car\FindCarRequest;
 use App\Http\Requests\Car\StoreRequest;
 use App\Http\Requests\Car\UpdateRequest;
 use App\Models\Car;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Throwable;
+use function PHPUnit\Framework\isNull;
 
 class CarController extends Controller
 {
@@ -36,34 +38,38 @@ class CarController extends Controller
 
     public function index(Request $request)
     {
-        $search['address']    = $request->get('address');
-        $search['date_start'] = $request->get('date_start');
-        $search['date_end']   = $request->get('date_end');
-        $search['name']       = $request->get('name');
+        $search['find']['address']    = $request->get('address');
+        $search['find']['date_start'] = $request->get('date_start');
+        $search['find']['date_end']   = $request->get('date_end');
+        $search['filter']['name']     = $request->get('name');
+        $search['filter']['status']   = $request->get('status');
 
         $query = $this->model->clone()->latest();
 
-        if (!empty($search['name']) && $search['name'] !== 'All') {
-            $query->where('name', $search['name']);
-        }
+        $idFind = (new Car())->isFind($search['find']);
+        if ($idFind === 0) {
+            $date_start = date('Y-m-d', strtotime($search['find']['date_start']));
+            $date_end   = date('Y-m-d', strtotime($search['find']['date_end']));
 
-        if (!empty($search['address']) && !empty($search['date_start']) && !empty($search['date_end'])) {
-            $address    = $search['address'];
-            $date_start = date('Y-m-d', strtotime($search['date_start']));
-            $date_end   = date('Y-m-d', strtotime($search['date_end']));
-
-            $query->where('address', $address)
+            $query->where('address', $search['find']['address'])
                 ->where('status', CarStatusEnum::READY)
-                ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end, $address) {
+                ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end) {
                     $query->where(function ($q) use ($date_start, $date_end) {
                         $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND CAST('$date_end' AS DATE)");
                         $q->orwhereRaw("date_end   BETWEEN CAST('$date_start' AS DATE)  AND CAST('$date_end' AS DATE)");
                     });
                 });
         }
-        $names = $query->pluck('name');
+        if (!empty($search['filter']['name']) && $search['filter']['name'] !== 'All') {
+            $query->where('name', $search['filter']['name']);
+        }
+        if (isset($search['filter']['status']) && $search['filter']['status'] !== 'All') {
+            $query->where('status', $search['filter']['status']);
+        }
 
-        $data = $query->paginate(10);
+        $names  = $query->pluck('name');
+        $status = CarStatusEnum::getArrayView();
+        $data   = $query->paginate(10);
 
         foreach ($data as $each) {
             $each->append('status_name');
@@ -74,6 +80,8 @@ class CarController extends Controller
             "data"   => $data,
             "search" => $search,
             "names"  => $names,
+            "status" => $status,
+            "idFind" => $idFind,
         ]);
     }
 
@@ -160,12 +168,12 @@ class CarController extends Controller
         return redirect()->back();
     }
 
-    public function search()
+    public function findCars()
     {
         $addressCars = Car::query()->clone()
             ->groupBy('address')
             ->pluck('address');
-        return view("$this->role.$this->table.search", [
+        return view("$this->role.$this->table.find", [
             "addressCars" => $addressCars,
         ]);
     }

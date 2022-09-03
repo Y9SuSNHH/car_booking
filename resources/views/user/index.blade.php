@@ -19,13 +19,13 @@
                                                class="form-control date_start"
                                                data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                data-date-autoclose="true" placeholder="Ngày bắt đầu"
-                                               value="{{session()->get('date_start')}}">
+                                               value="{{ $search['find']['date_start'] }}">
                                     </div>
                                     <div class="form-group label-floating">
                                         <input type="text" name="date_end" id="date_end" class="form-control date_end"
                                                data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                data-date-autoclose="true" placeholder="Ngày kết thúc"
-                                               value="{{session()->get('date_end')}}">
+                                               value="{{ $search['find']['date_end'] }}">
                                     </div>
                                 </div>
                             </form>
@@ -342,7 +342,7 @@
                     </div>
                     <div class="row">
                         <div class="float-right">
-                                    {{$cars->links()}}
+                            {{$cars->links()}}
                         </div>
                     </div>
                 </div>
@@ -504,14 +504,14 @@
                                                 <input type="text" name="date_start" class="form-control date_start"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" disabled
-                                                       value="{{session()->get('date_start')}}">
+                                                       value="{{$search['find']['date_start']}}">
                                             </div>
                                             <div class="col-6 ml-auto mr-auto">
                                                 <label class="font-weight-bold">Ngày kết thúc</label>
                                                 <input type="text" name="date_end" class="form-control date_end"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" disabled
-                                                       value="{{session()->get('date_end')}}">
+                                                       value="{{$search['find']['date_end']}}">
                                             </div>
                                             <br>
                                             <div class="col-12 ml-auto mr-auto mt-2 ">
@@ -635,7 +635,7 @@
             let address = '<option selected value="">Tỉnh/TP</option>';
             let selected = '';
             @foreach ($addressCars as $each)
-                @if ($each === session()->get('address'))
+                @if ($each === $search['find']['address'] )
                 selected = 'selected';
             @else
                 selected = '';
@@ -744,7 +744,7 @@
                         dataType: 'json',
                         data: $(form).serialize(),
                         success: function (response) {
-                            location.reload();
+                            window.location = "{{route('user.index')}}" + '?' + $(form).serialize();
                         },
                         error: function (response) {
                             const errors = Object.values(response.responseJSON.errors);

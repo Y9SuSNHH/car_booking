@@ -26,7 +26,7 @@
                     <a href="{{ route('admin.bills.index') }}">Danh sách hoá đơn</a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.cars.search')}}">Tạo hoá đơn</a>
+                    <a href="{{ route('admin.bills.find.cars')}}">Tạo hoá đơn</a>
                 </li>
             </ul>
         </li>

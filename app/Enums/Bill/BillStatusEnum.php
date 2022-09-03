@@ -11,7 +11,23 @@ use BenSampo\Enum\Enum;
  */
 final class BillStatusEnum extends Enum
 {
-    public const PENDING = 0;
-    public const ACCEPT = 1;
-    public const DONE = 2;
+    public const ORDER     = 0;
+    public const DELIVERED = 1;
+    public const EXPIRES       = 2;
+    public const DONE      = 3;
+
+    public static function getArrayView(): array
+    {
+        return [
+            'Đặt xe'     => self::ORDER,
+            'Đã giao xe' => self::DELIVERED,
+            'Quá hạn'    => self::EXPIRES,
+            'Hoàn thành' => self::DONE,
+        ];
+    }
+
+    public static function getKeyByValue($value)
+    {
+        return array_search($value, self::getArrayView(), true);
+    }
 }

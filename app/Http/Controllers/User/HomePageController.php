@@ -18,17 +18,15 @@ class HomePageController extends Controller
 {
     public function index(Request $request)
     {
-        $search['find']['address']    = session()->get('address');
-        $search['find']['date_start'] = session()->get('date_start');
-        $search['find']['date_end']   = session()->get('date_end');
+        $search['find']['address']    = $request->get('address');
+        $search['find']['date_start'] = $request->get('date_start');
+        $search['find']['date_end']   = $request->get('date_end');
 
-//        dd($search);
-        $address    = session()->get('address');
-        $date_start = date('Y-m-d', strtotime(session()->get('date_start')));
-        $date_end   = date('Y-m-d', strtotime(session()->get('date_end')));
+        $date_start = date('Y-m-d', strtotime($request->get('date_start')));
+        $date_end   = date('Y-m-d', strtotime($request->get('date_end')));
         $cars       = Car::query()->clone()
-            ->where('address', $address)
-            ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end, $address) {
+            ->where('address', $search['find']['address'])
+            ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end) {
                 $query->where(function ($q) use ($date_start, $date_end) {
                     $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND  CAST('$date_end' AS DATE)");
                     $q->orwhereRaw("date_end   BETWEEN  CAST('$date_start' AS DATE) AND CAST('$date_end' AS DATE)");
@@ -42,6 +40,7 @@ class HomePageController extends Controller
 //        dd($addressCar);
         return view('user.index', [
             'cars'        => $cars,
+            'search'      => $search,
             'addressCars' => $addressCars,
         ]);
     }

@@ -24,16 +24,37 @@ class BillController extends Controller
         View::share('table', $this->table);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $query = $this->model->clone()
-            ->with('user')
-            ->with('car')
-            ->latest();
-        $data  = $query->paginate();
-//        dd($data);
+        $filter['car_name']        = $request->get('car_name');
+        $filter['user_name']       = $request->get('user_name');
+        $filter['user_start_name'] = $request->get('user_start_name');
+        $filter['user_end_name']   = $request->get('user_end_name');
+
+        $query = $this->model->clone();
+
+//        if (!empty($filter['car_name']) && $filter['car_name'] !== 'All') {
+//            $query->where('name', $filter['car_name']);
+//        }
+//        if (!empty($filter['user_name']) && $filter['user_name'] !== 'All') {
+//            $query->where('name', $filter['user_name']);
+//        }
+//        if (!empty($filter['car_name']) && $filter['car_name'] !== 'All') {
+//            $query->where('name', $filter['user_start_name']);
+//        }
+//        if (!empty($filter['car_name']) && $filter['car_name'] !== 'All') {
+//            $query->where('name', $filter['user_start_name']);
+//        }
+//        $query->with([
+//            'user' => function ($q) {
+//                $q->select('name');
+//            }
+//        ]);
+        $query->with('user');
+        $query->with('car');
+        $data = $query->latest()->paginate(10);
         return view("$this->role.$this->table.index", [
-            'data'        => $data,
+            'data' => $data,
         ]);
     }
 
