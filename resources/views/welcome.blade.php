@@ -59,7 +59,6 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script type="text/javascript">
         function loadAddress() {
@@ -110,7 +109,7 @@
                         data: $(form).serialize(),
                         success: function () {
                             $("#div-error").hide();
-                            window.location = "{{route('user.index')}}" + '?' + $(form).serialize();
+                            window.location = "{{route('index')}}" + '?' + $(form).serialize();
                         },
                         error: function (response) {
                             const errors = Object.values(response.responseJSON.errors);
