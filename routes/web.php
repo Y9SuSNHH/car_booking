@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\HomePageController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -21,7 +22,8 @@ Route::get('/test', function () {
 })->name('test');
 Route::post('/test-func', [TestController::class, 'testFunc'])->name('test.func');
 
-Route::get('/', [AuthController::class, 'welcome'])->name('welcome');
+Route::get('/', [HomePageController::class, 'welcome'])->name('welcome');
+Route::get('/index', [HomePageController::class, 'index'])->name('index');
 Route::get('/signin', [AuthController::class, 'signin'])->name('signin');
 Route::post('/signin', [AuthController::class, 'processSignIn'])->name('process_signin');
 Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
