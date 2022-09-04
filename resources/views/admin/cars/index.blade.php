@@ -6,13 +6,13 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-xl-4">
-                            <form class="form-row" id="form-filter">
+                            <form class="form-horizontal form-inline" id="form-filter">
                                 <div class="form-group col-md-8">
                                     <label for="select-name">Tên xe</label>
                                     <select class="form-control select-filter" name="name" id='select-name'>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-sm-4">
                                     <label for="select-status">Trạng thái</label>
                                     <select class="form-control select-filter" name="status" id='select-status'>
                                         <option value="All" selected>Tất cả</option>
@@ -113,13 +113,13 @@
                                                     class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>
                                             </td>
                                             <td>
-                                                @if ($isFind === 0)
+                                                @if ($idFind === 0)
                                                     <button type='button'
                                                             id='btn-modal-form-create-bill-" + each.id + "'
                                                             data-toggle='modal' data-target='#modal-form-create-bill'
                                                             class='btn btn-outline-info'><i class='uil-money-bill'></i>
                                                     </button>
-                                                @elseif($isFind === 3)
+                                                @elseif($idFind === 3)
                                                     @if ($each->status === 0)
                                                         <i class="mdi mdi-circle text-success"></i>
                                                     @else

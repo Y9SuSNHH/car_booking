@@ -21,6 +21,17 @@ use Exception;
 
 class AuthController extends Controller
 {
+    public function welcome(): Factory|View|Application
+    {
+        $addressCars = Car::query()->clone()
+            ->groupBy('address')
+            ->pluck('address');
+
+        return view('welcome', [
+            'addressCars' => $addressCars,
+        ]);
+    }
+
     public function signin(): Factory|View|Application
     {
         return view('auth.signin');

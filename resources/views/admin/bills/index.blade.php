@@ -4,21 +4,19 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <form class="form-group" id="form-filter">
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
+                    <div class="row">
+                        <form class="form-horizontal form-inline" id="form-filter">
+                            <div class="form-group col-md-4">
                                 <label for="select-name-user">Tên người dùng</label>
-                                <select class="form-control select-filter" name="name_user"
-                                        id='select-name-users'>
+                                <select class="form-control select-filter" name="name_user" id='select-name-user'>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="select-name-cars">Tên xe</label>
-                                <select class="form-control select-filter" name="name_car"
-                                        id='select-name-cars'>
+                            <div class="form-group col-md-4">
+                                <label for="select-name-car">Tên xe</label>
+                                <select class="form-control select-filter" name="name_user" id='select-name-car'>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label for="select-status">Trạng thái</label>
                                 <select class="form-control select-filter" name="status" id='select-status'>
                                     <option value="All" selected>Tất cả</option>
@@ -32,24 +30,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <i class="mdi mdi-circle text-warning"></i> Đặt xe
-                                    </div>
-                                    <div class="col-6">
-                                        <i class="mdi mdi-circle text-info"></i> Đã giao xe
-                                    </div>
-                                    <div class="col-6">
-                                        <i class="mdi mdi-circle text-success"></i> Hoàn thành
-                                    </div>
-                                    <div class="col-6">
-                                        <i class="mdi mdi-circle text-danger"></i> Quá hạn trả xe
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="header-title">
@@ -101,7 +83,7 @@
                                             </td>
                                             <td>
                                                 <i class="mdi mdi-circle text-{{$each->GenerateStatus}}"></i>
-{{--                                                {{$each->StatusName}}--}}
+                                                {{$each->StatusName}}
                                             </td>
                                             <td class="table-action">
                                                 {{--                                                {{ route("admin.$table.show", $each)}}--}}
@@ -141,11 +123,11 @@
 @endsection
 @push('js')
     <script type="text/javascript">
-        function loadNameUsers() {
-            $("#select-name-users").select2();
+        function loadNames() {
+            $("#select-name-user").select2();
             let name = '<option selected value="All">Tất cả</option>';
             let selected = '';
-            @foreach($nameUsers as $name)
+            @foreach($names as $name)
                 @if($name === $filter['name_user'])
                 selected = 'selected';
             @else
@@ -153,28 +135,7 @@
             @endif
                 name += "<option " + selected + `>{{$name}}</option>`;
             @endforeach
-            $("#select-name-users").append(name);
-        }
-
-        function filter() {
-            $(".select-filter").change(function () {
-                $("#form-filter").submit();
-            });
-        }
-
-        function loadNameCars() {
-            $("#select-name-cars").select2();
-            let name = '<option selected value="All">Tất cả</option>';
-            let selected = '';
-            @foreach($nameCars as $name)
-                @if($name === $filter['name_car'])
-                selected = 'selected';
-            @else
-                selected = '';
-            @endif
-                name += "<option " + selected + `>{{$name}}</option>`;
-            @endforeach
-            $("#select-name-cars").append(name);
+            $("#select-name-user").append(name);
         }
 
         function filter() {
@@ -184,8 +145,7 @@
         }
 
         $(document).ready(async function () {
-            loadNameUsers();
-            loadNameCars();
+            loadNames();
             filter();
         });
     </script>

@@ -45,25 +45,15 @@ class BillController extends Controller
         } else {
             $query->with('user');
         }
-        if (!empty($filter['name_car']) && $filter['name_car'] !== 'All') {
-            $name = $filter['name_car'];
-            $query->whereHas('car', function ($q) use ($name) {
-                $q->where('cars.name', $name);
-            });
-        } else {
-            $query->with('car');
-        }
-        $nameUsers = User::query()->pluck('name');
-        $nameCars  = Car::query()->pluck('name');
+        $names = User::query()->pluck('name');
         $query->with('car');
         $data = $query->latest()->paginate(10);
 
         return view("$this->role.$this->table.index", [
-            'data'      => $data,
-            'filter'    => $filter,
-            'nameUsers' => $nameUsers,
-            'nameCars'  => $nameCars,
-            'status'    => $status,
+            'data'   => $data,
+            'filter' => $filter,
+            'names'  => $names,
+            'status' => $status,
         ]);
     }
 

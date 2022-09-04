@@ -46,8 +46,8 @@ class CarController extends Controller
 
         $query = $this->model->clone()->latest();
 
-        $isFind = (new Car())->isFind($search['find']);
-        if ($isFind === 0) {
+        $idFind = (new Car())->isFind($search['find']);
+        if ($idFind === 0) {
             $date_start = date('Y-m-d', strtotime($search['find']['date_start']));
             $date_end   = date('Y-m-d', strtotime($search['find']['date_end']));
 
@@ -81,7 +81,7 @@ class CarController extends Controller
             "search" => $search,
             "names"  => $names,
             "status" => $status,
-            "isFind" => $isFind,
+            "idFind" => $idFind,
         ]);
     }
 

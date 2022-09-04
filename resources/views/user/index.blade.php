@@ -744,7 +744,7 @@
                         dataType: 'json',
                         data: $(form).serialize(),
                         success: function (response) {
-                            window.location = "{{route('index')}}" + '?' + $(form).serialize();
+                            window.location = "{{route('user.index')}}" + '?' + $(form).serialize();
                         },
                         error: function (response) {
                             const errors = Object.values(response.responseJSON.errors);
