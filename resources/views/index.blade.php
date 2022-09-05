@@ -7,7 +7,7 @@
                 <div class="col-md-3">
                     <div class="card card-refine">
                         <div class="card-header">
-                            <form action="{{route('api.cars.find')}}" class="form-group"
+                            <form action="{{route('index')}}" class="form-group"
                                   id="form-list-car">
                                 <div class="card-body">
                                     <div class="form-group label-floating">
@@ -15,17 +15,16 @@
                                                 id='select-address'></select>
                                     </div>
                                     <div class="form-group label-floating">
-                                        <input type="text" name="date_start" id="date_start"
-                                               class="form-control date_start"
+                                        <input type="text" name="date_start" id="date_start" class="form-control"
                                                data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                data-date-autoclose="true" placeholder="Ngày bắt đầu"
-                                               value="{{ $search['find']['date_start'] }}">
+                                               value="{{ session()->get('filter_car.date_start') }}">
                                     </div>
                                     <div class="form-group label-floating">
-                                        <input type="text" name="date_end" id="date_end" class="form-control date_end"
+                                        <input type="text" name="date_end" id="date_end" class="form-control"
                                                data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                data-date-autoclose="true" placeholder="Ngày kết thúc"
-                                               value="{{ $search['find']['date_end'] }}">
+                                               value="{{ session()->get('filter_car.date_end') }}">
                                     </div>
                                 </div>
                             </form>
@@ -489,58 +488,57 @@
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <form id="form-each-car">
-                                        <div class="row">
-                                            <div class="col-8 ml-auto mr-auto">
-                                                <h3 class="text-center">
+                                    <div class="row">
+                                        <div class="col-8 ml-auto mr-auto">
+                                            <h3 class="text-center">
                                                     <span class="text-success font-weight-bold"><span
                                                             id="price_1_day_title"></span>K</span>
-                                                    <small class="text-muted">/ngày</small>
-                                                </h3>
+                                                <small class="text-muted">/ngày</small>
+                                            </h3>
+                                        </div>
+                                        <div class="col-6 ml-auto mr-auto">
+                                            <label class="font-weight-bold">Ngày bắt
+                                                đầu</label>
+                                            <input type="text" class="form-control"
+                                                   data-provide="datepicker" data-date-format="dd-mm-yyyy"
+                                                   data-date-autoclose="true" disabled
+                                                   value="{{ session()->get('filter_car.date_start') }}">
+                                        </div>
+                                        <div class="col-6 ml-auto mr-auto">
+                                            <label class="font-weight-bold">Ngày kết thúc</label>
+                                            <input type="text" class="form-control"
+                                                   data-provide="datepicker" data-date-format="dd-mm-yyyy"
+                                                   data-date-autoclose="true" disabled
+                                                   value="{{ session()->get('filter_car.date_end') }}">
+                                        </div>
+                                        <br>
+                                        <div class="col-12 ml-auto mr-auto mt-2 ">
+                                            <div class="alert alert-warning show mb-0 p-0">
+                                                <p class="mb-0">
+                                                    <small> Thời gian nhận xe
+                                                        <span class="float-right">05:00-22:00</span>
+                                                    </small>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <small> Thời gian trả xe
+                                                        <span class="float-right">17:00-21:00 </span>
+                                                    </small>
+                                                </p>
                                             </div>
-                                            <div class="col-6 ml-auto mr-auto">
-                                                <label class="font-weight-bold">Ngày bắt
-                                                    đầu</label>
-                                                <input type="text" name="date_start" class="form-control date_start"
-                                                       data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                                       data-date-autoclose="true" disabled
-                                                       value="{{$search['find']['date_start']}}">
-                                            </div>
-                                            <div class="col-6 ml-auto mr-auto">
-                                                <label class="font-weight-bold">Ngày kết thúc</label>
-                                                <input type="text" name="date_end" class="form-control date_end"
-                                                       data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                                       data-date-autoclose="true" disabled
-                                                       value="{{$search['find']['date_end']}}">
-                                            </div>
-                                            <br>
-                                            <div class="col-12 ml-auto mr-auto mt-2 ">
-                                                <div class="alert alert-warning show mb-0 p-0">
-                                                    <p class="mb-0">
-                                                        <small> Thời gian nhận xe
-                                                            <span class="float-right">05:00-22:00</span>
-                                                        </small>
-                                                    </p>
-                                                    <p class="mb-0">
-                                                        <small> Thời gian trả xe
-                                                            <span class="float-right">17:00-21:00 </span>
-                                                        </small>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 ml-auto mr-auto">
-                                                <strong>Địa điểm nhận xe</strong>
-                                                <h6>
-                                                    <i class="dripicons-location"> <span
-                                                            id="address2"></span></i>
-                                                </h6>
-                                                <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
-                                                    cụ
-                                                    thể sẽ được hiển thị sau khi đặt cọc</small>
-                                            </div>
-                                            <div class="col-12 ml-auto mr-auto">
-                                                <strong>Giới hạn số km</strong><br>
-                                                <span>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Địa điểm nhận xe</strong>
+                                            <h6>
+                                                <i class="dripicons-location"> <span
+                                                        id="address2"></span></i>
+                                            </h6>
+                                            <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
+                                                cụ
+                                                thể sẽ được hiển thị sau khi đặt cọc</small>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Giới hạn số km</strong><br>
+                                            <span>
                                                     <small>
                                                         Tối đa
                                                     <strong>300</strong>
@@ -549,65 +547,66 @@
                                                     /km vượt giới hạn.
                                                     </small>
                                                 </span>
-                                            </div>
-                                            <div class="col-12 ml-auto mr-auto">
-                                                <strong>Bảo hiểm</strong><br>
-                                                <span>
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Bảo hiểm</strong><br>
+                                            <span>
                                                     <small>Chuyến đi được bảo hiểm bởi MIC Tìm hiểu thêm</small>
                                                 </span>
-                                            </div>
-                                            <div class="col-12 ml-auto mr-auto">
-                                                <strong>Chi tiết giá</strong><br>
-                                                Đơn giá thuê<i class="mdi mdi-information-outline"
-                                                               data-toggle="tooltip" data-placement="top"
-                                                               title=""
-                                                               data-html="true"
-                                                               data-original-title="<small>Giá thuê xe không bao gồm tiền xăng. Khi kết thúc chuyến đi, bạn sẽ đổ xăng về lại mức ban đầu như khi nhận xe.</small>"></i>
-                                                <span class="float-right">
+                                        </div>
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Chi tiết giá</strong><br>
+                                            Đơn giá thuê<i class="mdi mdi-information-outline"
+                                                           data-toggle="tooltip" data-placement="top"
+                                                           title=""
+                                                           data-html="true"
+                                                           data-original-title="<small>Giá thuê xe không bao gồm tiền xăng. Khi kết thúc chuyến đi, bạn sẽ đổ xăng về lại mức ban đầu như khi nhận xe.</small>"></i>
+                                            <span class="float-right">
                                                     <span id="price_1_day" class="font-weight-bold"></span>/ ngày
                                                 </span>
-                                                <br>
-                                                Phí dịch vụ<i class="mdi mdi-information-outline"
-                                                              data-toggle="tooltip" data-placement="top" title=""
-                                                              data-container="body" data-animation="true"
-                                                              data-html="true"
-                                                              data-original-title="<small>Phí dịch vụ nhằm hỗ trợ KevinOTO duy trì nền tảng ứng dụng và các hoạt động chăm sóc khách hàng một cách tốt nhất.</small>"></i>
-                                                <span class="float-right">
+                                            <br>
+                                            Phí dịch vụ<i class="mdi mdi-information-outline"
+                                                          data-toggle="tooltip" data-placement="top" title=""
+                                                          data-container="body" data-animation="true"
+                                                          data-html="true"
+                                                          data-original-title="<small>Phí dịch vụ nhằm hỗ trợ KevinOTO duy trì nền tảng ứng dụng và các hoạt động chăm sóc khách hàng một cách tốt nhất.</small>"></i>
+                                            <span class="float-right">
                                                     <span id="price_service" class="font-weight-bold"></span>/ ngày
                                                 </span>
-                                                <br>
-                                                Phí bảo hiểm<i class="mdi mdi-information-outline"
-                                                               data-toggle="tooltip" data-placement="top" title=""
-                                                               data-container="body" data-animation="true"
-                                                               data-html="true"
-                                                               data-original-title="<small>Chuyến đi của bạn được mua gói bảo hiểm vật chất xe ô tô từ nhà bảo hiểm MIC. Trường hơp có sự cố ngoài ý muốn (trong phạm vi bảo hiểm), số tiền bạn thanh toán tối đa là 2,000,000VND/vụ.</small>"></i>
-                                                <span class="float-right">
+                                            <br>
+                                            Phí bảo hiểm<i class="mdi mdi-information-outline"
+                                                           data-toggle="tooltip" data-placement="top" title=""
+                                                           data-container="body" data-animation="true"
+                                                           data-html="true"
+                                                           data-original-title="<small>Chuyến đi của bạn được mua gói bảo hiểm vật chất xe ô tô từ nhà bảo hiểm MIC. Trường hơp có sự cố ngoài ý muốn (trong phạm vi bảo hiểm), số tiền bạn thanh toán tối đa là 2,000,000VND/vụ.</small>"></i>
+                                            <span class="float-right">
                                                         <span id="price_insure" class="font-weight-bold"></span>/ ngày
                                                     </span>
-                                                <hr/>
-                                                Tổng phí thuê xe
-                                                <span class="float-right font-weight-bold">
+                                            <hr/>
+                                            Tổng phí thuê xe
+                                            <span class="float-right font-weight-bold">
                                                         <span id="price"></span> x <span id="total-date"></span> ngày
                                                     </span>
-                                                <hr/>
-                                                <span class="font-weight-bold">
+                                            <hr/>
+                                            <span class="font-weight-bold">
                                                     Tổng cộng
                                                     <span class="float-right">
-                                                        <input type="number" name="total_price" id="total-price"
-                                                               class="form-control"
-                                                               hidden>
                                                         <span id="total-price-html"></span>đ
                                                     </span>
                                                 </span>
-                                            </div>
-                                            <div class="col-8 ml-auto mr-auto">
+                                        </div>
+                                        <div class="col-12">
+                                            <form id="form-car-store" class="form-horizontal">
+                                                <input type="number" name="total_price" id="total-price"
+                                                       class="form-control"
+                                                       hidden>
                                                 <div class="text-center">
-                                                    <button class="btn btn-success justify-content-center">ĐẶT XE
+                                                    <button class="btn btn-success">ĐẶT XE
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -616,6 +615,26 @@
             </div>
         </div>
     </div>
+    @if (session('checkUser'))
+        <div id="info-alert-modal" class="modal fade show" tabindex="-1" role="dialog"
+             style="display: block; padding-right: 21px;" aria-modal="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body p-4">
+                        <div class="text-center">
+                            <i class="dripicons-warning h3 text-warning"></i>
+                            <h4 class="mt-2"> {{session('checkUser')}} </h4>
+                            <form action="{{route('user.index')}}">
+                                <button type="submit" class="btn btn-sm btn-warning my-2" data-dismiss="modal">Điền
+                                    thông tin
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
@@ -635,7 +654,7 @@
             let address = '<option selected value="">Tỉnh/TP</option>';
             let selected = '';
             @foreach ($addressCars as $each)
-                @if ($each === $search['find']['address'] )
+                @if ($each === session()->get('filter_car.address'))
                 selected = 'selected';
             @else
                 selected = '';
@@ -646,26 +665,40 @@
             $("#select-address").append(address);
         }
 
-        function conditionalDateEnd() {
-            let setStartDate = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
-            $('.date_start').datepicker('setStartDate', setStartDate);
+        function setStartDateEnd() {
+            let setStartDateEnd = $('#date_start').val();
+            setStartDateEnd = setStartDateEnd.split("-");
+            setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
+            setStartDateEnd = setStartDateEnd.join("-");
+
+            $('#date_end').datepicker('setStartDate', setStartDateEnd);
+        }
+
+        function loadDate() {
+            const date_start = $('#date_start');
+
+            let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
+            date_start.datepicker('setStartDate', setStartDateStart);
+            setStartDateEnd();
 
             $("#select-address").change(function () {
                 $("#form-list-car").submit();
             });
-            $('#date_start').on('change', function () {
-                let date_start = $(".date_start").val();
-                date_start = date_start.split("-");
-                date_start[0] = (+date_start[0]) + (+1);
-                let date_end = date_start.join("-");
+            $("#date_end").change(function () {
+                if ($(this).val()) {
+                    $("#form-list-car").submit();
+                }
+            });
+            date_start.on('change', function () {
+                const date_end = $('#date_end');
 
-                $('#date_end').datepicker('setDate', '');
-                $('#date_end').datepicker('setStartDate', date_end);
-
-                if (!$('#date_end').val()) {
-                    $('#date_end').change(function () {
+                date_end.datepicker('setDate', '');
+                setStartDateEnd()
+                if (!date_end.val()) {
+                    date_end.change(function () {
                         $("#form-list-car").submit();
                     })
+                    console.log('1');
                 }
             });
         }
@@ -719,8 +752,8 @@
 
         function modalEachCar(carId) {
             let route = '{{route('user.bill.store')}}/' + carId;
-            $('#form-each-car').prop('action', route);
-            $('#form-each-car').prop('method', 'POST');
+            $('#form-car-store').prop('action', route);
+            $('#form-car-store').prop('method', 'POST');
             $('.carousel-indicators').empty();
             $('.carousel-inner').empty();
             carShow(carId);
@@ -728,38 +761,13 @@
 
         $(document).ready(async function () {
             loadAddress();
-            conditionalDateEnd();
+            loadDate();
 
             $("#modal-each-car").on('hide.bs.modal', function () {
-                $('#form-each-car').prop('action', '');
-                $('#form-each-car').prop('method', '');
-                // alert('The modal is about to be hidden.');
+                $('#form-car-store').prop('action', '');
+                $('#form-car-store').prop('method', '');
             });
 
-            $("#form-list-car").validate({
-                submitHandler: function (form) {
-                    $.ajax({
-                        url: $(form).attr('action'),
-                        type: 'GET',
-                        dataType: 'json',
-                        data: $(form).serialize(),
-                        success: function (response) {
-                            window.location = "{{route('index')}}" + '?' + $(form).serialize();
-                        },
-                        error: function (response) {
-                            const errors = Object.values(response.responseJSON.errors);
-                            let string = '<ul>';
-                            errors.forEach(function (each) {
-                                each.forEach(function (error) {
-                                    string += `<li>${error}</li>`;
-                                });
-                            });
-                            string += '</ul>';
-                            notifyError(string);
-                        },
-                    });
-                }
-            });
         });
     </script>
     <script type="text/javascript">

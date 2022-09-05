@@ -34,6 +34,10 @@
                         <a class="nav-link dropdown-toggle" href="javascript:void(0)"
                            data-toggle="dropdown"><i class="nc-icon nc-single-02"></i> {{auth()->user()->name}}</a>
                         <ul class="dropdown-menu dropdown-menu-right dropdown-danger">
+                            <a class="dropdown-item" href="{{route('user.index')}}">
+                                <i class="uil-user-exclamation"></i>
+                                Tài khoản
+                            </a>
                             <a class="dropdown-item" href="{{route('signout')}}">
                                 <i class="mdi mdi-logout mr-1"></i>
                                 Đăng xuất

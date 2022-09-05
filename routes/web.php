@@ -20,7 +20,7 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('/test', function () {
     return view('test');
 })->name('test');
-Route::post('/test-func', [TestController::class, 'testFunc'])->name('test.func');
+Route::get('/test-func', [TestController::class, 'testFunc'])->name('test.func');
 
 Route::get('/', [HomePageController::class, 'welcome'])->name('welcome');
 Route::get('/index', [HomePageController::class, 'index'])->name('index');

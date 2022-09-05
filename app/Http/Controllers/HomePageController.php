@@ -20,16 +20,22 @@ class HomePageController extends Controller
             'addressCars' => $addressCars,
         ]);
     }
+
     public function index(Request $request): Factory|View|Application
     {
-        $search['find']['address']    = $request->get('address');
-        $search['find']['date_start'] = $request->get('date_start');
-        $search['find']['date_end']   = $request->get('date_end');
+        $session['filter_car'] = [
+            'address'    => $request->get('address'),
+            'date_start' => $request->get('date_start'),
+            'date_end'   => $request->get('date_end'),
+        ];
+        session($session);
 
+        $address    = $request->get('address');
         $date_start = date('Y-m-d', strtotime($request->get('date_start')));
         $date_end   = date('Y-m-d', strtotime($request->get('date_end')));
-        $cars       = Car::query()->clone()
-            ->where('address', $search['find']['address'])
+
+        $cars = Car::query()->clone()
+            ->where('address', $address)
             ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end) {
                 $query->where(function ($q) use ($date_start, $date_end) {
                     $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND  CAST('$date_end' AS DATE)");
@@ -41,10 +47,8 @@ class HomePageController extends Controller
             ->groupBy('address')
             ->pluck('address');
 
-//        dd($addressCar);
         return view('index', [
             'cars'        => $cars,
-            'search'      => $search,
             'addressCars' => $addressCars,
         ]);
     }

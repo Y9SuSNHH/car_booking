@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FileTableEnum;
+use App\Enums\FileTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,7 +37,7 @@ class File extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $fillable = [
         'table',
         'table_id',
         'type',
@@ -48,4 +49,22 @@ class File extends Model
 //        return $this->hasMany(Car::class, 'table_id')
 //            ->where('files.table', strtoupper(FileTableEnum::getKey(FileTableEnum::CARS)));
 //    }
+
+    public function checkUserIdentity($userId): bool
+    {
+        $checkUserIdentity = self::query()->where('table', FileTableEnum::USERS)
+            ->where('table_id', $userId)
+            ->where('type', FileTypeEnum::IDENTITY)
+            ->count();
+        return $checkUserIdentity === 2;
+    }
+
+    public function checkUserLicenseCar($userId): bool
+    {
+        $checkUserLicenseCar = self::query()->where('table', FileTableEnum::USERS)
+            ->where('table_id', $userId)
+            ->where('type', FileTypeEnum::LICENSE_CAR)
+            ->count();
+        return $checkUserLicenseCar === 2;
+    }
 }

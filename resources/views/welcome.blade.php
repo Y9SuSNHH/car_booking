@@ -17,7 +17,7 @@
                     <div class="col-md-10 ml-auto mr-auto">
                         <div class="card card-raised card-form-horizontal no-transition">
                             <div class="card-body">
-                                <form action="{{route('api.cars.find')}}" class="form-group"
+                                <form action="{{route('index')}}" class="form-group"
                                       id="form-list-car">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -32,7 +32,7 @@
                                                        class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" placeholder="Ngày bắt đầu"
-                                                       value="{{session()->get('date_start')}}">
+                                                       value="{{ session()->get('filter_car.date_start') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -40,7 +40,7 @@
                                                 <input type="text" id="date_end" name="date_end" class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" placeholder="Ngày kết thúc"
-                                                       value="{{session()->get('date_end')}}">
+                                                       value="{{ session()->get('filter_car.date_end') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -66,7 +66,7 @@
             let address = '<option selected value="">Tỉnh/TP</option>';
             let selected = '';
             @foreach ($addressCars as $each)
-                @if ($each === session()->get('address'))
+                @if ($each === session()->get('filter_car.address'))
                 selected = 'selected';
             @else
                 selected = '';
@@ -76,56 +76,31 @@
             $("#select-address").append(address);
         }
 
-        function conditionalDateEnd() {
-            let setStartDate = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
-            $('#date_start').datepicker('setStartDate', setStartDate);
+        function setStartDateEnd() {
+            let setStartDateEnd = $('#date_start').val();
+            setStartDateEnd = setStartDateEnd.split("-");
+            setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
+            setStartDateEnd = setStartDateEnd.join("-");
 
-            $('#date_start').on('change', function () {
-                let date_start = $("#date_start").val();
-                date_start = date_start.split("-");
-                date_start[0] = (+date_start[0]) + (+1);
-                let date_end = date_start.join("-");
+            $('#date_end').datepicker('setStartDate', setStartDateEnd);
+        }
 
+        function loadDate() {
+            const date_start = $('#date_start');
+
+            let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
+            date_start.datepicker('setStartDate', setStartDateStart);
+            setStartDateEnd()
+
+            date_start.on('change', function () {
                 $('#date_end').datepicker('setDate', '');
-                $('#date_end').datepicker('setStartDate', date_end);
+                setStartDateEnd()
             });
         }
 
         $(document).ready(async function () {
             loadAddress();
-            conditionalDateEnd();
-
-            $("#form-list-car").validate({
-                // rules: {
-                //     name: {
-                //         required: true
-                //     }
-                // },
-                submitHandler: function (form) {
-                    $.ajax({
-                        url: $(form).attr('action'),
-                        type: 'GET',
-                        dataType: 'json',
-                        data: $(form).serialize(),
-                        success: function () {
-                            $("#div-error").hide();
-                            window.location = "{{route('index')}}" + '?' + $(form).serialize();
-                        },
-                        error: function (response) {
-                            const errors = Object.values(response.responseJSON.errors);
-                            let string = '<ul>';
-                            errors.forEach(function (each) {
-                                each.forEach(function (error) {
-                                    string += `<li>${error}</li>`;
-                                });
-                            });
-                            string += '</ul>';
-                            $("#div-error").html(string);
-                            $("#div-error").removeClass("d-none").show();
-                        },
-                    });
-                }
-            });
+            loadDate();
         });
 
 

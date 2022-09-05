@@ -98,14 +98,4 @@ class CarController extends Controller
     {
         return $this->successResponse();
     }
-
-    public function find(FindCarRequest $request): JsonResponse
-    {
-        try {
-            return $this->successResponse();
-        } catch (Throwable $e) {
-            return $this->errorResponse();
-        }
-    }
-
 }
