@@ -135,9 +135,9 @@ class Car extends Model
     public function getTransmissionNameAttribute(): string
     {
         $transmissionName = '';
-        if ($this->fuel === 0) {
+        if ($this->transmission === 0) {
             $transmissionName = 'Số tự động';
-        } else if ($this->fuel === 1) {
+        } else if ($this->transmission === 1) {
             $transmissionName = 'Số sàn';
         }
         return $transmissionName;

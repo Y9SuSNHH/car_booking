@@ -8,7 +8,6 @@ use App\Enums\FileTableEnum;
 use App\Enums\FileTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ResponseTrait;
-use App\Http\Requests\Car\FindCarRequest;
 use App\Http\Requests\Car\StoreRequest;
 use App\Http\Requests\Car\UpdateRequest;
 use App\Models\Car;

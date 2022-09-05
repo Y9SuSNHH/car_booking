@@ -6,6 +6,7 @@ use App\Enums\Bill\BillStatusEnum;
 use App\Enums\CarStatusEnum;
 use App\Enums\FileTableEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Car\FindRequest;
 use App\Models\Bill;
 use App\Models\Car;
 use App\Models\File;
@@ -28,7 +29,7 @@ class BillController extends Controller
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function store(Request $request, $carId)
+    public function store(FindRequest $request, $carId)
     {
         $checkUserIdentity   = (new File)->checkUserIdentity(auth()->user()->id);
         $checkUserLicenseCar = (new File)->checkUserLicenseCar(auth()->user()->id);
@@ -36,7 +37,7 @@ class BillController extends Controller
         $date_start          = date('Y-m-d', strtotime(session()->get('filter_car.date_start')));
         $date_end            = date('Y-m-d', strtotime(session()->get('filter_car.date_end')));
 
-        if ($checkUserIdentity && $checkUserLicenseCar) {
+        if ($checkUserIdentity && $checkUserLicenseCar ) {
             $bill = Bill::create([
                 "user_id"     => auth()->user()->id,
                 "car_id"      => $carId,

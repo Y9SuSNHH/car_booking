@@ -4,7 +4,7 @@
         <div class="container">
             <h3 class="section-title">Xe bạn đã tìm kiếm</h3>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <div class="card card-refine">
                         <div class="card-header">
                             <form action="{{route('index')}}" class="form-group"
@@ -18,13 +18,13 @@
                                         <input type="text" name="date_start" id="date_start" class="form-control"
                                                data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                data-date-autoclose="true" placeholder="Ngày bắt đầu"
-                                               value="{{ session()->get('filter_car.date_start') }}">
+                                               value="{{ session()->get('find_cars.date_start') }}">
                                     </div>
                                     <div class="form-group label-floating">
                                         <input type="text" name="date_end" id="date_end" class="form-control"
                                                data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                data-date-autoclose="true" placeholder="Ngày kết thúc"
-                                               value="{{ session()->get('filter_car.date_end') }}">
+                                               value="{{ session()->get('find_cars.date_end') }}">
                                     </div>
                                 </div>
                             </form>
@@ -333,7 +333,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-lg-9">
                     <div class="row">
                         @foreach($cars as $car)
                             <x-car :car="$car"></x-car>
@@ -354,87 +354,286 @@
             <div class="modal-content bg-transparent text-dark shadow-none">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="card">
-                                    <div id="carouselExampleIndicators" class="carousel slide"
-                                         data-ride="carousel">
-                                        <ol class="carousel-indicators">
-                                        </ol>
-                                        <div class="carousel-inner" role="listbox">
-                                        </div>
-                                        <a class="carousel-control-prev"
-                                           href="#carouselExampleIndicators"
-                                           role="button" data-slide="prev">
+                        <div class="col-xl-8">
+                            <div class="card">
+                                <div id="carouselExampleIndicators" class="carousel slide"
+                                     data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                    </ol>
+                                    <div class="carousel-inner" role="listbox">
+                                    </div>
+                                    <a class="carousel-control-prev"
+                                       href="#carouselExampleIndicators"
+                                       role="button" data-slide="prev">
                                                                     <span class="carousel-control-prev-icon"
                                                                           aria-hidden="true"></span>
-                                            <span class="sr-only">Sau</span>
-                                        </a>
-                                        <a class="carousel-control-next"
-                                           href="#carouselExampleIndicators"
-                                           role="button" data-slide="next">
+                                        <span class="sr-only">Sau</span>
+                                    </a>
+                                    <a class="carousel-control-next"
+                                       href="#carouselExampleIndicators"
+                                       role="button" data-slide="next">
                                                                     <span class="carousel-control-next-icon"
                                                                           aria-hidden="true"></span>
-                                            <span class="sr-only">Trước</span>
-                                        </a>
-                                    </div>
+                                        <span class="sr-only">Trước</span>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <strong class="category">ĐẶC ĐIỂM</strong>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong class="category">ĐẶC ĐIỂM</strong>
+                                        </div>
+                                        <div class="col-3 p-0">
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-seatbelt"></i>
+                                                <span>Số ghế: </span>
+                                                <span id="slot"></span>
                                             </div>
-                                            <div class="col-3 p-0">
-                                                <div class="feed-line">
-                                                    <i class="mdi mdi-seatbelt"></i>
-                                                    <span>Số ghế: </span>
-                                                    <span id="slot"></span>
-                                                </div>
-                                                <br>
-                                                <div class="feed-line">
-                                                    <i class="mdi mdi-engine"></i>
-                                                    <span>Nhiên liệu: </span>
-                                                    <span id="fuel"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="feed-line">
-                                                    <i class="mdi mdi-car-shift-pattern"></i>
-                                                    <span>Truyền động: </span>
-                                                    <span id="transmission"></span>
-                                                </div>
-                                                <br>
-                                                <div class="feed-line">
-                                                    <i class="mdi mdi-fuel"></i>
-                                                    <span>Mức tiêu thụ nhiên liệu: </span>
-                                                    <span id="fuel_comsumpiton"></span>
-                                                    <span>L/Km</span>
-                                                </div>
+                                            <br>
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-engine"></i>
+                                                <span>Nhiên liệu: </span>
+                                                <span id="fuel"></span>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <strong class="category">MÔ TẢ</strong>
+                                        <div class="col-6">
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-car-shift-pattern"></i>
+                                                <span>Truyền động: </span>
+                                                <span id="transmission"></span>
                                             </div>
-                                            <div class="col-9">
-                                                <span id="description"></span>
+                                            <br>
+                                            <div class="feed-line">
+                                                <i class="mdi mdi-fuel"></i>
+                                                <span>Mức tiêu thụ nhiên liệu: </span>
+                                                <span id="fuel_comsumpiton"></span>
+                                                <span>L/Km</span>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong class="category">MÔ TẢ</strong>
+                                        </div>
+                                        <div class="col-9">
+                                            <span id="description"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <strong class="category">ĐIỀU KHOẢN</strong>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-8 ml-auto mr-auto">
+                                            <h3 class="text-center">
+                                                    <span class="text-success font-weight-bold"><span
+                                                            id="price_1_day_title"></span>K</span>
+                                                <small class="text-muted">/ngày</small>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 ml-auto mr-auto">
+                                            <label class="font-weight-bold">Ngày bắt
+                                                đầu</label>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ session()->get('find_cars.date_start') }}">
+                                        </div>
+                                        <div class="col-6 ml-auto mr-auto">
+                                            <label class="font-weight-bold">Ngày kết thúc</label>
+                                            <input type="text" class="form-control" disabled
+                                                   value="{{ session()->get('find_cars.date_end') }}">
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2 mt-2 bg-warning">
+                                        <div class="col-lg-7">
+                                            <div class="grid-container">
+                                                <small>
+                                                    <span class="float-left">Thời gian nhận xe</span>
+                                                </small>
                                             </div>
-                                            <div class="col-9">
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="grid-container">
+                                                <small>
+                                                    <span class="float-right">05:00-22:00</span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2 mb-2 bg-warning">
+                                        <div class="col-lg-7">
+                                            <div class="grid-container">
+                                                <small>
+                                                    <span class="float-left">Thời gian trả xe</span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="grid-container">
+                                                <small>
+                                                    <span class="float-right">17:00-21:00 </span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Địa điểm nhận xe</strong>
+                                            <h6>
+                                                <i class="dripicons-location"> <span
+                                                        id="address2"></span></i>
+                                            </h6>
+                                            <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
+                                                cụ
+                                                thể sẽ được hiển thị sau khi đặt cọc</small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Giới hạn số km</strong><br>
+                                            <span>
+                                                <small>Tối đa<strong>300</strong>km/ngày. Phí<strong>2K</strong>
+                                                    /km vượt giới hạn.
+                                                </small>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Bảo hiểm</strong><br>
+                                            <span>
+                                                    <small>Chuyến đi được bảo hiểm bởi MIC Tìm hiểu thêm</small>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 ml-auto mr-auto">
+                                            <strong>Chi tiết giá</strong><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                    <span class="float-left">Đơn giá thuê
+                                                    <i class="mdi mdi-information-outline" data-toggle="tooltip"
+                                                       data-placement="top" title="" data-html="true"
+                                                       data-original-title="<small>Giá thuê xe không bao gồm tiền
+                                                       xăng. Khi kết thúc chuyến đi, bạn sẽ đổ xăng về lại mức ban
+                                                       đầu như khi nhận xe.</small>"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                <span class="float-right">
+                                                    <span id="price_1_day" class="font-weight-bold"></span>/ ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                <span class="float-left">Phí dịch vụ
+                                                <i class="mdi mdi-information-outline"
+                                                   data-toggle="tooltip" data-placement="top" title="Phí dịch vụ nhằm hỗ trợ KevinOTO duy
+                                                       trì nền tảng ứng dụng và các hoạt động chăm sóc khách hàng một
+                                                       cách tốt nhất."></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                <span class="float-right">
+                                                    <span id="price_service" class="font-weight-bold"></span>/ ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                Phí bảo hiểm
+                                                <i class="mdi mdi-information-outline"
+                                                   data-toggle="tooltip" data-placement="top" title=""
+                                                   data-container="body" data-animation="true" data-html="true"
+                                                   data-original-title="
+                                                       <small>Chuyến đi của bạn được mua gói bảo hiểm vật chất xe ô tô
+                                                       từ nhà bảo hiểm MIC. Trường hơp có sự cố ngoài ý muốn (trong phạm
+                                                        vi bảo hiểm), số tiền bạn thanh toán tối đa là 2,000,000VND/vụ.
+                                                        </small>"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                    <span class="float-right">
+                                                        <span id="price_insure" class="font-weight-bold"></span>/ ngày
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                Tổng phí thuê xe
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="grid-container">
+                                                <span class="float-right font-weight-bold">
+                                                    <span id="price"></span> x <span id="total-date"></span> ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row font-weight-bold">
+                                        <div class="col-sm-4">
+                                            <div class="grid-container">
+                                                Tổng cộng
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="grid-container">
+                                                <span class="float-right">
+                                                    <span id="total-price-html"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <form id="form-car-store" class="form-horizontal">
+                                                <input type="number" name="total_price" id="total-price"
+                                                       class="form-control"
+                                                       hidden>
+                                                <div class="text-center">
+                                                    <button class="btn btn-success">ĐẶT XE
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong class="category">ĐIỀU KHOẢN</strong>
+                                        </div>
+                                        <div class="col-9">
                                                 <span>
                                                     1. Giấy tờ thuê xe (bản gốc)
                                                         <br>
@@ -477,134 +676,8 @@
                                                         <br>
                                                         ◦ Khi trả xe, nếu xe bẩn hoặc có mùi trong xe, khách hàng vui lòng vệ sinh xe sạch sẽ hoặc gửi phụ thu phí vệ sinh xe.
                                                         <br>
-                                                        Trân trọng cảm ơn, chúc quý khách hàng có những chuyến đi tuyệt vời !
+                                                        Trân trọng cảm ơn, chúc quý khách hàng có những chuyến đi tuyệt vời!
                                                 </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-8 ml-auto mr-auto">
-                                            <h3 class="text-center">
-                                                    <span class="text-success font-weight-bold"><span
-                                                            id="price_1_day_title"></span>K</span>
-                                                <small class="text-muted">/ngày</small>
-                                            </h3>
-                                        </div>
-                                        <div class="col-6 ml-auto mr-auto">
-                                            <label class="font-weight-bold">Ngày bắt
-                                                đầu</label>
-                                            <input type="text" class="form-control"
-                                                   data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                                   data-date-autoclose="true" disabled
-                                                   value="{{ session()->get('filter_car.date_start') }}">
-                                        </div>
-                                        <div class="col-6 ml-auto mr-auto">
-                                            <label class="font-weight-bold">Ngày kết thúc</label>
-                                            <input type="text" class="form-control"
-                                                   data-provide="datepicker" data-date-format="dd-mm-yyyy"
-                                                   data-date-autoclose="true" disabled
-                                                   value="{{ session()->get('filter_car.date_end') }}">
-                                        </div>
-                                        <br>
-                                        <div class="col-12 ml-auto mr-auto mt-2 ">
-                                            <div class="alert alert-warning show mb-0 p-0">
-                                                <p class="mb-0">
-                                                    <small> Thời gian nhận xe
-                                                        <span class="float-right">05:00-22:00</span>
-                                                    </small>
-                                                </p>
-                                                <p class="mb-0">
-                                                    <small> Thời gian trả xe
-                                                        <span class="float-right">17:00-21:00 </span>
-                                                    </small>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 ml-auto mr-auto">
-                                            <strong>Địa điểm nhận xe</strong>
-                                            <h6>
-                                                <i class="dripicons-location"> <span
-                                                        id="address2"></span></i>
-                                            </h6>
-                                            <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
-                                                cụ
-                                                thể sẽ được hiển thị sau khi đặt cọc</small>
-                                        </div>
-                                        <div class="col-12 ml-auto mr-auto">
-                                            <strong>Giới hạn số km</strong><br>
-                                            <span>
-                                                    <small>
-                                                        Tối đa
-                                                    <strong>300</strong>
-                                                    km/ngày. Phí
-                                                    <strong>2K</strong>
-                                                    /km vượt giới hạn.
-                                                    </small>
-                                                </span>
-                                        </div>
-                                        <div class="col-12 ml-auto mr-auto">
-                                            <strong>Bảo hiểm</strong><br>
-                                            <span>
-                                                    <small>Chuyến đi được bảo hiểm bởi MIC Tìm hiểu thêm</small>
-                                                </span>
-                                        </div>
-                                        <div class="col-12 ml-auto mr-auto">
-                                            <strong>Chi tiết giá</strong><br>
-                                            Đơn giá thuê<i class="mdi mdi-information-outline"
-                                                           data-toggle="tooltip" data-placement="top"
-                                                           title=""
-                                                           data-html="true"
-                                                           data-original-title="<small>Giá thuê xe không bao gồm tiền xăng. Khi kết thúc chuyến đi, bạn sẽ đổ xăng về lại mức ban đầu như khi nhận xe.</small>"></i>
-                                            <span class="float-right">
-                                                    <span id="price_1_day" class="font-weight-bold"></span>/ ngày
-                                                </span>
-                                            <br>
-                                            Phí dịch vụ<i class="mdi mdi-information-outline"
-                                                          data-toggle="tooltip" data-placement="top" title=""
-                                                          data-container="body" data-animation="true"
-                                                          data-html="true"
-                                                          data-original-title="<small>Phí dịch vụ nhằm hỗ trợ KevinOTO duy trì nền tảng ứng dụng và các hoạt động chăm sóc khách hàng một cách tốt nhất.</small>"></i>
-                                            <span class="float-right">
-                                                    <span id="price_service" class="font-weight-bold"></span>/ ngày
-                                                </span>
-                                            <br>
-                                            Phí bảo hiểm<i class="mdi mdi-information-outline"
-                                                           data-toggle="tooltip" data-placement="top" title=""
-                                                           data-container="body" data-animation="true"
-                                                           data-html="true"
-                                                           data-original-title="<small>Chuyến đi của bạn được mua gói bảo hiểm vật chất xe ô tô từ nhà bảo hiểm MIC. Trường hơp có sự cố ngoài ý muốn (trong phạm vi bảo hiểm), số tiền bạn thanh toán tối đa là 2,000,000VND/vụ.</small>"></i>
-                                            <span class="float-right">
-                                                        <span id="price_insure" class="font-weight-bold"></span>/ ngày
-                                                    </span>
-                                            <hr/>
-                                            Tổng phí thuê xe
-                                            <span class="float-right font-weight-bold">
-                                                        <span id="price"></span> x <span id="total-date"></span> ngày
-                                                    </span>
-                                            <hr/>
-                                            <span class="font-weight-bold">
-                                                    Tổng cộng
-                                                    <span class="float-right">
-                                                        <span id="total-price-html"></span>đ
-                                                    </span>
-                                                </span>
-                                        </div>
-                                        <div class="col-12">
-                                            <form id="form-car-store" class="form-horizontal">
-                                                <input type="number" name="total_price" id="total-price"
-                                                       class="form-control"
-                                                       hidden>
-                                                <div class="text-center">
-                                                    <button class="btn btn-success">ĐẶT XE
-                                                    </button>
-                                                </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -614,188 +687,215 @@
                 </div>
             </div>
         </div>
-    </div>
-    @if (session('checkUser'))
-        <div id="info-alert-modal" class="modal fade show" tabindex="-1" role="dialog"
-             style="display: block; padding-right: 21px;" aria-modal="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-body p-4">
-                        <div class="text-center">
-                            <i class="dripicons-warning h3 text-warning"></i>
-                            <h4 class="mt-2"> {{session('checkUser')}} </h4>
-                            <form action="{{route('user.index')}}">
-                                <button type="submit" class="btn btn-sm btn-warning my-2" data-dismiss="modal">Điền
-                                    thông tin
-                                </button>
-                            </form>
+        @if (session('checkUser'))
+            <div id="info-alert-modal" class="modal fade show" tabindex="-1" role="dialog"
+                 style="display: block; padding-right: 21px;" aria-modal="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-body p-4">
+                            <div class="text-center">
+                                <i class="dripicons-warning h3 text-warning"></i>
+                                <h4 class="mt-2"> {{session('checkUser')}} </h4>
+                                <form action="{{route('user.index')}}">
+                                    <button type="submit" class="btn btn-sm btn-warning my-2" data-dismiss="modal">Điền
+                                        thông tin
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    @endif
-@endsection
-@push('js')
-    <script src="{{asset('js/jquery.validate.js')}}"></script>
-    <script src="{{asset('js/helper.js')}}"></script>
-    <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
-    <script src="{{asset('js/nouislider.js')}}"></script>
-    <script type="text/javascript">
-        function getDateDiff() {
-            let date_start = new Date($('#date_start').val());
-            let date_end = new Date($('#date_end').val());
-            let date_diff = new Date(date_end - date_start);
-            return date_diff / 1000 / 60 / 60 / 24;
-        }
-
-        function loadAddress() {
-            $("#select-address").select2();
-            let address = '<option selected value="">Tỉnh/TP</option>';
-            let selected = '';
-            @foreach ($addressCars as $each)
-                @if ($each === session()->get('filter_car.address'))
-                selected = 'selected';
-            @else
-                selected = '';
-            @endif
-                address += "<option " + selected + `>{{$each}}</option>`;
-
-            @endforeach
-            $("#select-address").append(address);
-        }
-
-        function setStartDateEnd() {
-            let setStartDateEnd = $('#date_start').val();
-            setStartDateEnd = setStartDateEnd.split("-");
-            setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
-            setStartDateEnd = setStartDateEnd.join("-");
-
-            $('#date_end').datepicker('setStartDate', setStartDateEnd);
-        }
-
-        function loadDate() {
-            const date_start = $('#date_start');
-
-            let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
-            date_start.datepicker('setStartDate', setStartDateStart);
-            setStartDateEnd();
-
-            $("#select-address").change(function () {
-                $("#form-list-car").submit();
-            });
-            $("#date_end").change(function () {
-                if ($(this).val()) {
-                    $("#form-list-car").submit();
+        @endif
+        @endsection
+        @push('js')
+            <script src="{{asset('js/jquery.validate.js')}}"></script>
+            <script src="{{asset('js/helper.js')}}"></script>
+            <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
+            <script src="{{asset('js/nouislider.js')}}"></script>
+            <script type="text/javascript">
+                function changeDateType(date) {
+                    let new_date = date.split('-');
+                    let day = new_date[0];
+                    let month = new_date[1];
+                    let year = new_date[2];
+                    return month + "/" + day + "/" + year;
                 }
-            });
-            date_start.on('change', function () {
-                const date_end = $('#date_end');
 
-                date_end.datepicker('setDate', '');
-                setStartDateEnd()
-                if (!date_end.val()) {
-                    date_end.change(function () {
+                function getDateDiff() {
+                    let date_start = changeDateType($("#date_start").val());
+                    let date_end = changeDateType($("#date_end").val());
+
+                    date_start = new Date(date_start);
+                    date_end = new Date(date_end);
+                    let date_diff = new Date(date_end - date_start);
+                    return date_diff / 1000 / 60 / 60 / 24;
+                }
+
+                function loadAddress() {
+                    $("#select-address").select2();
+                    let address = '<option selected value="">Tỉnh/TP</option>';
+                    let selected = '';
+                    @foreach ($addressCars as $each)
+                        @if ($each === session()->get('find_cars.address'))
+                        selected = 'selected';
+                    @else
+                        selected = '';
+                    @endif
+                        address += "<option " + selected + `>{{$each}}</option>`;
+
+                    @endforeach
+                    $("#select-address").append(address);
+                }
+
+                function setStartDateEnd() {
+                    let setStartDateEnd = $('#date_start').val();
+                    setStartDateEnd = setStartDateEnd.split("-");
+                    setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
+                    setStartDateEnd = setStartDateEnd.join("-");
+
+                    $('#date_end').datepicker('setStartDate', setStartDateEnd);
+                }
+
+                function loadDate() {
+                    const date_start = $('#date_start');
+
+                    let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
+                    date_start.datepicker('setStartDate', setStartDateStart);
+                    setStartDateEnd();
+
+                    $("#select-address").change(function () {
                         $("#form-list-car").submit();
-                    })
-                    console.log('1');
-                }
-            });
-        }
+                    });
+                    $("#date_end").change(function () {
+                        if ($(this).val()) {
+                            $("#form-list-car").submit();
+                        }
+                    });
+                    date_start.on('change', function () {
+                        const date_end = $('#date_end');
 
-        function carShow(carId) {
-            $.ajax({
-                url: '{{ route('api.cars.show') }}/' + carId,
-                type: 'GET',
-                dataType: 'JSON',
-                success: function (response) {
-                    $.each(response.data, function (index, each) {
-                        let image_url = "{{asset('storage/')}}" + '/' + each.image;
-                        let li, image;
-                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
-                        image = "<div class='carousel-item active'>" +
-                            "<img class='d-block img-fluid' src='" + image_url + "'>";
-                        $('.carousel-indicators').append(li);
-                        $('.carousel-inner').append(image);
-                        $("#price_1_day_title").html(each.price_1_day);
-                        $("#address2").html(each.address2);
-                        $("#slot").html(each.slot);
-                        $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
-                        $("#transmission").html(each.transmission ? "Số tự động" : "Số sàn");
-                        $("#fuel_comsumpiton").html(each.fuel_comsumpiton);
-                        $("#description").html(each.description);
-                        $("#price_1_day").html(each.price_1_day + " 000");
-                        $("#price_insure").html(each.price_insure);
-                        $("#price_service").html(each.price_service);
-                        let price = (each.price_1_day * 1000) + each.price_insure + each.price_service
-                        $("#price").html(price);
-                        $("#total-date").html(getDateDiff());
-                        $("#total-price-html").html(getDateDiff() * price);
-                        $("#total-price").val(getDateDiff() * price);
-                        if (each.files.length !== 0) {
-                            $.each(each.files, function (index, each) {
-                                index += 1;
-                                let image_url = "{{asset('storage/')}}" + '/' + each.link;
-                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
-                                image = "<div class='carousel-item'>" +
+                        date_end.datepicker('setDate', '');
+                        setStartDateEnd()
+                        if (!date_end.val()) {
+                            date_end.change(function () {
+                                $("#form-list-car").submit();
+                            })
+                            console.log('1');
+                        }
+                    });
+                }
+
+                function carShow(carId) {
+                    $.ajax({
+                        url: '{{ route('api.cars.show') }}/' + carId,
+                        type: 'GET',
+                        dataType: 'JSON',
+                        success: function (response) {
+                            $.each(response.data, function (index, each) {
+                                let image_url = "{{asset('storage/')}}" + '/' + each.image;
+                                let li, image;
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
+                                image = "<div class='carousel-item active'>" +
                                     "<img class='d-block img-fluid' src='" + image_url + "'>";
                                 $('.carousel-indicators').append(li);
                                 $('.carousel-inner').append(image);
+                                $("#price_1_day_title").html(each.price_1_day);
+                                $("#address2").html(each.address2);
+                                $("#slot").html(each.slot);
+                                $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
+                                $("#transmission").html(each.transmission ? '<span class="badge badge-info">Số tự động</span>' : '<span class="badge badge-dark">Số sàn</span>');
+                                $("#fuel_comsumpiton").html(each.fuel_comsumpiton);
+                                $("#description").html(each.description);
+                                $("#price_1_day").html(each.price_1_day + " 000");
+                                $("#price_insure").html(each.price_insure);
+                                $("#price_service").html(each.price_service);
+                                let price = (each.price_1_day * 1000) + each.price_insure + each.price_service;
+                                $("#price").html(price);
+                                $("#total-date").html(getDateDiff());
+                                let total_price = getDateDiff() * price;
+                                console.log(crawlPrice(total_price))
+                                $("#total-price-html").html(crawlPrice(total_price));
+                                $("#total-price").val(total_price);
+                                if (each.files.length !== 0) {
+                                    $.each(each.files, function (index, each) {
+                                        index += 1;
+                                        let image_url = "{{asset('storage/')}}" + '/' + each.link;
+                                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
+                                        image = "<div class='carousel-item'>" +
+                                            "<img class='d-block img-fluid' src='" + image_url + "'>";
+                                        $('.carousel-indicators').append(li);
+                                        $('.carousel-inner').append(image);
+                                    })
+                                } else {
+                                    notifyInfo('Xe này chưa có ảnh chi tiết');
+                                }
                             })
-                        } else {
-                            notifyInfo('Xe này chưa có ảnh chi tiết');
                         }
-                    })
+                    });
                 }
-            });
-        }
 
-        function modalEachCar(carId) {
-            let route = '{{route('user.bill.store')}}/' + carId;
-            $('#form-car-store').prop('action', route);
-            $('#form-car-store').prop('method', 'POST');
-            $('.carousel-indicators').empty();
-            $('.carousel-inner').empty();
-            carShow(carId);
-        }
-
-        $(document).ready(async function () {
-            loadAddress();
-            loadDate();
-
-            $("#modal-each-car").on('hide.bs.modal', function () {
-                $('#form-car-store').prop('action', '');
-                $('#form-car-store').prop('method', '');
-            });
-
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            const slider2 = document.getElementById('sliderDouble');
-            const minSalary = parseInt($("#input-min-salary").val());
-            const maxSalary = parseInt($("#input-max-salary").val());
-            noUiSlider.create(slider2, {
-                start: [minSalary, maxSalary],
-                connect: true,
-                step: 50,
-                range: {
-                    'min': [500 - 100],
-                    'max': [2000 + 500]
+                function modalEachCar(carId) {
+                    let route = '{{route('user.bill.store')}}/' + carId;
+                    $('#form-car-store').prop('action', route);
+                    $('#form-car-store').prop('method', 'POST');
+                    $('.carousel-indicators').empty();
+                    $('.carousel-inner').empty();
+                    carShow(carId);
                 }
-            });
-            let val;
-            slider2.noUiSlider.on('update', function (values, handle) {
-                val = Math.round(values[handle]);
-                if (handle) {
-                    $('#span-max-salary').text(val);
-                    $('#input-max-salary').val(val);
-                } else {
-                    $('#span-min-salary').text(val);
-                    $('#input-min-salary').val(val);
+
+                function crawlPrice(price) {
+                    return price.toLocaleString('vi', {style: 'currency', currency: 'VND'});
                 }
-            });
-        });
-    </script>
-@endpush
+
+                function findCarValidation() {
+                    let validation = '<ul>';
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $error)
+                        validation += `<li>{{ $error }}</li>`;
+                    @endforeach
+                        @endif
+                        validation += `</ul>`;
+                    notifyError(validation);
+                }
+
+                $(document).ready(async function () {
+                    loadAddress();
+                    loadDate();
+
+                    $("#modal-each-car").on('hide.bs.modal', function () {
+                        $('#form-car-store').prop('action', '');
+                        $('#form-car-store').prop('method', '');
+                    });
+                    console.log(crawlPrice(1000000));
+                });
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    const slider2 = document.getElementById('sliderDouble');
+                    const minSalary = parseInt($("#input-min-salary").val());
+                    const maxSalary = parseInt($("#input-max-salary").val());
+                    noUiSlider.create(slider2, {
+                        start: [minSalary, maxSalary],
+                        connect: true,
+                        step: 50,
+                        range: {
+                            'min': [500 - 100],
+                            'max': [2000 + 500]
+                        }
+                    });
+                    let val;
+                    slider2.noUiSlider.on('update', function (values, handle) {
+                        val = Math.round(values[handle]);
+                        if (handle) {
+                            $('#span-max-salary').text(val);
+                            $('#input-max-salary').val(val);
+                        } else {
+                            $('#span-min-salary').text(val);
+                            $('#input-min-salary').val(val);
+                        }
+                    });
+                });
+            </script>
+    @endpush
 

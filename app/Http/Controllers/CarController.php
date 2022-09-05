@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\CarStatusEnum;
 use App\Enums\FileTypeEnum;
 use App\Http\Requests\Car\CheckSlugRequest;
-use App\Http\Requests\Car\FindCarRequest;
 use App\Http\Requests\Car\GenerateSlugRequest;
 use App\Models\Car;
 use App\Models\File;

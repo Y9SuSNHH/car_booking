@@ -57,6 +57,5 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Car whereUpdatedAt($value)
  */
-	class Car extends \Eloquent {}
 }
 

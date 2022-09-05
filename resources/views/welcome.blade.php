@@ -12,7 +12,15 @@
                         <br>
                     </div>
                     <div class="col-md-8 ml-auto mr-auto">
-                        <div id="div-error" class="alert alert-danger d-none"></div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-md-10 ml-auto mr-auto">
                         <div class="card card-raised card-form-horizontal no-transition">
@@ -32,7 +40,7 @@
                                                        class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" placeholder="Ngày bắt đầu"
-                                                       value="{{ session()->get('filter_car.date_start') }}">
+                                                       value="{{ session()->get('find_cars.date_start') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -40,7 +48,7 @@
                                                 <input type="text" id="date_end" name="date_end" class="form-control"
                                                        data-provide="datepicker" data-date-format="dd-mm-yyyy"
                                                        data-date-autoclose="true" placeholder="Ngày kết thúc"
-                                                       value="{{ session()->get('filter_car.date_end') }}">
+                                                       value="{{ session()->get('find_cars.date_end') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -66,7 +74,7 @@
             let address = '<option selected value="">Tỉnh/TP</option>';
             let selected = '';
             @foreach ($addressCars as $each)
-                @if ($each === session()->get('filter_car.address'))
+                @if ($each === session()->get('find_cars.address'))
                 selected = 'selected';
             @else
                 selected = '';

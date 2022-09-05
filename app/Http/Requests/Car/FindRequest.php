@@ -4,7 +4,7 @@ namespace App\Http\Requests\Car;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FindCarRequest extends FormRequest
+class FindRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
