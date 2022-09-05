@@ -342,7 +342,7 @@
                     </div>
                     <div class="row">
                         <div class="float-right">
-                            {{$cars->links()}}
+                            {{$cars->appends(request()->query())->links()}}
                         </div>
                     </div>
                 </div>

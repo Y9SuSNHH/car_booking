@@ -35,7 +35,7 @@
                             <br>
                             <nav class="float-right">
                                 <ul class="pagination pagination-rounded mb-0">
-                                    {{$data->links()}}
+                                    {{$data->appends(request()->query())->links()}}
                                 </ul>
                             </nav>
                         </div>
