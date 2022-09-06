@@ -29,15 +29,19 @@ class BillController extends Controller
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function store(FindRequest $request, $carId)
+    public function store(Request $request, $carId): RedirectResponse
     {
         $checkUserIdentity   = (new File)->checkUserIdentity(auth()->user()->id);
         $checkUserLicenseCar = (new File)->checkUserLicenseCar(auth()->user()->id);
 
-        $date_start          = date('Y-m-d', strtotime(session()->get('filter_car.date_start')));
-        $date_end            = date('Y-m-d', strtotime(session()->get('filter_car.date_end')));
+        $date_start = date('Y-m-d', strtotime(session()->get('filter_car.date_start')));
+        $date_end   = date('Y-m-d', strtotime(session()->get('filter_car.date_end')));
 
-        if ($checkUserIdentity && $checkUserLicenseCar ) {
+        $user['phone']    = auth()->user()->phone;
+        $user['address']  = auth()->user()->address;
+        $user['address2'] = auth()->user()->address2;
+
+        if ($checkUserIdentity && $checkUserLicenseCar && !empty($user['phone']) && !empty($user['address']) && !empty($user['address2'])) {
             $bill = Bill::create([
                 "user_id"     => auth()->user()->id,
                 "car_id"      => $carId,
