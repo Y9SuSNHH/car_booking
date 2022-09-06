@@ -687,215 +687,215 @@
                 </div>
             </div>
         </div>
-        @if (session('checkUser'))
-            <div id="info-alert-modal" class="modal fade show" tabindex="-1" role="dialog"
-                 style="display: block; padding-right: 21px;" aria-modal="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-body p-4">
-                            <div class="text-center">
-                                <i class="dripicons-warning h3 text-warning"></i>
-                                <h4 class="mt-2"> {{session('checkUser')}} </h4>
-                                <form action="{{route('user.index')}}">
-                                    <button type="submit" class="btn btn-sm btn-warning my-2" data-dismiss="modal">Điền
-                                        thông tin
-                                    </button>
-                                </form>
-                            </div>
+    </div>
+    @if (session('checkUser'))
+        <div id="warning-alert-modal" class="modal fade show" tabindex="-1" role="dialog" aria-modal="true" style="display: block; padding-right: 21px;">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body p-4">
+                        <div class="text-center">
+                            <i class="dripicons-warning h3 text-warning"></i>
+                            <h4 class="mt-2"> {{session('checkUser')}} </h4>
+                            <form action="{{route('user.index')}}">
+                                <button type="submit" class="btn btn-sm btn-warning my-2" data-dismiss="modal">Điền
+                                    thông tin
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </div>
-            </div>
-        @endif
-        @endsection
-        @push('js')
-            <script src="{{asset('js/jquery.validate.js')}}"></script>
-            <script src="{{asset('js/helper.js')}}"></script>
-            <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
-            <script src="{{asset('js/nouislider.js')}}"></script>
-            <script type="text/javascript">
-                function changeDateType(date) {
-                    let new_date = date.split('-');
-                    let day = new_date[0];
-                    let month = new_date[1];
-                    let year = new_date[2];
-                    return month + "/" + day + "/" + year;
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    @endif
+@endsection
+@push('js')
+    <script src="{{asset('js/jquery.validate.js')}}"></script>
+    <script src="{{asset('js/helper.js')}}"></script>
+    <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
+    <script src="{{asset('js/nouislider.js')}}"></script>
+    <script type="text/javascript">
+        function changeDateType(date) {
+            let new_date = date.split('-');
+            let day = new_date[0];
+            let month = new_date[1];
+            let year = new_date[2];
+            return month + "/" + day + "/" + year;
+        }
+
+        function getDateDiff() {
+            let date_start = changeDateType($("#date_start").val());
+            let date_end = changeDateType($("#date_end").val());
+
+            date_start = new Date(date_start);
+            date_end = new Date(date_end);
+            let date_diff = new Date(date_end - date_start);
+            return date_diff / 1000 / 60 / 60 / 24;
+        }
+
+        function loadAddress() {
+            $("#select-address").select2();
+            let address = '<option selected value="">Tỉnh/TP</option>';
+            let selected = '';
+            @foreach ($addressCars as $each)
+                @if ($each === session()->get('find_cars.address'))
+                selected = 'selected';
+            @else
+                selected = '';
+            @endif
+                address += "<option " + selected + `>{{$each}}</option>`;
+
+            @endforeach
+            $("#select-address").append(address);
+        }
+
+        function setStartDateEnd() {
+            let setStartDateEnd = $('#date_start').val();
+            setStartDateEnd = setStartDateEnd.split("-");
+            setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
+            setStartDateEnd = setStartDateEnd.join("-");
+
+            $('#date_end').datepicker('setStartDate', setStartDateEnd);
+        }
+
+        function loadDate() {
+            const date_start = $('#date_start');
+
+            let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
+            date_start.datepicker('setStartDate', setStartDateStart);
+            setStartDateEnd();
+
+            $("#select-address").change(function () {
+                $("#form-list-car").submit();
+            });
+            $("#date_end").change(function () {
+                if ($(this).val()) {
+                    $("#form-list-car").submit();
                 }
+            });
+            date_start.on('change', function () {
+                const date_end = $('#date_end');
 
-                function getDateDiff() {
-                    let date_start = changeDateType($("#date_start").val());
-                    let date_end = changeDateType($("#date_end").val());
-
-                    date_start = new Date(date_start);
-                    date_end = new Date(date_end);
-                    let date_diff = new Date(date_end - date_start);
-                    return date_diff / 1000 / 60 / 60 / 24;
-                }
-
-                function loadAddress() {
-                    $("#select-address").select2();
-                    let address = '<option selected value="">Tỉnh/TP</option>';
-                    let selected = '';
-                    @foreach ($addressCars as $each)
-                        @if ($each === session()->get('find_cars.address'))
-                        selected = 'selected';
-                    @else
-                        selected = '';
-                    @endif
-                        address += "<option " + selected + `>{{$each}}</option>`;
-
-                    @endforeach
-                    $("#select-address").append(address);
-                }
-
-                function setStartDateEnd() {
-                    let setStartDateEnd = $('#date_start').val();
-                    setStartDateEnd = setStartDateEnd.split("-");
-                    setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
-                    setStartDateEnd = setStartDateEnd.join("-");
-
-                    $('#date_end').datepicker('setStartDate', setStartDateEnd);
-                }
-
-                function loadDate() {
-                    const date_start = $('#date_start');
-
-                    let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
-                    date_start.datepicker('setStartDate', setStartDateStart);
-                    setStartDateEnd();
-
-                    $("#select-address").change(function () {
+                date_end.datepicker('setDate', '');
+                setStartDateEnd()
+                if (!date_end.val()) {
+                    date_end.change(function () {
                         $("#form-list-car").submit();
-                    });
-                    $("#date_end").change(function () {
-                        if ($(this).val()) {
-                            $("#form-list-car").submit();
-                        }
-                    });
-                    date_start.on('change', function () {
-                        const date_end = $('#date_end');
-
-                        date_end.datepicker('setDate', '');
-                        setStartDateEnd()
-                        if (!date_end.val()) {
-                            date_end.change(function () {
-                                $("#form-list-car").submit();
-                            })
-                            console.log('1');
-                        }
-                    });
+                    })
+                    console.log('1');
                 }
+            });
+        }
 
-                function carShow(carId) {
-                    $.ajax({
-                        url: '{{ route('api.cars.show') }}/' + carId,
-                        type: 'GET',
-                        dataType: 'JSON',
-                        success: function (response) {
-                            $.each(response.data, function (index, each) {
-                                let image_url = "{{asset('storage/')}}" + '/' + each.image;
-                                let li, image;
-                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
-                                image = "<div class='carousel-item active'>" +
+        function carShow(carId) {
+            $.ajax({
+                url: '{{ route('api.cars.show') }}/' + carId,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (response) {
+                    $.each(response.data, function (index, each) {
+                        let image_url = "{{asset('storage/')}}" + '/' + each.image;
+                        let li, image;
+                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
+                        image = "<div class='carousel-item active'>" +
+                            "<img class='d-block img-fluid' src='" + image_url + "'>";
+                        $('.carousel-indicators').append(li);
+                        $('.carousel-inner').append(image);
+                        $("#price_1_day_title").html(each.price_1_day);
+                        $("#address2").html(each.address2);
+                        $("#slot").html(each.slot);
+                        $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
+                        $("#transmission").html(each.transmission ? '<span class="badge badge-info">Số tự động</span>' : '<span class="badge badge-dark">Số sàn</span>');
+                        $("#fuel_comsumpiton").html(each.fuel_comsumpiton);
+                        $("#description").html(each.description);
+                        $("#price_1_day").html(each.price_1_day + " 000");
+                        $("#price_insure").html(each.price_insure);
+                        $("#price_service").html(each.price_service);
+                        let price = (each.price_1_day * 1000) + each.price_insure + each.price_service;
+                        $("#price").html(price);
+                        $("#total-date").html(getDateDiff());
+                        let total_price = getDateDiff() * price;
+                        console.log(crawlPrice(total_price))
+                        $("#total-price-html").html(crawlPrice(total_price));
+                        $("#total-price").val(total_price);
+                        if (each.files.length !== 0) {
+                            $.each(each.files, function (index, each) {
+                                index += 1;
+                                let image_url = "{{asset('storage/')}}" + '/' + each.link;
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
+                                image = "<div class='carousel-item'>" +
                                     "<img class='d-block img-fluid' src='" + image_url + "'>";
                                 $('.carousel-indicators').append(li);
                                 $('.carousel-inner').append(image);
-                                $("#price_1_day_title").html(each.price_1_day);
-                                $("#address2").html(each.address2);
-                                $("#slot").html(each.slot);
-                                $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
-                                $("#transmission").html(each.transmission ? '<span class="badge badge-info">Số tự động</span>' : '<span class="badge badge-dark">Số sàn</span>');
-                                $("#fuel_comsumpiton").html(each.fuel_comsumpiton);
-                                $("#description").html(each.description);
-                                $("#price_1_day").html(each.price_1_day + " 000");
-                                $("#price_insure").html(each.price_insure);
-                                $("#price_service").html(each.price_service);
-                                let price = (each.price_1_day * 1000) + each.price_insure + each.price_service;
-                                $("#price").html(price);
-                                $("#total-date").html(getDateDiff());
-                                let total_price = getDateDiff() * price;
-                                console.log(crawlPrice(total_price))
-                                $("#total-price-html").html(crawlPrice(total_price));
-                                $("#total-price").val(total_price);
-                                if (each.files.length !== 0) {
-                                    $.each(each.files, function (index, each) {
-                                        index += 1;
-                                        let image_url = "{{asset('storage/')}}" + '/' + each.link;
-                                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
-                                        image = "<div class='carousel-item'>" +
-                                            "<img class='d-block img-fluid' src='" + image_url + "'>";
-                                        $('.carousel-indicators').append(li);
-                                        $('.carousel-inner').append(image);
-                                    })
-                                } else {
-                                    notifyInfo('Xe này chưa có ảnh chi tiết');
-                                }
                             })
-                        }
-                    });
-                }
-
-                function modalEachCar(carId) {
-                    let route = '{{route('user.bill.store')}}/' + carId;
-                    $('#form-car-store').prop('action', route);
-                    $('#form-car-store').prop('method', 'POST');
-                    $('.carousel-indicators').empty();
-                    $('.carousel-inner').empty();
-                    carShow(carId);
-                }
-
-                function crawlPrice(price) {
-                    return price.toLocaleString('vi', {style: 'currency', currency: 'VND'});
-                }
-
-                function findCarValidation() {
-                    let validation = '<ul>';
-                    @if ($errors->any())
-                        @foreach ($errors->all() as $error)
-                        validation += `<li>{{ $error }}</li>`;
-                    @endforeach
-                        @endif
-                        validation += `</ul>`;
-                    notifyError(validation);
-                }
-
-                $(document).ready(async function () {
-                    loadAddress();
-                    loadDate();
-
-                    $("#modal-each-car").on('hide.bs.modal', function () {
-                        $('#form-car-store').prop('action', '');
-                        $('#form-car-store').prop('method', '');
-                    });
-                    console.log(crawlPrice(1000000));
-                });
-            </script>
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    const slider2 = document.getElementById('sliderDouble');
-                    const minSalary = parseInt($("#input-min-salary").val());
-                    const maxSalary = parseInt($("#input-max-salary").val());
-                    noUiSlider.create(slider2, {
-                        start: [minSalary, maxSalary],
-                        connect: true,
-                        step: 50,
-                        range: {
-                            'min': [500 - 100],
-                            'max': [2000 + 500]
-                        }
-                    });
-                    let val;
-                    slider2.noUiSlider.on('update', function (values, handle) {
-                        val = Math.round(values[handle]);
-                        if (handle) {
-                            $('#span-max-salary').text(val);
-                            $('#input-max-salary').val(val);
                         } else {
-                            $('#span-min-salary').text(val);
-                            $('#input-min-salary').val(val);
+                            notifyInfo('Xe này chưa có ảnh chi tiết');
                         }
-                    });
-                });
-            </script>
-    @endpush
+                    })
+                }
+            });
+        }
+
+        function modalEachCar(carId) {
+            let route = '{{route('user.bill.store')}}/' + carId;
+            $('#form-car-store').prop('action', route);
+            $('#form-car-store').prop('method', 'POST');
+            $('.carousel-indicators').empty();
+            $('.carousel-inner').empty();
+            carShow(carId);
+        }
+
+        function crawlPrice(price) {
+            return price.toLocaleString('vi', {style: 'currency', currency: 'VND'});
+        }
+
+        function findCarValidation() {
+            let validation = '<ul>';
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                validation += `<li>{{ $error }}</li>`;
+            @endforeach
+                @endif
+                validation += `</ul>`;
+            notifyError(validation);
+        }
+
+        $(document).ready(async function () {
+            loadAddress();
+            loadDate();
+
+            $("#modal-each-car").on('hide.bs.modal', function () {
+                $('#form-car-store').prop('action', '');
+                $('#form-car-store').prop('method', '');
+            });
+            console.log(crawlPrice(1000000));
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const slider2 = document.getElementById('sliderDouble');
+            const minSalary = parseInt($("#input-min-salary").val());
+            const maxSalary = parseInt($("#input-max-salary").val());
+            noUiSlider.create(slider2, {
+                start: [minSalary, maxSalary],
+                connect: true,
+                step: 50,
+                range: {
+                    'min': [500 - 100],
+                    'max': [2000 + 500]
+                }
+            });
+            let val;
+            slider2.noUiSlider.on('update', function (values, handle) {
+                val = Math.round(values[handle]);
+                if (handle) {
+                    $('#span-max-salary').text(val);
+                    $('#input-max-salary').val(val);
+                } else {
+                    $('#span-min-salary').text(val);
+                    $('#input-min-salary').val(val);
+                }
+            });
+        });
+    </script>
+@endpush
 

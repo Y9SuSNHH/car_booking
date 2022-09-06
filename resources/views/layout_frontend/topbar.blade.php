@@ -13,22 +13,21 @@
             </button>
         </div>
         <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route('welcome')}}" data-scroll="true">Trang chủ</a>
-                </li>
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#pablo">
-                        About Us
+                    <a class="nav-link" href="tel:19001900">
+                        <i class="uil uil-phone-volume"></i>
+                        19001900
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#pablo">
-                        Contact Us
+                <li class="nav-item active">
+                    <a class="nav-link" href="mailto:contact@kevinoto.com">
+                        <i class="uil uil-envelope-upload"></i>
+                        contact@kevinoto.com
                     </a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="navbar-nav ml-auto">
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="javascript:void(0)"
