@@ -38,11 +38,11 @@
                                 <label for="type">Loại xe</label>
                                 <select name="type" id="type" class="form-control select-filter">
                                     @foreach($types as $key => $value)
-                                        <option value="{{ $value }}"
+                                        <option value="{{ $key }}"
                                                 @if ($loop->first)
                                                     selected
                                             @endif>
-                                            {{ $key}}
+                                            {{ $value}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -80,11 +80,11 @@
                                 <label for="car-status">Trạng thái</label>
                                 <select class="form-control select-filter" name="status" id="car-status">
                                     @foreach($status as $key => $value)
-                                        <option value="{{ $value }}"
+                                        <option value="{{ $key }}"
                                                 @if ($loop->first)
                                                     selected
                                             @endif>
-                                            {{ $key}}
+                                            {{ $value}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -122,11 +122,11 @@
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="price_insure">Phí bảo hiểm(x1000đ)</label>
+                                    <label for="price_insure">Phí bảo hiểm</label>
                                     <input type="number" name="price_insure" id="price_insure" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="price_service">Phí dịch vụ(x1000đ)</label>
+                                    <label for="price_service">Phí dịch vụ</label>
                                     <input type="number" name="price_service" id="price_service" class="form-control">
                                 </div>
                                 <div class="form-group float-right">

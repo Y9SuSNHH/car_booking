@@ -11,28 +11,28 @@ use BenSampo\Enum\Enum;
  */
 final class CarTypeEnum extends Enum
 {
-    public const MINI = 1;
-    public const SEDAN = 2;
-    public const HATCHBACK = 3;
-    public const LOW_GROUND = 4;
+    public const MINI        = 1;
+    public const SEDAN       = 2;
+    public const HATCHBACK   = 3;
+    public const LOW_GROUND  = 4;
     public const HIGH_GROUND = 5;
-    public const TRUCK = 6;
+    public const TRUCK       = 6;
 
-    public static function getArrayView():array
+    public static function getArrayView(): array
     {
         return [
-            'Mini' => self::MINI,
-            'Sedan' => self::SEDAN,
-            'Hatchback' => self::HATCHBACK,
-            'Gầm thấp' => self::LOW_GROUND,
-            'Gầm cao' => self::HIGH_GROUND,
-            'Bán tải' => self::TRUCK,
+            self::MINI        => 'Mini',
+            self::SEDAN       => 'Sedan',
+            self::HATCHBACK   => 'Hatchback',
+            self::LOW_GROUND  => 'Gầm thấp',
+            self::HIGH_GROUND => 'Gầm cao',
+            self::TRUCK       => 'Bán tải',
         ];
     }
 
 
-    public static function getKeyByValue($value)
+    public static function getValueByKey($key)
     {
-        return array_search($value, self::getArrayView(),true);
+        return self::getArrayView()[$key];
     }
 }

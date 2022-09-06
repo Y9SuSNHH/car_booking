@@ -30,10 +30,10 @@
                                 <label for="type">Loại xe</label>
                                 <select name="type" id="type" class="form-control select-filter">
                                     @foreach($types as $key => $value)
-                                        <option value="{{ $value }}"
-                                                @if ($value===$each->type)
+                                        <option value="{{ $key }}"
+                                                @if ($key===$each->type)
                                                     selected
-                                            @endif>{{ $key}}</option>
+                                            @endif>{{ $value}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -90,11 +90,11 @@
                                 <label for="car-status">Trạng thái</label>
                                 <select class="form-control select-filter" name="status" id="car-status">
                                     @foreach($status as $key => $value)
-                                        <option value="{{ $value }}"
-                                                @if ($value === $each->status)
+                                        <option value="{{ $key }}"
+                                                @if ($key === $each->status)
                                                     selected
                                             @endif>
-                                            {{ $key}}
+                                            {{ $value}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -128,12 +128,13 @@
                                 <div class="form-group">
                                     <label for="description">Mô tả</label>
                                     <textarea class="form-control" placeholder="Nhập mô tả ở đây.."
-                                              name="description" id="description" style="height: 300px;">{{$each->description}}</textarea>
+                                              name="description" id="description"
+                                              style="height: 300px;">{{$each->description}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group col-4">
                                 <div class="form-group">
-                                    <label for="price_1_day">Giá thuê 1 ngày</label>
+                                    <label for="price_1_day">Giá thuê 1 ngày(x1000đ)</label>
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control"
                                            value="{{$each->price_1_day}}">
                                 </div>

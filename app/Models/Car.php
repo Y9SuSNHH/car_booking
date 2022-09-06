@@ -112,7 +112,7 @@ class Car extends Model
 
     public function getTypeNameAttribute(): bool|int|string
     {
-        return CarTypeEnum::getKeyByValue($this->type);
+        return CarTypeEnum::getValueByKey($this->type);
     }
 
     public function files(): HasMany
