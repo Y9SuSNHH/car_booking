@@ -54,7 +54,10 @@ class File extends Model
     {
         $checkUserIdentity = self::query()->where('table', FileTableEnum::USERS)
             ->where('table_id', $userId)
-            ->where('type', FileTypeEnum::IDENTITY)
+            ->whereIn('type', [
+                FileTypeEnum::IDENTITY_FRONT,
+                FileTypeEnum::IDENTITY_BACK,
+            ])
             ->count();
         return $checkUserIdentity === 2;
     }
@@ -63,7 +66,10 @@ class File extends Model
     {
         $checkUserLicenseCar = self::query()->where('table', FileTableEnum::USERS)
             ->where('table_id', $userId)
-            ->where('type', FileTypeEnum::LICENSE_CAR)
+            ->whereIn('type', [
+                FileTypeEnum::LICENSE_CAR_FRONT,
+                FileTypeEnum::LICENSE_CAR_BACK,
+            ])
             ->count();
         return $checkUserLicenseCar === 2;
     }

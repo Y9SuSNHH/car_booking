@@ -9,4 +9,6 @@ Route::get('/', function() {
 })->name('welcome');
 
 Route::get('/index', [UserController::class, 'index'])->name('index');
+Route::get('/edit', [UserController::class, 'edit'])->name('edit');
+Route::put('/edit', [UserController::class, 'update'])->name('update');
 Route::post('/bill/create/{carId?}', [BillController::class, 'store'])->name('bill.store');
