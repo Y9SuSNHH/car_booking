@@ -53,7 +53,7 @@ class AuthController extends Controller
             $role = strtolower(UserRoleEnum::getKey($user->role));
             return redirect()->route("$role.welcome");
         }
-        return redirect()->route('welcome');
+        return redirect()->route('signup');
     }
 
     public function processSignIn(Request $request): RedirectResponse
