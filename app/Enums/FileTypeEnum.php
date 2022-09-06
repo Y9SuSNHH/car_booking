@@ -11,8 +11,10 @@ use BenSampo\Enum\Enum;
  */
 final class FileTypeEnum extends Enum
 {
-    public const IDENTITY = 1;
-    public const LICENSE_CAR = 2;
-    public const CAR_IMAGE = 3;
-    public const BILL_IMAGE = 4;
+    public const IDENTITY_FRONT    = 1;
+    public const IDENTITY_BACK     = 2;
+    public const LICENSE_CAR_FRONT = 3;
+    public const LICENSE_CAR_BACK  = 4;
+    public const CAR_IMAGE         = 5;
+    public const BILL_IMAGE        = 6;
 }
