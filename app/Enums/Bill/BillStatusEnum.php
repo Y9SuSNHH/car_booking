@@ -22,6 +22,7 @@ final class BillStatusEnum extends Enum
             self::PENDING  => 'Đặt xe',
             self::ACCEPTED => 'Đã giao xe',
             self::DONE     => 'Hoàn thành',
+            self::EXPIRES  => 'Quá hạn trả xe',
         ];
     }
 

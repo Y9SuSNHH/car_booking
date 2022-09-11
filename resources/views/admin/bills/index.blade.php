@@ -38,7 +38,7 @@
                                         <i class="mdi mdi-circle text-warning"></i> Đặt xe
                                     </div>
                                     <div class="col-6">
-                                        <i class="mdi mdi-circle text-info"></i> Đã giao xe
+                                        <i class="mdi mdi-circle text-primary"></i> Đã giao xe
                                     </div>
                                     <div class="col-6">
                                         <i class="mdi mdi-circle text-success"></i> Hoàn thành
@@ -90,18 +90,20 @@
                                             </td>
                                             <td>
                                                 {{$each->car->name}}
+                                                <br>
+                                                {{$each->car->address2}} - {{$each->car->address}}
                                             </td>
                                             <td>
-                                                {{date('d-m-Y', strtotime($each->date_start))}}
+                                                <span class="badge badge-info">{{date('d-m-Y', strtotime($each->date_start))}}</span>
                                                 <br>
-                                                {{date('d-m-Y', strtotime($each->date_end))}}
+                                                <span class="badge badge-info">{{date('d-m-Y', strtotime($each->date_end))}}</span>
                                             </td>
                                             <td>
                                                 {{ number_format($each->total_price) }} đ
                                             </td>
                                             <td>
                                                 <i class="mdi mdi-circle text-{{$each->GenerateStatus}}"></i>
-{{--                                                {{$each->StatusName}}--}}
+                                                {{--                                                {{$each->StatusName}}--}}
                                             </td>
                                             <td class="table-action">
                                                 {{--                                                {{ route("admin.$table.show", $each)}}--}}

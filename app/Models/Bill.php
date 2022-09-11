@@ -74,20 +74,17 @@ class Bill extends Model
 
     public function staffStart(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'staff_start', 'id')
-            ->select('id', 'name', 'gender');
+        return $this->belongsTo(User::class, 'staff_start', 'id');
     }
 
     public function staffEnd(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'staff_end', 'id')
-            ->select('id', 'name', 'gender');
+        return $this->belongsTo(User::class, 'staff_end', 'id');
     }
 
     public function car(): BelongsTo
     {
-        return $this->belongsTo(Car::class)
-            ->select('id', 'name');
+        return $this->belongsTo(Car::class);
     }
 
     public function getStatusNameAttribute(): bool|int|string
@@ -113,7 +110,7 @@ class Bill extends Model
             $statusIcon = 'warning';
         }
         if ($status === BillStatusEnum::ACCEPTED) {
-            $statusIcon = 'info';
+            $statusIcon = 'primary';
         }
         if ($status === BillStatusEnum::DONE) {
             $statusIcon = 'success';

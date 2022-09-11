@@ -8,7 +8,7 @@
                     <h4 class="modal-title" id="mySmallModalLabel">Tìm xe</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <form action="{{route('api.cars.find')}}" class="form-group"
+                <form action="{{route('admin.cars.index')}}" class="form-group"
                       id="form-list-car">
                     <div class="modal-body">
                         <div class="row">
@@ -41,7 +41,7 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{asset('js/jquery.validate.js')}}"></script>
+{{--    <script src="{{asset('js/jquery.validate.js')}}"></script>--}}
     <script type="text/javascript">
         function conditionalDateEnd() {
             let setStartDate = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
@@ -70,30 +70,30 @@
             loadAddress();
             conditionalDateEnd();
 
-            $("#form-list-car").validate({
-                submitHandler: function (form) {
-                    $.ajax({
-                        url: $(form).attr('action'),
-                        type: 'GET',
-                        dataType: 'json',
-                        data: $(form).serialize(),
-                        success: function () {
-                            window.location = "{{route('admin.cars.index')}}" + '?' + $(form).serialize();
-                        },
-                        error: function (response) {
-                            const errors = Object.values(response.responseJSON.errors);
-                            let string = '<ul>';
-                            errors.forEach(function (each) {
-                                each.forEach(function (error) {
-                                    string += `<li>${error}</li>`;
-                                });
-                            });
-                            string += '</ul>';
-                            notifyError(string);
-                        },
-                    });
-                }
-            });
+            {{--$("#form-list-car").validate({--}}
+            {{--    submitHandler: function (form) {--}}
+            {{--        $.ajax({--}}
+            {{--            url: $(form).attr('action'),--}}
+            {{--            type: 'GET',--}}
+            {{--            dataType: 'json',--}}
+            {{--            data: $(form).serialize(),--}}
+            {{--            success: function () {--}}
+            {{--                window.location = "{{route('admin.cars.index')}}" + '?' + $(form).serialize();--}}
+            {{--            },--}}
+            {{--            error: function (response) {--}}
+            {{--                const errors = Object.values(response.responseJSON.errors);--}}
+            {{--                let string = '<ul>';--}}
+            {{--                errors.forEach(function (each) {--}}
+            {{--                    each.forEach(function (error) {--}}
+            {{--                        string += `<li>${error}</li>`;--}}
+            {{--                    });--}}
+            {{--                });--}}
+            {{--                string += '</ul>';--}}
+            {{--                notifyError(string);--}}
+            {{--            },--}}
+            {{--        });--}}
+            {{--    }--}}
+            {{--});--}}
         });
     </script>
 @endpush
