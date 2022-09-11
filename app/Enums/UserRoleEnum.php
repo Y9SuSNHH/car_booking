@@ -13,19 +13,19 @@ final class UserRoleEnum extends Enum
 {
     public const ADMIN = 0;
     public const STAFF = 1;
-    public const USER = 2;
+    public const USER  = 2;
 
-    public static function getArrayView():array
+    public static function getArrayView(): array
     {
         return [
-            'Quản lý' => self::ADMIN,
-            'Nhân viên' => self::STAFF,
-            'Khách hàng' => self::USER,
+            self::ADMIN => 'Quản lý',
+            self::STAFF => 'Nhân viên',
+            self::USER  => 'Khách hàng',
         ];
     }
 
-    public static function getKeyByValue($value)
+    public static function getValueByKey($key): string
     {
-        return array_search($value, self::getArrayView(),true);
+        return self::getArrayView()[$key];
     }
 }

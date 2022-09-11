@@ -41,16 +41,20 @@ class UserController extends Controller
         if (!empty($selectedAddress2) && $selectedAddress2 !== 'All') {
             $query->where('address2', $selectedAddress2);
         }
-        $query->with(['files' => function($q) {
-            $q->whereIn('type', [
-                FileTypeEnum::getValue('IDENTITY'),
-                FileTypeEnum::getValue('LICENSE_CAR'),
-            ]);
-        }]);
+        $query->with([
+            'files' => function ($q) {
+                $q->whereIn('type', [
+                    FileTypeEnum::IDENTITY_FRONT,
+                    FileTypeEnum::IDENTITY_BACK,
+                    FileTypeEnum::LICENSE_CAR_FRONT,
+                    FileTypeEnum::LICENSE_CAR_BACK,
+                ]);
+            }
+        ]);
 
-        $data      = $query->paginate();
+        $data = $query->paginate();
 
-        $roles     = UserRoleEnum::getArrayView();
+        $roles = UserRoleEnum::getArrayView();
 
         $positions = $this->model->clone()
             ->distinct()

@@ -81,7 +81,7 @@ class User extends Model implements AuthenticatableContract
 
     public function getRoleNameAttribute(): bool|int|string
     {
-        return UserRoleEnum::getKeyByValue($this->role);
+        return UserRoleEnum::getValueByKey($this->role);
     }
 
     public function getGenderNameAttribute(): string
