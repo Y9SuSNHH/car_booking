@@ -107,7 +107,7 @@
                                                 <span class="badge badge-success">{{$each->price_1_day}} K</span>
                                                 <br>
                                                 <span
-                                                    class="badge badge-secondary">{{$each->price_insure}} - {{$each->price_service}}</span>
+                                                    class="badge badge-secondary">{{$each->price_insure}}đ - {{$each->price_service}}đ</span>
                                                 <br>
                                                 <span
                                                     class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>

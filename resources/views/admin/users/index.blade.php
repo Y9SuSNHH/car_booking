@@ -9,11 +9,11 @@
                             <label for="role" class="col-form-label">Role</label>
                             <select class="form-control select-filter" name="role" id="role">
                                 <option selected value="All">Tất cả</option>
-                                @foreach($roles as $role => $value)
-                                    <option value="{{ $value }}"
-                                            @if((string)$value === $selectedRole) selected @endif
+                                @foreach($roles as $key => $value)
+                                    <option value="{{ $key }}"
+                                            @if((string)$key === $selectedRole) selected @endif
                                     >
-                                        {{ $role }}
+                                        {{ $value }}
                                     </option>
                                 @endforeach
                             </select>
@@ -48,11 +48,11 @@
                     </form>
                 </div>
                 <div class="card-body">
-                    <div class="header-title">
-                        <div class="form-group col-md-2">
-                            <a href="{{ route("admin.$table.create") }}" class="btn btn-success">Thêm</a>
-                        </div>
-                    </div>
+{{--                    <div class="header-title">--}}
+{{--                        <div class="form-group col-md-2">--}}
+{{--                            <a href="{{ route("admin.$table.create") }}" class="btn btn-success">Thêm</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="tab-content">
                         <table class="table table-striped table-centered mb-0">
                             <thead>
@@ -99,8 +99,8 @@
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td>{{$each->address}}</td>
                                     <td>{{$each->address2}}</td>
+                                    <td>{{$each->address}}</td>
                                     <td>{{$each->RoleName}}</td>
                                     <td class="table-action">
                                         <a href="{{ route("admin.$table.show", $each)}}" class="action-icon"> <i
@@ -128,7 +128,7 @@
                 <div class="card-footer">
                     <nav class="float-right">
                         <ul class="pagination pagination-rounded mb-0">
-                            {{$data->links()}}
+                            {{$data->appends(request()->query())->links()}}
                         </ul>
                     </nav>
                 </div>
