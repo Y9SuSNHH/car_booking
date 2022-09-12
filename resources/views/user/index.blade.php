@@ -8,7 +8,7 @@
 @endpush
 @section('content')
     <div class="page-header page-header-small"
-         style="background-image: url('{{asset('storage/configs/icon-256x256.png')}}');">
+         style="background-image: url('https://images.unsplash.com/photo-1486310662856-32058c639c65?dpr=2&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop=');">
         <div class="filter"></div>
     </div>
     <div class="profile-content section">
@@ -18,7 +18,7 @@
                     <div class="profile-picture">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <div class="fileinput-new img-no-padding text-center">
-                                <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
+                                <img src="{{asset('storage/configs/icon-256x256.png')}}"
                                      alt="...">
                             </div>
                             <div class="name">

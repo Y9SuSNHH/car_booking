@@ -114,11 +114,11 @@
                                                     <br><br><br>
                                                     <div class="col-md-9">
                                                         <div class="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" id="genderNam" name="gender"
-                                                                   class="custom-control-input"
-                                                                   value="1" checked>
-                                                            <label class="custom-control-label"
-                                                                   for="genderNam">Nam</label>
+                                                                <input type="radio" id="genderNam" name="gender"
+                                                                       class="custom-control-input"
+                                                                       value="1" checked>
+                                                                <label class="custom-control-label"
+                                                                       for="genderNam">Nam</label>
                                                         </div>
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input type="radio" id="genderNữ" name="gender"
