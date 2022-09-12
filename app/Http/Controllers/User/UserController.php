@@ -19,17 +19,18 @@ class UserController extends Controller
 
     public function index(): Factory|View|Application
     {
-        $data = File::query()
-            ->select('type', 'link', 'status')
-            ->where('table', FileTableEnum::USERS)
-            ->where('table_id', auth()->user()->id)
-            ->whereIn('type', [
-                FileTypeEnum::IDENTITY_FRONT,
-                FileTypeEnum::IDENTITY_BACK,
-                FileTypeEnum::LICENSE_CAR_FRONT,
-                FileTypeEnum::LICENSE_CAR_BACK,
-            ])->get();
-        $user = (new \App\Models\User)->handleAccountInfo($data);
+        $query = User::query()->where('id', auth()->user()->id);
+        $query->with([
+            'files' => function ($q) {
+                $q->whereIn('type', [
+                    FileTypeEnum::IDENTITY_FRONT,
+                    FileTypeEnum::IDENTITY_BACK,
+                    FileTypeEnum::LICENSE_CAR_FRONT,
+                    FileTypeEnum::LICENSE_CAR_BACK,
+                ]);
+            }
+        ]);
+        $user = $query->get();
         return view("$this->role.index", [
             'user' => $user,
         ]);
@@ -39,6 +40,7 @@ class UserController extends Controller
     {
         return 'edit';
     }
+
     public function update()
     {
         return 'update';

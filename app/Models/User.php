@@ -95,6 +95,50 @@ class User extends Model implements AuthenticatableContract
             ->where('files.table', FileTableEnum::getValue(strtoupper($this->getTable())));
     }
 
+    public function getFileIdentityAttribute(): string
+    {
+        $status = 0;
+        foreach ($this->files as $file) {
+            if ($file->type === FileTypeEnum::IDENTITY_FRONT || $file->type === FileTypeEnum::IDENTITY_BACK) {
+                if ($file->status === FileStatusEnum::APPROVED) {
+                    ++$status;
+                }
+                if ($file->status === FileStatusEnum::PENDING) {
+                    --$status;
+                }
+            }
+        }
+        if ($status === 2) {
+            return 'success';
+        }
+        if ($status === -2) {
+            return 'warning';
+        }
+        return 'danger';
+    }
+
+    public function getFileLicenseCarAttribute(): string
+    {
+        $status = 0;
+        foreach ($this->files as $file) {
+            if ($file->type === FileTypeEnum::LICENSE_CAR_FRONT || $file->type === FileTypeEnum::LICENSE_CAR_BACK) {
+                if ($file->status === FileStatusEnum::APPROVED) {
+                    ++$status;
+                }
+                if ($file->status === FileStatusEnum::PENDING) {
+                    --$status;
+                }
+            }
+        }
+        if ($status === 2) {
+            return 'success';
+        }
+        if ($status === -2) {
+            return 'warning';
+        }
+        return 'danger';
+    }
+
     public function handleAccountInfo($data): array
     {
         $user['identity']['link']    = [];

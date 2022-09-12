@@ -48,11 +48,22 @@
                     </form>
                 </div>
                 <div class="card-body">
-{{--                    <div class="header-title">--}}
-{{--                        <div class="form-group col-md-2">--}}
-{{--                            <a href="{{ route("admin.$table.create") }}" class="btn btn-success">Thêm</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                    <div class="header-title">
+                        <div class="row text-lowercase">
+                            <div class="col-md-2">
+                                <i class="mdi mdi-circle text-danger"></i>
+                                {{\App\Enums\FileStatusEnum::getValueByKey(\App\Enums\FileStatusEnum::NO_PHOTO)}}
+                            </div>
+                            <div class="col-md-2">
+                                <i class="mdi mdi-circle text-warning"></i>
+                                {{\App\Enums\FileStatusEnum::getValueByKey(\App\Enums\FileStatusEnum::PENDING)}}
+                            </div>
+                            <div class="col-md-2">
+                                <i class="mdi mdi-circle text-success"></i>
+                                {{\App\Enums\FileStatusEnum::getValueByKey(\App\Enums\FileStatusEnum::APPROVED)}}
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-content">
                         <table class="table table-striped table-centered mb-0">
                             <thead>
@@ -84,20 +95,10 @@
                                         </a>
                                     </td>
                                     <td>
-                                        @foreach($each->files as $file)
-                                            @if($file->type === 0)
-                                                <img src="{{$file->link}}" class="img-fluid img-thumbnail p-2"
-                                                     style="max-width: 80px;" alt="CMND">
-                                            @endif
-                                        @endforeach
+                                        <i class="mdi mdi-circle text-{{$each->FileIdentity}}"></i>
                                     </td>
                                     <td>
-                                        @foreach($each->files as $file)
-                                            @if($file->type === 1)
-                                                <img src="{{$file->link}}" class="img-fluid img-thumbnail p-2"
-                                                     style="max-width: 80px;" alt="GPLX">
-                                            @endif
-                                        @endforeach
+                                        <i class="mdi mdi-circle text-{{$each->FileLicenseCar}}"></i>
                                     </td>
                                     <td>{{$each->address2}}</td>
                                     <td>{{$each->address}}</td>
