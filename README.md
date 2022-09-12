@@ -41,24 +41,21 @@
     + Ngày bắt đầu
     + Ngày kết thúc
     + Tổng tiền
-    + Trạng thái: đã thanh toán, chưa thanh toán
+    + Trạng thái: đặt xe, giao xe, quá hạn trả xe, đã thanh toán
 
 **[⬆ Về mục lục](#mục-lục)**
 
 ### Người dùng
 - Đăng nhập, đăng kí
 - Quản lý thông tin cá nhân
-    + id
-    + name
-    + giới tính
+    + Tên
+    + Giới tính
     + email 
     + địa chỉ
-    + ảnh
     + tài khoản
     + mật khẩu
-    + role(0.Người dùng, 1.Nhân viên, 2. Quản lý) 
-    + Thêm cmt dòng 60
-    + Thêm cmt dòng 61
-
+- Quản lý hóa đơn
+    + Chi tiết hóa đơn
+    + Lịch sử thuê xe
 
 **[⬆ Về mục lục](#mục-lục)**
