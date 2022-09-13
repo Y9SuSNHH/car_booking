@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top nav-down navbar-transparent">
+<nav class="navbar navbar-expand-lg fixed-top nav-down">
     <div class="container">
         <div class="navbar-translate">
             <div class="navbar-header">

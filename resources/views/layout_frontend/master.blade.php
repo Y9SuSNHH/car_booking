@@ -27,7 +27,6 @@
 <!-- Navbar -->
 @include('layout_frontend.topbar')
 <!-- End Navbar -->
-
 <!-- Content -->
 <div class="wrapper">
     @yield('content')

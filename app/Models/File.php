@@ -7,6 +7,7 @@ use App\Enums\FileTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\File
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|File whereTableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUpdatedAt($value)
+ * @method static create(array $array)
  * @mixin \Eloquent
  */
 class File extends Model
@@ -72,5 +74,29 @@ class File extends Model
             ])
             ->count();
         return $checkUserLicenseCar === 2;
+    }
+
+    public function updateOrCreate($table, $table_id, $type, $value): void
+    {
+        $file = self::query()->clone()
+            ->where('table', $table)
+            ->where('table_id', $table_id)
+            ->where('type', $type)
+            ->first();
+        $link = Storage::disk('public')->putFile('users', $value);
+        if ($file === null) {
+            self::query()->create([
+                'table'    => $table,
+                'table_id' => $table_id,
+                'type'     => $type,
+                'link'     => $link,
+            ]);
+        } else {
+            self::query()
+                ->where('table', $table)
+                ->where('table_id', $table_id)
+                ->where('type', $type)
+                ->update(['link' => $link]);
+        }
     }
 }

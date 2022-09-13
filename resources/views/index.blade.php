@@ -1,9 +1,5 @@
 @extends('layout_frontend.master')
 @section('content')
-    <div class="page-header page-header-xs settings-background"
-         style="background-image: url('https://images.unsplash.com/photo-1486310662856-32058c639c65?dpr=2&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop=');">
-        <div class="filter"></div>
-    </div>
     <div class="section section-blog">
         <div class="container">
             <h3 class="section-title">Xe bạn đã tìm kiếm</h3>

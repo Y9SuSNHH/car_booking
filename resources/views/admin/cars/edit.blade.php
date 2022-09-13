@@ -171,9 +171,15 @@
             const path = $("#select-address option:selected").data('path');
             const response = await fetch('{{ asset('locations/') }}' + path);
             const address2 = await response.json();
+            const district = "{{$each->address2}}";
             $.each(address2.district, function (index, each) {
+                let selected = '';
+                let select = each.pre+' '+ each.name;
+                if (district === select) {
+                    selected = 'selected';
+                }
                 $("#select-address2").append(`
-                        <option>
+                        <option ${selected}>
                             ${each.pre} ${each.name}
                         </option>`);
             })
@@ -256,9 +262,14 @@
             $("#select-address").select2();
             const response = await fetch('{{asset('locations/index.json')}}');
             const address = await response.json();
+            const city = "{{$each->address}}";
             $.each(address, function (index, each) {
+                let selected = '';
+                if (city === index) {
+                    selected = 'selected';
+                }
                 $("#select-address").append(`
-                <option value='${index}' data-path='${each.file_path}'>
+                <option value='${index}' data-path='${each.file_path}' ${selected}>
                     ${index}
                 </option>`);
             })

@@ -7,104 +7,98 @@
     </style>
 @endpush
 @section('content')
-    <div class="page-header page-header-small"
-         style="background-image: url('https://images.unsplash.com/photo-1486310662856-32058c639c65?dpr=2&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop=');">
-        <div class="filter"></div>
-    </div>
     <div class="profile-content section">
         <div class="container">
-            @foreach($user as $each)
-                <div class="row">
-                    <div class="profile-picture">
-                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <div class="fileinput-new img-no-padding text-center">
-                                <img src="{{asset('storage/configs/icon-256x256.png')}}"
-                                     alt="...">
-                            </div>
-                            <div class="name">
-                                <h4 class="title text-center font-weight-bold">
-                                    {{auth()->user()->name}}
+            <div class="row">
+                <div class="profile-picture">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <div class="fileinput-new img-no-padding text-center">
+                            <img src="{{asset('storage/configs/icon-256x256.png')}}"
+                                 alt="...">
+                        </div>
+                        <div class="name">
+                            <h4 class="title text-center font-weight-bold">
+                                {{$user->name}}
+                                <br>
+                                <small>
+                                    Giới tính: {{$user->gender ? 'Nam' : 'Nữ'}}
                                     <br>
-                                    <small>
-                                        Giới tính: {{auth()->user()->gender ? 'Nam' : 'Nữ'}}
-                                        <br>
-                                        Địa chỉ : {{auth()->user()->address2}} - {{auth()->user()->address}}
-                                        @if(!empty(auth()->user()->address) && !empty(auth()->user()->address))
-                                            <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                               data-placement="top" title="Chưa điền đủ địa chỉ"></i>
-                                        @endif
-                                        <br>
-                                        Số điện thoại: {{auth()->user()->phone}}
-                                        @if(empty(auth()->user()->phone))
-                                            <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                               data-placement="top" title="Chưa điền sđt"></i>
-                                        @endif
-                                        <br>
-                                        Ngày thêm: {{date('d-m-Y', strtotime(auth()->user()->created_at))}}
-                                        <br>
-                                        <a href="{{route("user.edit")}}"
-                                           class="btn btn-just-icon btn-border btn-twitter">
-                                            <i class="mdi mdi-account-edit mdi-18px p-0"></i>
-                                        </a>
-                                    </small>
-                                </h4>
-                            </div>
+                                    Địa chỉ : {{$user->address2}} - {{$user->address}}
+                                    @if(empty($user->address2) || empty($user->address))
+                                        <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
+                                           data-placement="top" title="Chưa điền đủ địa chỉ"></i>
+                                    @endif
+                                    <br>
+                                    Số điện thoại: {{$user->phone}}
+                                    @if(empty($user->phone))
+                                        <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
+                                           data-placement="top" title="Chưa điền sđt"></i>
+                                    @endif
+                                    <br>
+                                    Ngày thêm: {{date('d-m-Y', strtotime($user->created_at))}}
+                                    <br>
+                                    <a href="{{route("user.edit")}}"
+                                       class="btn btn-just-icon btn-border btn-twitter">
+                                        <i class="mdi mdi-account-edit mdi-18px p-0"></i>
+                                    </a>
+                                </small>
+                            </h4>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="col-md-8 ml-auto mr-auto text-center">
-                                <h4 class="title font-weight-bold">CCCD
-                                    <i class="mdi mdi-eye-outline" id="identity"></i>
-                                    @if($each->FileIdentity !== 'success')
-                                        <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                           data-placement="top" title="CCCD chưa điền/duyệt"></i>
-                                    @endif
-                                </h4>
-                            </div>
-                            <div class="row">
-                                @foreach ($each->files as $file)
-                                    @if($file->type === App\Enums\FileTypeEnum::IDENTITY_FRONT || $file->type === App\Enums\FileTypeEnum::IDENTITY_BACK)
-                                        <div class="col-md-6">
-                                            <div class="card popImage" data-background="image"
-                                                 style="background-image: url('{{asset('storage/users/').'/'. $file->link}}')">
-                                                <div class="card-body">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="col-md-8 ml-auto mr-auto text-center">
+                            <h4 class="title font-weight-bold">CCCD
+                                <i class="mdi mdi-eye-outline" id="identity"></i>
+                                @if($user->FileIdentity !== 'success')
+                                    <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
+                                       data-placement="top" title="CCCD chưa điền/duyệt"></i>
+                                @endif
+                            </h4>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="col-md-8 ml-auto mr-auto text-center">
-                                <h4 class="title font-weight-bold">GPLX
-                                    <i class="mdi mdi-eye-outline" id="license-car"></i>
-                                    @if($each->FileLicenseCar !== 'success')
-                                        <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                           data-placement="top" title="GPLX chưa điền/duyệt"></i>
-                                    @endif
-                                </h4>
-                            </div>
-                            <div class="row">
-                                @foreach ($each->files as $file)
-                                    @if($file->type === App\Enums\FileTypeEnum::LICENSE_CAR_FRONT || $file->type === App\Enums\FileTypeEnum::LICENSE_CAR_BACK)
-                                        <div class="col-md-6">
-                                            <div class="card popImage" data-background="image"
-                                                 style="background-image: url('{{asset('storage/users').'/'. $file->link}}')">
-                                                <div class="card-body">
-                                                </div>
+                        <div class="row">
+                            @foreach ($user->files as $file)
+                                @if($file->type === App\Enums\FileTypeEnum::IDENTITY_FRONT || $file->type === App\Enums\FileTypeEnum::IDENTITY_BACK)
+                                    <div class="col-md-6">
+                                        <div class="card popImage" data-background="image"
+                                             style="background-image: url('{{asset('storage/users/').'/'. $file->link}}')">
+                                            <div class="card-body">
                                             </div>
                                         </div>
-                                    @endif
-                                @endforeach
-                            </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="col-md-8 ml-auto mr-auto text-center">
+                            <h4 class="title font-weight-bold">GPLX
+                                <i class="mdi mdi-eye-outline" id="license-car"></i>
+                                @if($user->FileLicenseCar !== 'success')
+                                    <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
+                                       data-placement="top" title="GPLX chưa điền/duyệt"></i>
+                                @endif
+                            </h4>
+                        </div>
+                        <div class="row">
+                            @foreach ($user->files as $file)
+                                @if($file->type === App\Enums\FileTypeEnum::LICENSE_CAR_FRONT || $file->type === App\Enums\FileTypeEnum::LICENSE_CAR_BACK)
+                                    <div class="col-md-6">
+                                        <div class="card popImage" data-background="image"
+                                             style="background-image: url('{{asset('storage/users').'/'. $file->link}}')">
+                                            <div class="card-body">
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
     <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -120,20 +114,3 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('body').addClass('profile');
-            $(function () {
-                $('.popImage').on('click', function () {
-                    // bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
-                    let bg = $(this).css("background-image")
-                    // bg = bg.replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '')
-                    console.log(bg);
-                    // $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-                    // $('#imagemodal').modal('show');
-                });
-            });
-        });
-    </script>
-@endpush

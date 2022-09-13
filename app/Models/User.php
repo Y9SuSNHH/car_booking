@@ -138,41 +138,4 @@ class User extends Model implements AuthenticatableContract
         }
         return 'danger';
     }
-
-    public function handleAccountInfo($data): array
-    {
-        $user['identity']['link']    = [];
-        $user['license_car']['link'] = [];
-        $statusIdentity              = 0;
-        $statusLicenseCar            = 0;
-        foreach ($data as $each) {
-            if ($each->type === FileTypeEnum::IDENTITY_FRONT) {
-                $user['identity']['link'] += ['IDENTITY_FRONT' => $each->link];
-                if ($each->status === FileStatusEnum::APPROVED) {
-                    ++$statusIdentity;
-                }
-            }
-            if ($each->type === FileTypeEnum::IDENTITY_BACK) {
-                $user['identity']['link'] += ['IDENTITY_BACK' => $each->link];
-                if ($each->status === FileStatusEnum::APPROVED) {
-                    ++$statusIdentity;
-                }
-            }
-            if ($each->type === FileTypeEnum::LICENSE_CAR_FRONT) {
-                $user['license_car']['link'] += ['LICENSE_CAR_FRONT' => $each->link];
-                if ($each->status === FileStatusEnum::APPROVED) {
-                    ++$statusLicenseCar;
-                }
-            }
-            if ($each->type === FileTypeEnum::LICENSE_CAR_BACK) {
-                $user['license_car']['link'] += ['LICENSE_CAR_BACK' => $each->link];
-                if ($each->status === FileStatusEnum::APPROVED) {
-                    ++$statusLicenseCar;
-                }
-            }
-        }
-        $user['identity']    += ['status' => $statusIdentity];
-        $user['license_car'] += ['status' => $statusLicenseCar];
-        return $user;
-    }
 }
