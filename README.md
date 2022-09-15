@@ -4,7 +4,7 @@
 
 Đề 13: Phân tích web cho thuê xe ô tô tự lái
 <br>
-[![Sơ đồ thực thể](https://app.diagrams.net/images/favicon-32x32.png)]()
+[![Sơ đồ thực thể](https://app.diagrams.net/images/favicon-32x32.png)](https://drive.google.com/file/d/1sGJ4iG9lcO-YTX5RExofoyXiDpdB6mDd/view?usp=sharing)
 [![Cơ sở dữ liệu](https://i.ibb.co/S7KTZxP/google-sheets-1.png)](https://docs.google.com/spreadsheets/d/1JPa9-RjSs1IyNPLrPkSbb_lR1A0kiczO_1OpqVTdpzw/edit?usp=sharing)
 
 - Đối tượng sử dụng
