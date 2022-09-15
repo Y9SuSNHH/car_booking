@@ -15,7 +15,7 @@ class AlterColumnTotalPriceInBillsTable extends Migration
     {
         if (Schema::hasColumn('bills', 'total_price')) {
             Schema::table('bills', function(Blueprint $table) {
-                $table->string('total_price')->change();
+                $table->bigInteger('total_price')->change();
             });
         }
     }

@@ -15,20 +15,20 @@ class CreateCarsTable extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('image')->nullable();
+            $table->string('name');
+            $table->string('image');
             $table->string('address');
             $table->string('address2');
-            $table->integer('type')->nullable();
-            $table->integer('slot')->nullable();
-            $table->boolean('transmission')->nullable();
-            $table->boolean('fuel')->nullable();
-            $table->integer('fuel_comsumpiton')->nullable();
+            $table->smallInteger('type');
+            $table->smallInteger('slot');
+            $table->boolean('transmission');
+            $table->boolean('fuel');
+            $table->integer('fuel_comsumpiton');
             $table->text('description')->nullable();
-            $table->float('price_1_day')->nullable();
-            $table->float('price_insure')->nullable();
-            $table->float('price_service')->nullable();
-            $table->boolean('status');
+            $table->bigInteger('price_1_day');
+            $table->bigInteger('price_insure');
+            $table->bigInteger('price_service');
+            $table->smallInteger('status');
             $table->string('slug')->unique();
             $table->timestamps();
             $table->softDeletes();

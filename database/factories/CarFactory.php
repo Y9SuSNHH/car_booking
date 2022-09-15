@@ -16,7 +16,7 @@ class CarFactory extends Factory
     public function definition()
     {
         return [
-            'name'             => $this->faker->unique()->company,
+            'name'             => $this->faker->company,
             'image'            => $this->faker->imageUrl(),
             'address'          => $this->faker->city,
             'address2'         => $this->faker->streetName,
