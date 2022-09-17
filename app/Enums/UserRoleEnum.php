@@ -11,15 +11,13 @@ use BenSampo\Enum\Enum;
  */
 final class UserRoleEnum extends Enum
 {
-    public const ADMIN = 0;
-    public const STAFF = 1;
+    public const ADMIN = 1;
     public const USER  = 2;
 
     public static function getArrayView(): array
     {
         return [
             self::ADMIN => 'Quản lý',
-            self::STAFF => 'Nhân viên',
             self::USER  => 'Khách hàng',
         ];
     }

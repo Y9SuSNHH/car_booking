@@ -29,12 +29,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $query            = $this->model->clone()->latest();
-        $selectedRole     = $request->get('role');
         $selectedAddress  = $request->get('address');
         $selectedAddress2 = $request->get('address2');
-        if (isset($selectedRole) && $selectedRole !== 'All') {
-            $query->where('role', $selectedRole);
-        }
+        $query->where('role', UserRoleEnum::USER);
         if (!empty($selectedAddress) && $selectedAddress !== 'All') {
             $query->where('address', $selectedAddress);
         }
@@ -54,8 +51,6 @@ class UserController extends Controller
 
         $data = $query->paginate();
 
-        $roles = UserRoleEnum::getArrayView();
-
         $positions = $this->model->clone()
             ->distinct()
             ->pluck('address');
@@ -67,8 +62,6 @@ class UserController extends Controller
 
         return view("$this->role.$this->table.index", [
             'data'             => $data,
-            'roles'            => $roles,
-            'selectedRole'     => $selectedRole,
             'selectedAddress'  => $selectedAddress,
             'positions'        => $positions,
             'selectedAddress2' => $selectedAddress2,
