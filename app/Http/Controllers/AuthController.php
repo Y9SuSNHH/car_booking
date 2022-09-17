@@ -53,7 +53,7 @@ class AuthController extends Controller
             $role = strtolower(UserRoleEnum::getKey($user->role));
             return redirect()->route("$role.welcome");
         }
-        return redirect()->route('signup');
+        return redirect()->route('welcome');
     }
 
     public function processSignIn(Request $request): RedirectResponse
@@ -69,7 +69,7 @@ class AuthController extends Controller
             $role = strtolower(UserRoleEnum::getKey($user->role));
             return redirect()->route("$role.welcome");
         } catch (Throwable $e) {
-            return redirect()->route('signin')->with('failed', 'Sai tài khoản hoặc mật khẩu');
+            return redirect()->route('signin')->with('failed', 'Tài khoản không đúng');
         }
     }
 
