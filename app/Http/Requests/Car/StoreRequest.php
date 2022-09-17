@@ -40,11 +40,10 @@ class StoreRequest extends FormRequest
             ],
             'address'          => [
                 'required',
-                'nullable',
                 'string',
             ],
             'address2'         => [
-                'nullable',
+                'required',
                 'string',
             ],
             'description'      => [
