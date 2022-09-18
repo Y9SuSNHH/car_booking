@@ -129,20 +129,15 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="javascript: void(0);" class="action-icon"> <i
-                                                        class="mdi mdi-eye"></i></a>
                                                 <a href="{{route("admin.cars.edit",$each->id)}}" class='action-icon'><i
                                                         class='mdi mdi-pencil'></i></a>
-                                                @if(auth()->user()->role === \App\Enums\UserRoleEnum::ADMIN)
-                                                    <form action="{{route("admin.cars.destroy",$each->id)}}"
-                                                          method="post"
-                                                          class="action-icon" style="margin: 0px;padding: 0px;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-link action-icon"><i
-                                                                class='mdi mdi-delete'></i></button>
-                                                    </form>
-                                                @endif
+                                                <form action="{{route("admin.cars.destroy",$each->id)}}" method="post"
+                                                      class="action-icon" style="margin: 0px;padding: 0px;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-link action-icon"><i
+                                                            class='mdi mdi-delete'></i></button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -151,6 +146,275 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-each-car" tabindex="-1" role="dialog"
+         aria-labelledby="scrollableModalTitle"
+         aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="modal-dialog modal-lg float-right" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div id="carouselExampleIndicators" class="carousel slide"
+                                                 data-ride="carousel">
+                                                <ol class="carousel-indicators">
+                                                </ol>
+                                                <div class="carousel-inner" role="listbox">
+                                                </div>
+                                                <a class="carousel-control-prev"
+                                                   href="#carouselExampleIndicators"
+                                                   role="button" data-slide="prev">
+                                                                    <span class="carousel-control-prev-icon"
+                                                                          aria-hidden="true"></span>
+                                                    <span class="sr-only">Sau</span>
+                                                </a>
+                                                <a class="carousel-control-next"
+                                                   href="#carouselExampleIndicators"
+                                                   role="button" data-slide="next">
+                                                                    <span class="carousel-control-next-icon"
+                                                                          aria-hidden="true"></span>
+                                                    <span class="sr-only">Trước</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="info-car--desc">
+                                                <div class="group"><span
+                                                        class="lstitle-new">ĐẶC ĐIỂM</span>
+                                                    <div class="ctn-desc-new">
+                                                        <ul class="features">
+                                                            <li><i class="ic ic-chair"></i> Số ghế: 5
+                                                            </li>
+                                                            <li><i class="ic ic-trans"></i> Truyền động:
+                                                                Số tự động
+                                                            </li>
+                                                            <li><i class="ic ic-diesel"></i> Nhiên liệu:
+                                                                Xăng
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="group"><span
+                                                        class="lstitle-new">MÔ TẢ</span>
+                                                    <div class="ctn-desc-new"><pre>-Xe đẹp được kiểm tra bảo dưỡng định kỳ 5.000km tại hãng KIA nhằm đảm bảo an toàn nhất cho khách hàng ..
+-Kia Cerato Fulloption rộng rãi (phân khúcC), sạch sẽ, nội thất  mới, lót sàn 6D, đầy đủ Camera hành trình, Cam lùi, dẫn đường, Sạc điện thoại ko dây...
+-Rửa xe sạch sẽ khi giao khách. Rất hân hạnh được phục vụ.</pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="modal-dialog modal-sm float-left">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="rent-box rent-car" id="booking-sidebar">
+                                                <div class="price"><h3>739K <span> / ngày</span></h3>
+                                                </div>
+                                                <div class="line-form has-timer"><label class="label">Ngày
+                                                        nhận xe</label>
+                                                    <div class="wrap-input has-dropdown date">
+                                                        <div
+                                                            class="react-bootstrap-daterangepicker-container"
+                                                            style="display: inline-block;"><span
+                                                                class="value">15/08/2022</span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="line-form has-timer"><label class="label">Ngày
+                                                        trả xe</label>
+                                                    <div class="wrap-input has-dropdown date">
+                                                        <div
+                                                            class="react-bootstrap-daterangepicker-container"
+                                                            style="display: inline-block;"><span
+                                                                class="value">16/08/2022</span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="line-form notice-form note"><p
+                                                        class="d-flex-between">Thời gian
+                                                        nhận xe <span>06:00-22:00 </span>
+                                                    </p>
+                                                    <p class="d-flex-between">Thời gian trả xe <span>18:00-21:00</span>
+                                                    </p>
+                                                </div>
+                                                <div class="line-form local"><label>Địa điểm giao nhận
+                                                        xe</label>
+                                                    <div class="note">
+                                                        <p class="pickup">
+                                                            <svg class="icsvg" viewBox="0 0 24 24"
+                                                                 style="fill: none;">
+                                                                <path
+                                                                    d="m12 22.5c5.799 0 10.5-4.701 10.5-10.5 0-5.799-4.701-10.5-10.5-10.5-5.799 0-10.5 4.701-10.5 10.5 0 5.799 4.701 10.5 10.5 10.5zm0 1.5c6.6274 0 12-5.3726 12-12 0-6.6274-5.3726-12-12-12-6.6274 0-12 5.3726-12 12 0 6.6274 5.3726 12 12 12z"
+                                                                    clip-rule="evenodd" fill="#141414"
+                                                                    fill-rule="evenodd"></path>
+                                                                <path
+                                                                    d="m7.5 10.494c0-2.4778 2.0187-4.4937 4.5-4.4937 2.4813 0 4.5 2.0159 4.5 4.4937 0 1.2789-0.7204 2.918-2.1412 4.8719-1.0399 1.4301-2.0635 2.484-2.1066 2.5281-0.0662 0.068-0.1572 0.1063-0.2522 0.1063s-0.186-0.0383-0.2522-0.1063c-0.0431-0.0442-1.0667-1.098-2.1066-2.5281-1.4208-1.9539-2.1412-3.593-2.1412-4.8719zm4.5095 1.5064c0.9955 0 1.8025-0.8059 1.8025-1.8 0-0.99411-0.807-1.8-1.8025-1.8s-1.8025 0.80589-1.8025 1.8c0 0.9941 0.807 1.8 1.8025 1.8z"
+                                                                    clip-rule="evenodd" fill="#141414"
+                                                                    fill-rule="evenodd"></path>
+                                                            </svg>
+                                                            Quận 10, Hồ Chí Minh
+                                                        </p>
+                                                        <p class="subnote">
+                                                            <span> Không hỗ trợ giao nhận xe tận nơi. </span>
+                                                            Địa chỉ cụ thể
+                                                            sẽ được hiển thị sau khi đặt cọc</p></div>
+                                                </div>
+                                                <div class="line-form local"><label>Giới hạn số km
+                                                        <div class="tooltip"><i
+                                                                class="ic ic-question-mark"></i>
+                                                            <div class="tooltip-text">Nếu bạn thuê xe
+                                                                nhiều hơn 1 ngày: Giới
+                                                                hạn số km =
+                                                                Giới hạn 1 ngày x Tổng số ngày đi
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                    <div class="note">
+                                                        <div class="note"><p>Tối đa <strong>350</strong>
+                                                                km/ngày. Phí
+                                                                <strong>5K</strong>/km
+                                                                vượt giới hạn.</p></div>
+                                                    </div>
+                                                </div>
+                                                <div class="line-form local">
+                                                    <div class="note insurance"><label>Bảo hiểm </label>
+                                                        <p><a><i class="ic ic-act-insurance"></i>Chuyến
+                                                                đi được bảo hiểm bởi
+                                                                MIC<span
+                                                                    class="link-trip font-13"> Tìm hiểu thêm</span></a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="car-bill"><h4 class="text-center">Chi tiết
+                                                        giá</h4>
+                                                    <div class="bill-wrap">
+                                                        <div class="group"><p>Đơn giá thuê
+                                                            <div class="tooltip"><i
+                                                                    class="ic ic-question-mark"></i>
+                                                                <div class="tooltip-text">Giá thuê xe
+                                                                    không bao gồm tiền
+                                                                    xăng. Khi kết thúc
+                                                                    chuyến đi, bạn sẽ đổ xăng về lại mức
+                                                                    ban đầu như khi
+                                                                    nhận xe.
+                                                                </div>
+                                                            </div>
+                                                            </p><span><span>739 000 / ngày</span></span>
+                                                        </div>
+                                                        <div class="group">
+                                                            <div>Phí dịch vụ
+                                                                <div class="tooltip"><i
+                                                                        class="ic ic-question-mark"></i>
+                                                                    <div class="tooltip-text">Phí dịch
+                                                                        vụ nhằm hỗ trợ Mioto
+                                                                        duy trì nền tảng
+                                                                        ứng dụng và các hoạt động chăm
+                                                                        sóc khách hàng một
+                                                                        cách tốt nhất.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span><span>62 815 / ngày</span></span>
+                                                        </div>
+                                                        <div class="group">
+                                                            <div>Phí bảo hiểm
+                                                                <div class="tooltip"><i
+                                                                        class="ic ic-question-mark"></i>
+                                                                    <div class="tooltip-text">Chuyến đi
+                                                                        của bạn được mua gói
+                                                                        bảo hiểm vật
+                                                                        chất xe ô tô từ nhà bảo hiểm
+                                                                        MIC. Trường hơp có sự
+                                                                        cố ngoài ý muốn
+                                                                        (trong phạm vi bảo hiểm), số
+                                                                        tiền bạn thanh toán tối
+                                                                        đa là
+                                                                        2,000,000VND/vụ.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span><span>62 815 / ngày</span></span>
+                                                        </div>
+                                                        <div class="group has-line"><p>Tổng phí thuê
+                                                                xe</p>
+                                                            <span><span>864 630</span> x <strong>1 ngày</strong></span>
+                                                        </div>
+                                                        <div class="group has-line"><p><strong>Tổng
+                                                                    cộng</strong></p>
+                                                            <span><strong><span>864 630đ</span></strong></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="space m"></div>
+                                                    <div class="promotion-code d-flex"><a
+                                                            class="title-new"><h4
+                                                                class="lstitle-new">Mã
+                                                                khuyến mãi</h4></a></div>
+                                                    <div class="space m"></div>
+                                                    <div class="space m"></div>
+                                                    <div class="wrap-btn"><a
+                                                            class="btn btn-primary btn--m"><i
+                                                                class="ic ic-thunderbolt-wh"></i>ĐẶT XE</a>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="daterangepicker dropdown-menu ltr show-calendar openscenter">
+                                                    <div class="calendar left">
+                                                        <div class="daterangepicker_input hidden"><input
+                                                                class="input-mini form-control"
+                                                                type="text"
+                                                                name="daterangepicker_start"
+                                                                value=""><i
+                                                                class="fa fa-calendar glyphicon glyphicon-calendar"></i>
+                                                            <div class="calendar-time">
+                                                                <div></div>
+                                                                <i class="fa fa-clock-o glyphicon glyphicon-time"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="calendar-table"></div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="daterangepicker dropdown-menu ltr show-calendar openscenter">
+                                                    <div class="calendar left">
+                                                        <div class="daterangepicker_input hidden"><input
+                                                                class="input-mini form-control"
+                                                                type="text"
+                                                                name="daterangepicker_start"
+                                                                value=""><i
+                                                                class="fa fa-calendar glyphicon glyphicon-calendar"></i>
+                                                            <div class="calendar-time">
+                                                                <div></div>
+                                                                <i class="fa fa-clock-o glyphicon glyphicon-time"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="calendar-table"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
                 </div>
             </div>
         </div>
@@ -326,6 +590,21 @@
             @endforeach
             $("#select-name").append(name);
         }
+
+        {{--function loadStatus() {--}}
+        {{--    $("#select-status").select2();--}}
+        {{--    let status = '<option selected value="All">Tất cả</option>';--}}
+        {{--    let selected = '';--}}
+        {{--    @foreach($status as $key => $value)--}}
+        {{--        @if($key === $search['filter']['status'])--}}
+        {{--        selected = 'selected';--}}
+        {{--    @else--}}
+        {{--        selected = '';--}}
+        {{--    @endif--}}
+        {{--        status += `<option value='{{$key}}' ` + selected + `>{{$value}}</option>`;--}}
+        {{--    @endforeach--}}
+        {{--    $("#select-status").append(status);--}}
+        {{--}--}}
 
         function filter() {
             $(".select-filter").change(function () {

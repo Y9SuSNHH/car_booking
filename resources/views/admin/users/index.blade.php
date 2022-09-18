@@ -5,19 +5,19 @@
             <div class="card">
                 <div class="card-header">
                     <form class="form-horizontal form-inline" id="form-filter">
-{{--                        <div class="form-group col-md-4">--}}
-{{--                            <label for="role" class="col-form-label">Role</label>--}}
-{{--                            <select class="form-control select-filter" name="role" id="role">--}}
-{{--                                <option selected value="All">Tất cả</option>--}}
-{{--                                @foreach($roles as $key => $value)--}}
-{{--                                    <option value="{{ $key }}"--}}
-{{--                                            @if((string)$key === $selectedRole) selected @endif--}}
-{{--                                    >--}}
-{{--                                        {{ $value }}--}}
-{{--                                    </option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
+                        {{--                        <div class="form-group col-md-4">--}}
+                        {{--                            <label for="role" class="col-form-label">Role</label>--}}
+                        {{--                            <select class="form-control select-filter" name="role" id="role">--}}
+                        {{--                                <option selected value="All">Tất cả</option>--}}
+                        {{--                                @foreach($roles as $key => $value)--}}
+                        {{--                                    <option value="{{ $key }}"--}}
+                        {{--                                            @if((string)$key === $selectedRole) selected @endif--}}
+                        {{--                                    >--}}
+                        {{--                                        {{ $value }}--}}
+                        {{--                                    </option>--}}
+                        {{--                                @endforeach--}}
+                        {{--                            </select>--}}
+                        {{--                        </div>--}}
 
                         <div class="form-group col-md-4">
                             <label for="address" class="col-form-label">Tỉnh/TP</label>
@@ -74,7 +74,6 @@
                                 <th>GPLX</th>
                                 <th>Quận/Huyện</th>
                                 <th>Tỉnh/TP</th>
-                                <th>Role</th>
                                 <th>Xử lý</th>
                             </tr>
                             </thead>
@@ -102,14 +101,11 @@
                                     </td>
                                     <td>{{$each->address2}}</td>
                                     <td>{{$each->address}}</td>
-                                    <td>{{$each->RoleName}}</td>
                                     <td class="table-action">
                                         <a href="{{ route("admin.$table.show", $each)}}" class="action-icon"> <i
                                                 class="mdi mdi-eye"></i></a>
-                                        @if(empty($each->email))
-                                            <a href="javascript: void(0);" class="action-icon"> <i
-                                                    class="mdi mdi-pencil"></i></a>
-                                        @endif
+                                        <a href="{{ route("admin.$table.edit", $each)}}" class="action-icon"> <i
+                                                class="mdi mdi-pencil"></i></a>
                                         <form action="{{ route("admin.$table.destroy", $each)}}" method="post"
                                               class="action-icon" style="margin: 0px;padding: 0px;">
                                             @csrf
