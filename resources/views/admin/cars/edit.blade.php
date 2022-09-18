@@ -8,8 +8,6 @@
                           class="form-group">
                         @method('PUT')
                         @csrf
-                        <div id="div-error" class="alert alert-danger d-none"></div>
-                        @csrf
                         <div class="form-row">
                             <div class="form-group col-6">
                                 <label for="name">Tên xe</label>
@@ -104,11 +102,11 @@
                             <div class="form-group col-4">
                                 <div class="form-group">
                                     <label>Ảnh cũ</label>
-                                    <img name="ole_image" src="{{asset('storage')}}/{{$each->image}}" alt="ảnh cũ"
+                                    <img name="ole_image" src="{{asset('storage'). '/'. $each->image}}" alt="ảnh cũ"
                                          style="max-width: 200px; max-height:200px;">
                                     <br>
                                     <label for="photo">Thay ảnh mới</label>
-                                    <img id="pic" style="max-width: 200px; max-height:200px;"/>
+                                    <img id="pic" style="max-width: 200px; max-height:200px;" src=""/>
                                     <input type="file" name="photo" id="photo" class="form-control-file"
                                            oninput="pic.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
@@ -134,7 +132,7 @@
                             </div>
                             <div class="form-group col-4">
                                 <div class="form-group">
-                                    <label for="price_1_day">Giá thuê 1 ngày(x1000đ)</label>
+                                    <label for="price_1_day">Giá thuê 1 ngày</label>
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control"
                                            value="{{$each->price_1_day}}">
                                 </div>
@@ -160,11 +158,6 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="{{asset('js/jquery.validate.js')}}"></script>
-    <script src="{{asset('js/dropzone.min.js')}}"></script>
-    <script src="{{asset('js/component.fileupload.js')}}"></script>
-    <script src="{{asset('js/image-uploader.min.js')}}"></script>
     <script type="text/javascript">
         async function loadDistrict(parent) {
             $("#select-address2").empty();
@@ -174,7 +167,7 @@
             const district = "{{$each->address2}}";
             $.each(address2.district, function (index, each) {
                 let selected = '';
-                let select = each.pre+' '+ each.name;
+                let select = each.pre + ' ' + each.name;
                 if (district === select) {
                     selected = 'selected';
                 }
@@ -200,62 +193,12 @@
             });
         }
 
-        function showError(errors) {
-            let string = '<ul>';
-            if (Array.isArray(errors)) {
-                errors.forEach(function (each) {
-                    each.forEach(function (error) {
-                        string += `<li>${error}</li>`;
-                    });
-                });
-            } else {
-                string += `<li>${errors}</li>`;
-            }
-            string += '</ul>';
-            $("#div-error").html(string);
-            $("#div-error").removeClass("d-none").show();
-            notifyError(string);
-        }
 
         function preview_image() {
             var total_file = document.getElementById("fullphoto").files.length;
             for (var i = 0; i < total_file; i++) {
                 $('#image_preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' style='max-width: 300px; max-height:200px;'>");
             }
-        }
-
-        function submitForm() {
-            const obj = $("#form-create");
-            const formData = new FormData(obj[0]);
-            $.ajax({
-                url: obj.attr('action'),
-                type: 'POST',
-                dataType: 'json',
-                data: formData,
-                processData: false,
-                contentType: false,
-                async: false,
-                cache: false,
-                enctype: 'multipart/form-data',
-                success: function (form) {
-                    if (response.success) {
-                        $("#div-error").hide();
-                        form.submit();
-                    } else {
-                        showError(response.message);
-                    }
-                },
-                error: function (response) {
-                    let errors;
-                    if (response.responseJSON.errors) {
-                        errors = Object.values(response.responseJSON.errors);
-                        showError(errors);
-                    } else {
-                        errors = response.responseJSON.message;
-                        showError(errors);
-                    }
-                },
-            });
         }
 
         $(document).ready(async function () {
@@ -300,16 +243,6 @@
                 });
             })
 
-            $("#form-create").validate({
-                rules: {
-                    name: {
-                        required: true
-                    }
-                },
-                submitHandler: function () {
-                    submitForm();
-                }
-            });
         });
     </script>
 @endpush
