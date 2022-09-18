@@ -64,7 +64,7 @@
                                 @if($file->type === App\Enums\FileTypeEnum::IDENTITY_FRONT || $file->type === App\Enums\FileTypeEnum::IDENTITY_BACK)
                                     <div class="col-md-6">
                                         <div class="card popImage" data-background="image"
-                                             style="background-image: url('{{asset('storage/users/').'/'. $file->link}}')">
+                                             style="background-image: url('{{asset('storage/').'/'. $file->link}}')">
                                             <div class="card-body">
                                             </div>
                                         </div>
@@ -88,7 +88,7 @@
                                 @if($file->type === App\Enums\FileTypeEnum::LICENSE_CAR_FRONT || $file->type === App\Enums\FileTypeEnum::LICENSE_CAR_BACK)
                                     <div class="col-md-6">
                                         <div class="card popImage" data-background="image"
-                                             style="background-image: url('{{asset('storage/users').'/'. $file->link}}')">
+                                             style="background-image: url('{{asset('storage').'/'. $file->link}}')">
                                             <div class="card-body">
                                             </div>
                                         </div>

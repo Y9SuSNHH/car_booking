@@ -124,12 +124,15 @@
                                 <br>
                                 @foreach($user->files as $file)
                                     @if($file->type === App\Enums\FileTypeEnum::LICENSE_CAR_FRONT)
-                                        <div class="col-md-6 text-center">
-                                            <img name="ole_license_car_front" src="{{asset('storage').'/'. $file->link}}"
+                                        <div class="col-md-6">
+                                            <h6>Mặt trước</h6>
+                                            <img name="ole_license_car_front"
+                                                 src="{{asset('storage').'/'. $file->link}}"
                                                  style="max-height: 250px; max-width: 250px;">
                                         </div>
                                     @elseif($file->type === App\Enums\FileTypeEnum::LICENSE_CAR_BACK)
                                         <div class="col-md-6">
+                                            <h6>Mặt sau</h6>
                                             <img name="ole_license_car_back" src="{{asset('storage').'/'. $file->link}}"
                                                  style="max-height: 250px; max-width: 250px;">
                                         </div>
@@ -139,13 +142,11 @@
                             <label>Đổi ảnh mới</label>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h6>Mặt trước</h6>
                                     <img id="pic3" style="max-width: 200px; max-height:200px;"/>
                                     <input type="file" name="license_car_front" class="form-control-file"
                                            oninput="pic3.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                                 <div class="col-md-6">
-                                    <h6>Mặt sau</h6>
                                     <img id="pic4" style="max-width: 200px; max-height:200px;"/>
                                     <input type="file" name="license_car_back" class="form-control-file"
                                            oninput="pic4.src=window.URL.createObjectURL(this.files[0])">
@@ -184,6 +185,7 @@
                         </option>`);
             })
         }
+
         function UserUpdate() {
             @if (session('UserUpdate'))
             notifyInfo(`{{session('UserUpdate')}}`);
