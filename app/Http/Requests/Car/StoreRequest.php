@@ -29,7 +29,6 @@ class StoreRequest extends FormRequest
             'name'             => [
                 'required',
                 'string',
-                Rule::unique(Car::class),
             ],
             'photo'            => [
                 'required',
