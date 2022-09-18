@@ -118,7 +118,7 @@
                             </div>
                             <div class="form-group col-4">
                                 <div class="form-group">
-                                    <label for="price_1_day">Giá thuê 1 ngày(x1000đ)</label>
+                                    <label for="price_1_day">Giá thuê 1 ngày</label>
                                     <input type="number" name="price_1_day" id="price_1_day" class="form-control">
                                 </div>
                                 <div class="form-group">
