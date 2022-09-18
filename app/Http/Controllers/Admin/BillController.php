@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Bill\BillStatusEnum;
+use App\Enums\BillStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Car;
@@ -31,7 +31,7 @@ class BillController extends Controller
         $filter['name_car']  = $request->get('name_car');
         $filter['status']    = $request->get('status');
 
-        $query = $this->model->clone();
+        $query = $this->model->clone()->latest();
 
         $status = BillStatusEnum::getArrayView();
         if (isset($filter['status']) && $filter['status'] !== 'All') {
@@ -64,7 +64,7 @@ class BillController extends Controller
         $nameUsers = User::query()->pluck('name');
         $nameCars  = Car::query()->pluck('name');
         $query->with('car');
-        $data = $query->latest()->paginate(10);
+        $data = $query->paginate(10);
 
         return view("$this->role.$this->table.index", [
             'data'      => $data,

@@ -7,6 +7,9 @@ use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Models\File;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View as ViewAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -15,18 +18,19 @@ class UserController extends Controller
 {
     private object $model;
     private string $table;
-    private string $role = 'admin';
+    private string $role;
 
     public function __construct()
     {
         $this->model = User::query();
         $this->table = (new User())->getTable();
+        $this->role  = strtolower(UserRoleEnum::getKey(UserRoleEnum::ADMIN));
 
         View::share('title', ucwords($this->table));
         View::share('table', $this->table);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Factory|ViewAlias|Application
     {
         $query            = $this->model->clone()->latest();
         $selectedAddress  = $request->get('address');
@@ -82,8 +86,27 @@ class UserController extends Controller
 //        ]);
     }
 
+    public function edit($userId)
+    {
+        $query = User::query()->clone();
+        $query->with([
+            'files' => function ($q) {
+                $q->whereIn('type', [
+                    FileTypeEnum::IDENTITY_FRONT,
+                    FileTypeEnum::IDENTITY_BACK,
+                    FileTypeEnum::LICENSE_CAR_FRONT,
+                    FileTypeEnum::LICENSE_CAR_BACK,
+                ]);
+            }
+        ]);
+        $user = $query->find($userId);
+//        dd($user);
+        return view("$this->role.$this->table.edit", [
+            'user' => $user,
+        ]);
+    }
 
-    public function destroy($userId)
+    public function destroy($userId): \Illuminate\Http\RedirectResponse
     {
         User::destroy($userId);
 

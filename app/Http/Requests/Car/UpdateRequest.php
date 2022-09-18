@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\Car;
 
+use App\Enums\CarStatusEnum;
+use App\Enums\CarTypeEnum;
+use App\Models\Car;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -13,7 +17,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,20 +28,77 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'image' => 'nullable',
-            'fullphoto' => 'nullable',
-            'address' =>'required',
-            'description' => 'required',
-            'type' => 'required',
-            'slot' => ['required','numeric'],
-            'transmission' => ['required', 'boolean'],
-            'fuel' => ['required','boolean'],
-            'fuel_comsumpiton' => ['required','numeric'],
-            'price_1_day' => ['required','numeric'],
-            'price_insure' => ['required','numeric'],
-            'price_service' => ['required','numeric'],
-            'slug' => 'nullable',
+            'name'             => [
+                'required',
+                'string',
+            ],
+            'photo'            => [
+                'nullable',
+                'image',
+            ],
+            'fullphoto'        => [
+                'nullable',
+            ],
+            'address'          => [
+                'required',
+                'string',
+            ],
+            'address2'         => [
+                'required',
+                'string',
+            ],
+            'description'      => [
+                'nullable',
+            ],
+            'type'             => [
+                'required',
+                'numeric',
+                Rule::in(CarTypeEnum::getValues()),
+            ],
+            'slot'             => [
+                'required',
+                'numeric',
+                Rule::in([4,5,7]),
+            ],
+            'transmission'     => [
+                'required',
+                'boolean',
+            ],
+            'fuel'             => [
+                'required',
+                'boolean',
+            ],
+            'fuel_comsumpiton' => [
+                'required',
+                'numeric',
+            ],
+            'price_1_day'      => [
+                'required',
+                'numeric',
+                'min:1',
+            ],
+            'price_insure'     => [
+                'required',
+                'numeric',
+                'min:1',
+            ],
+            'price_service'    => [
+                'required',
+                'numeric',
+                'min:1',
+            ],
+            'status'    => [
+                'required',
+                'numeric',
+                Rule::in(CarStatusEnum::getValues()),
+            ],
+            'slug'             => [
+                'required',
+                'string',
+                'filled',
+                'min:3',
+                'max:255',
+            ],
         ];
     }
 }

@@ -12,6 +12,10 @@ use App\Http\Requests\Car\StoreRequest;
 use App\Http\Requests\Car\UpdateRequest;
 use App\Models\Car;
 use App\Models\File;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View as ViewAlias;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -94,7 +98,7 @@ class CarController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         try {
             if ($request->has('photo')) {
@@ -128,7 +132,7 @@ class CarController extends Controller
     }
 
 
-    public function edit($carId)
+    public function edit($carId): Factory|ViewAlias|Application
     {
         $each   = Car::query()->find($carId);
         $types  = CarTypeEnum::getArrayView();
@@ -144,21 +148,25 @@ class CarController extends Controller
 
     public function update(UpdateRequest $request, Car $car)
     {
-        $image_path = app_path("uploads/{$request->ole_image}");
-        if (!empty($request->new_image)) {
-            unlink($image_path);
-            $file      = $request->new_image;
-            $ext       = $request->new_image->extension();
-            $file_name = time() . '-' . 'car' . '.' . $ext;
-            $file->move(public_path('uploads'), $file_name);
-            $request->merge(['image' => $file_name]);
-        }
-
-        $car->update($request->validated());
-
+        dd(1);
+        dd($request->all());
         return redirect()->route("$this->role.$this->table.index");
-
     }
+//        $image_path = app_path("uploads/{$request->ole_image}");
+//        if (!empty($request->new_image)) {
+//            unlink($image_path);
+//            $file      = $request->new_image;
+//            $ext       = $request->new_image->extension();
+//            $file_name = time() . '-' . 'car' . '.' . $ext;
+//            $file->move(public_path('uploads'), $file_name);
+//            $request->merge(['image' => $file_name]);
+//        }
+//
+//        $car->update($request->validated());
+
+//        return redirect()->route("$this->role.$this->table.index");
+//
+//    }
 
     public function destroy($carId)
     {
