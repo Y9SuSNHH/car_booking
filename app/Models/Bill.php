@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Bill\BillStatusEnum;
+use App\Enums\BillStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +49,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Bill whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|Bill withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Bill withoutTrashed()
+ * @method static create(array $array)
  * @mixin \Eloquent
  * @property-read int $generate_status
  */
@@ -107,10 +108,10 @@ class Bill extends Model
         $statusIcon = '';
 
         if ($status === BillStatusEnum::PENDING) {
-            $statusIcon = 'warning';
+            $statusIcon = 'primary';
         }
         if ($status === BillStatusEnum::ACCEPTED) {
-            $statusIcon = 'primary';
+            $statusIcon = 'warning';
         }
         if ($status === BillStatusEnum::DONE) {
             $statusIcon = 'success';

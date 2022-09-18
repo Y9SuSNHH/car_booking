@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Car;
 
+use App\Enums\CarStatusEnum;
+use App\Enums\CarTypeEnum;
 use App\Models\Car;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -50,10 +52,13 @@ class StoreRequest extends FormRequest
             ],
             'type'             => [
                 'required',
+                'numeric',
+                Rule::in(CarTypeEnum::getValues()),
             ],
             'slot'             => [
                 'required',
                 'numeric',
+                Rule::in([4, 5, 7]),
             ],
             'transmission'     => [
                 'required',
@@ -81,6 +86,11 @@ class StoreRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:1',
+            ],
+            'status'           => [
+                'required',
+                'numeric',
+                Rule::in(CarStatusEnum::getValues()),
             ],
             'slug'             => [
                 'required',

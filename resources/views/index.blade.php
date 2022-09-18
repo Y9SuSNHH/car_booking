@@ -437,27 +437,27 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6 ml-auto mr-auto">
+                                        <div class="col-sm-6 ml-auto mr-auto">
                                             <label class="font-weight-bold">Ngày bắt
                                                 đầu</label>
                                             <input type="text" class="form-control" disabled
                                                    value="{{ session()->get('find_cars.date_start') }}">
                                         </div>
-                                        <div class="col-6 ml-auto mr-auto">
+                                        <div class="col-sm-6 ml-auto mr-auto">
                                             <label class="font-weight-bold">Ngày kết thúc</label>
                                             <input type="text" class="form-control" disabled
                                                    value="{{ session()->get('find_cars.date_end') }}">
                                         </div>
                                     </div>
                                     <div class="row pt-2 mt-2 bg-warning">
-                                        <div class="col-lg-7">
+                                        <div class="col-7">
                                             <div class="grid-container">
                                                 <small>
                                                     <span class="float-left">Thời gian nhận xe</span>
                                                 </small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5">
+                                        <div class="col-5">
                                             <div class="grid-container">
                                                 <small>
                                                     <span class="float-right">05:00-22:00</span>
@@ -466,14 +466,14 @@
                                         </div>
                                     </div>
                                     <div class="row pb-2 mb-2 bg-warning">
-                                        <div class="col-lg-7">
+                                        <div class="col-7">
                                             <div class="grid-container">
                                                 <small>
                                                     <span class="float-left">Thời gian trả xe</span>
                                                 </small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5">
+                                        <div class="col-5">
                                             <div class="grid-container">
                                                 <small>
                                                     <span class="float-right">17:00-21:00 </span>
@@ -517,7 +517,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <div class="grid-container">
                                                     <span class="float-left">Đơn giá thuê
                                                     <i class="mdi mdi-information-outline" data-toggle="tooltip"
@@ -528,7 +528,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <div class="grid-container">
                                                 <span class="float-right">
                                                     <span id="price_1_day" class="font-weight-bold"></span>/ ngày
@@ -537,7 +537,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <div class="grid-container">
                                                 <span class="float-left">Phí dịch vụ
                                                 <i class="mdi mdi-information-outline"
@@ -547,7 +547,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-6">
                                             <div class="grid-container">
                                                 <span class="float-right">
                                                     <span id="price_service" class="font-weight-bold"></span>/ ngày
@@ -602,7 +602,7 @@
                                         <div class="col-sm-8">
                                             <div class="grid-container">
                                                 <span class="float-right">
-                                                    <span id="total-price-html"></span>
+                                                    <span id="total-price"></span> đ
                                                 </span>
                                             </div>
                                         </div>
@@ -610,10 +610,8 @@
                                     <hr/>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <form id="form-car-store" class="form-horizontal">
-                                                <input type="number" name="total_price" id="total-price"
-                                                       class="form-control"
-                                                       hidden>
+                                            <form id="form-bill-store" class="form-horizontal">
+                                                @csrf
                                                 <div class="text-center">
                                                     <button class="btn btn-success">ĐẶT XE
                                                     </button>
@@ -688,30 +686,28 @@
             </div>
         </div>
     </div>
-    @if (session('checkUser'))
-        <div id="warning-alert-modal" class="modal fade show" tabindex="-1" role="dialog" aria-modal="true" style="display: block; padding-right: 21px;">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-body p-4">
-                        <div class="text-center">
-                            <i class="dripicons-warning h3 text-warning"></i>
-                            <h4 class="mt-2"> {{session('checkUser')}} </h4>
-                            <form action="{{route('user.index')}}">
-                                <button type="submit" class="btn btn-sm btn-warning my-2" data-dismiss="modal">Điền
-                                    thông tin
-                                </button>
-                            </form>
-                        </div>
+    <div id="alert-user-index" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body p-4">
+                    <div class="text-center">
+                        <i class="dripicons-warning h3 text-warning"></i>
+                        <h4 class="mt-2" id="error-bill-store"></h4>
+                        <form action="{{route('user.index')}}" method="GET">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-warning my-2">Điền
+                                thông tin
+                            </button>
+                        </form>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+                </div>
+            </div>
         </div>
-    @endif
+    </div>
 @endsection
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script src="{{asset('js/helper.js')}}"></script>
-    <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
     <script src="{{asset('js/nouislider.js')}}"></script>
     <script type="text/javascript">
         function changeDateType(date) {
@@ -800,23 +796,21 @@
                             "<img class='d-block img-fluid' src='" + image_url + "'>";
                         $('.carousel-indicators').append(li);
                         $('.carousel-inner').append(image);
-                        $("#price_1_day_title").html(each.price_1_day);
+                        $("#price_1_day_title").html(each.price_1_day / 1000);
                         $("#address2").html(each.address2);
                         $("#slot").html(each.slot);
                         $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
                         $("#transmission").html(each.transmission ? '<span class="badge badge-info">Số tự động</span>' : '<span class="badge badge-dark">Số sàn</span>');
                         $("#fuel_comsumpiton").html(each.fuel_comsumpiton);
                         $("#description").html(each.description);
-                        $("#price_1_day").html(each.price_1_day + " 000");
-                        $("#price_insure").html(each.price_insure);
-                        $("#price_service").html(each.price_service);
-                        let price = (each.price_1_day * 1000) + each.price_insure + each.price_service;
-                        $("#price").html(price);
+                        $("#price_1_day").html(crawlPrice(each.price_1_day));
+                        $("#price_insure").html(crawlPrice(each.price_insure));
+                        $("#price_service").html(crawlPrice(each.price_service));
+                        let price = each.price_1_day + each.price_insure + each.price_service;
+                        $("#price").html(crawlPrice(price));
                         $("#total-date").html(getDateDiff());
                         let total_price = getDateDiff() * price;
-                        console.log(crawlPrice(total_price))
-                        $("#total-price-html").html(crawlPrice(total_price));
-                        $("#total-price").val(total_price);
+                        $("#total-price").html(crawlPrice(total_price));
                         if (each.files.length !== 0) {
                             $.each(each.files, function (index, each) {
                                 index += 1;
@@ -835,17 +829,38 @@
             });
         }
 
-        function modalEachCar(carId) {
-            let route = '{{route('user.bill.store')}}/' + carId;
-            $('#form-car-store').prop('action', route);
-            $('#form-car-store').prop('method', 'POST');
+        function modalEachCar(car) {
+            let route = '{{route('api.bills.store')}}/' + car;
+            $('#form-bill-store').prop('action', route);
+            $('#form-bill-store').prop('method', 'POST');
             $('.carousel-indicators').empty();
             $('.carousel-inner').empty();
-            carShow(carId);
+            carShow(car);
         }
 
         function crawlPrice(price) {
-            return price.toLocaleString('vi', {style: 'currency', currency: 'VND'});
+            return price.toLocaleString('vi');
+        }
+
+        function submitFormBillStore() {
+            $("#form-bill-store").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: $(form).serialize(),
+                        success: function (response) {
+                            console.log(response);
+                        },
+                        error: function (response) {
+                            $('#modal-each-car').modal('hide');
+                            $("#error-bill-store").html(response.responseJSON.message);
+                            $('#alert-user-index').modal('show');
+                        },
+                    });
+                }
+            });
         }
 
         function findCarValidation() {
@@ -862,12 +877,11 @@
         $(document).ready(async function () {
             loadAddress();
             loadDate();
-
+            submitFormBillStore();
             $("#modal-each-car").on('hide.bs.modal', function () {
-                $('#form-car-store').prop('action', '');
-                $('#form-car-store').prop('method', '');
+                $('#form-bill-store').prop('action', '');
+                $('#form-bill-store').prop('method', '');
             });
-            console.log(crawlPrice(1000000));
         });
     </script>
     <script type="text/javascript">

@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
             <h6 class="card-category text-success">
-                <i class="mdi mdi-cash-usd-outline" aria-hidden="true"></i> {{$car->price_1_day}}K
+                <i class="mdi mdi-cash-usd-outline" aria-hidden="true"></i> {{$car->price_1_day/1000}}K
             </h6>
             <h6 class="card-title">
                 {{Str::limit($car->name , 24, '...')}}

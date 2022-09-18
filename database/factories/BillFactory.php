@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\Bill\BillStatusEnum;
+use App\Enums\BillStatusEnum;
 use App\Models\Car;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;

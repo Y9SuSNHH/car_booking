@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Bill;
+namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 

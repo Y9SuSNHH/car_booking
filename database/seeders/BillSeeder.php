@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\Bill\BillStatusEnum;
+use App\Enums\BillStatusEnum;
 use App\Models\Bill;
 use App\Models\Car;
 use App\Models\User;
