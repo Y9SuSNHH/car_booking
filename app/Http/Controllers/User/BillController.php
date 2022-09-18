@@ -8,15 +8,21 @@ use App\Http\Controllers\ResponseTrait;
 use App\Models\Bill;
 use App\Models\Car;
 use App\Models\File;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 
 class BillController extends Controller
 {
     use ResponseTrait;
 
+    public function index()
+    {
+        return view('user.bill.index');
+    }
+
     public function store($carId): JsonResponse
     {
-
         $car = Car::query()->find($carId);
 
         $checkUserIdentity   = (new File)->checkUserIdentity(auth()->user()->id);
@@ -46,6 +52,19 @@ class BillController extends Controller
         } else {
             return $this->errorResponse('Chưa điền đủ thông tin');
         }
-        return $this->successResponse();
+        return $this->successResponse($bill->id);
+    }
+
+    public function show($billId): Factory|\Illuminate\Contracts\View\View|Application
+    {
+        $query = Bill::query()
+            ->where('id', $billId);
+
+        $query->with('car');
+
+        $bill = $query->get();
+        return view('user.bill.show', [
+            'bill' => $bill,
+        ]);
     }
 }

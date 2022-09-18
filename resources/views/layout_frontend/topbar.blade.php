@@ -37,6 +37,10 @@
                                 <i class="uil-user-exclamation"></i>
                                 Tài khoản
                             </a>
+                            <a class="dropdown-item" href="{{route('user.bills.index')}}">
+                                <i class="mdi mdi-file-document-box-search-outline"></i>
+                                Lịch sử đặt xe
+                            </a>
                             <a class="dropdown-item" href="{{route('signout')}}">
                                 <i class="mdi mdi-logout mr-1"></i>
                                 Đăng xuất

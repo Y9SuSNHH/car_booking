@@ -851,7 +851,8 @@
                         dataType: 'JSON',
                         data: $(form).serialize(),
                         success: function (response) {
-                            console.log(response);
+                            let route = '{{route('user.bills.show')}}/' + response.data;
+                            window.location.assign(route);
                         },
                         error: function (response) {
                             $('#modal-each-car').modal('hide');
@@ -867,7 +868,7 @@
             let validation = '<ul>';
             @if ($errors->any())
                 @foreach ($errors->all() as $error)
-                validation += `<li>{{ $error }}</li>`;
+                validation += ` < li > {{ $error }} < /li>`;
             @endforeach
                 @endif
                 validation += `</ul>`;
