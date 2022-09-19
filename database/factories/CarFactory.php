@@ -26,7 +26,7 @@ class CarFactory extends Factory
             'fuel'             => $this->faker->boolean(),
             'fuel_comsumpiton' => $this->faker->numberBetween(50,200),
             'description'      => $this->faker->realText(200),
-            'price_1_day'      => $this->faker->numberBetween(100,9999),
+            'price_1_day'      => $this->faker->numberBetween(100000,5000000),
             'price_insure'     => $this->faker->numberBetween(50000,500000),
             'price_service'    => $this->faker->numberBetween(50000,500000),
             'status'           => $this->faker->randomElement(CarStatusEnum::getValues()),
