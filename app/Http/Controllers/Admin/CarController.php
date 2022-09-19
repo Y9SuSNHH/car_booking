@@ -37,7 +37,7 @@ class CarController extends Controller
         $this->model = Car::query();
         $this->table = (new Car())->getTable();
 
-        View::share('title', ucwords($this->table));
+        View::share('title', ucfirst('Quản lý xe'));
         View::share('table', $this->table);
     }
 

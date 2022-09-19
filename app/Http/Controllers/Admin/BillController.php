@@ -26,7 +26,7 @@ class BillController extends Controller
         $this->table = (new Bill())->getTable();
         $this->role  = strtolower(UserRoleEnum::getKey(UserRoleEnum::ADMIN));
 
-        View::share('title', ucwords('Hóa đơn'));
+        View::share('title', ucfirst('Quản lý hóa đơn'));
         View::share('table', $this->table);
     }
 

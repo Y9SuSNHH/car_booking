@@ -4,7 +4,7 @@
             <a href="{{ route('admin.users.index') }}" class="side-nav-link">
                 <i class="uil uil-user"></i>
                 <span class="badge badge-info badge-pill float-right"></span>
-                <span> Người dùng </span>
+                <span>Quản lý người dùng </span>
             </a>
         </li>
         <li class="side-nav-item">

@@ -26,7 +26,7 @@ class UserController extends Controller
         $this->table = (new User())->getTable();
         $this->role  = strtolower(UserRoleEnum::getKey(UserRoleEnum::ADMIN));
 
-        View::share('title', ucwords($this->table));
+        View::share('title', ucfirst('Quản lý người dùng'));
         View::share('table', $this->table);
     }
 
