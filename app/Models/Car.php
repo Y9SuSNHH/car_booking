@@ -77,7 +77,6 @@ class Car extends Model
 {
     use Sluggable;
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = [
         'name',
