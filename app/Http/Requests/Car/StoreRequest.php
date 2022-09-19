@@ -32,7 +32,7 @@ class StoreRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'photo'            => [
+            'image'            => [
                 'required',
                 'image',
             ],
