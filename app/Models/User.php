@@ -63,6 +63,8 @@ class User extends Model implements AuthenticatableContract
 {
     use Authenticatable;
     use HasFactory;
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'gender',

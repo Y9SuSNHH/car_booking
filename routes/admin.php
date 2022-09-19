@@ -27,6 +27,7 @@ Route::group([
     Route::post('/create', [CarController::class, 'store'])->name('store');
     Route::get('/edit/{car}', [CarController::class, 'edit'])->name('edit');
     Route::put('/edit/{car}', [CarController::class, 'update'])->name('update');
+    Route::delete('/{car}', [CarController::class, 'destroy'])->name('destroy');
 
 });
 Route::group([

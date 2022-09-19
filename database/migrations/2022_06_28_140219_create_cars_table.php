@@ -31,6 +31,7 @@ class CreateCarsTable extends Migration
             $table->smallInteger('status');
             $table->string('slug')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
