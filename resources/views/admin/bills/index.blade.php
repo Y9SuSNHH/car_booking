@@ -35,10 +35,10 @@
                             <div class="form-group col-md-3">
                                 <div class="row">
                                     <div class="col-6">
-                                        <i class="mdi mdi-circle text-warning"></i> Đặt xe
+                                        <i class="mdi mdi-circle text-primary"></i> Đặt xe
                                     </div>
                                     <div class="col-6">
-                                        <i class="mdi mdi-circle text-primary"></i> Đã giao xe
+                                        <i class="mdi mdi-circle text-warning"></i> Đã giao xe
                                     </div>
                                     <div class="col-6">
                                         <i class="mdi mdi-circle text-success"></i> Hoàn thành
@@ -107,20 +107,22 @@
                                             </td>
                                             <td class="table-action">
                                                 {{--                                                {{ route("admin.$table.show", $each)}}--}}
-                                                <a href="" class="action-icon"> <i
-                                                        class="mdi mdi-eye"></i></a>
-                                                <a href="javascript: void(0);" class="action-icon"> <i
-                                                        class="mdi mdi-pencil"></i></a>
-                                                @if(auth()->user()->role === \App\Enums\UserRoleEnum::ADMIN)
-                                                    {{--                                                    {{ route("admin.$table.destroy", $each)}}"--}}
-                                                    <form action="" method="post"
-                                                          class="action-icon" style="margin: 0px;padding: 0px;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-link action-icon" style="border: 0px;"><i
-                                                                class="mdi mdi-delete"></i></button>
-                                                    </form>
-                                                @endif
+                                                <div class="row">
+                                                    <a href="" class="action-icon"> <i
+                                                            class="mdi mdi-eye"></i></a>
+                                                    <a href="javascript: void(0);" class="action-icon"> <i
+                                                            class="mdi mdi-pencil"></i></a>
+                                                    @if(auth()->user()->role === \App\Enums\UserRoleEnum::ADMIN)
+                                                        {{--                                                    {{ route("admin.$table.destroy", $each)}}"--}}
+                                                        <form action="" method="post"
+                                                              class="action-icon" style="margin: 0px;padding: 0px;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-link action-icon" style="border: 0px;"><i
+                                                                    class="mdi mdi-delete"></i></button>
+                                                        </form>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

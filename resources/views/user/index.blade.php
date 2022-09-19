@@ -7,6 +7,10 @@
     </style>
 @endpush
 @section('content')
+    <div class="page-header page-header-xs"
+         style="background-image: url('https://images.unsplash.com/photo-1486310662856-32058c639c65?dpr=2&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop=');">
+        <div class="filter"></div>
+    </div>
     <div class="profile-content section">
         <div class="container">
             <div class="row">
@@ -35,7 +39,7 @@
                                            data-placement="top" title="Chưa điền sđt"></i>
                                     @endif
                                     <br>
-                                    Ngày thêm: {{date('d-m-Y', strtotime($user->created_at))}}
+                                    Ngày tham gia: {{date('d-m-Y', strtotime($user->created_at))}}
                                     <br>
                                     <a href="{{route("user.edit")}}"
                                        class="btn btn-just-icon btn-border btn-twitter">
@@ -63,6 +67,7 @@
                             @foreach ($user->files as $file)
                                 @if($file->type === App\Enums\FileTypeEnum::IDENTITY_FRONT || $file->type === App\Enums\FileTypeEnum::IDENTITY_BACK)
                                     <div class="col-md-6">
+{{--                                        <img src="{{asset('storage/').'/'. $file->link}}" class="img-rounded img-responsive">--}}
                                         <div class="card popImage" data-background="image"
                                              style="background-image: url('{{asset('storage/').'/'. $file->link}}')">
                                             <div class="card-body">
@@ -114,3 +119,8 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script type="text/javascript">
+        $('body').addClass('profile');
+    </script>
+@endpush
