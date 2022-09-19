@@ -15,7 +15,6 @@ Route::group([
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('/{user}', [UserController::class, 'show'])->name('show');
     Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
-    Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
 });
 
 Route::group([

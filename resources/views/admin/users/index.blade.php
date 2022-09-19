@@ -106,13 +106,6 @@
                                                 class="mdi mdi-eye"></i></a>
                                         <a href="{{ route("admin.$table.edit", $each)}}" class="action-icon"> <i
                                                 class="mdi mdi-pencil"></i></a>
-                                        <form action="{{ route("admin.$table.destroy", $each)}}" method="post"
-                                              class="action-icon" style="margin: 0px;padding: 0px;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-link action-icon" style="border: 0px;"><i
-                                                    class="mdi mdi-delete"></i></button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
