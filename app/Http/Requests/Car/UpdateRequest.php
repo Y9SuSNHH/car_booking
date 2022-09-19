@@ -58,7 +58,7 @@ class UpdateRequest extends FormRequest
             'slot'             => [
                 'required',
                 'numeric',
-                Rule::in([4,5,7]),
+                Rule::in([4, 5, 7]),
             ],
             'transmission'     => [
                 'required',
@@ -87,7 +87,7 @@ class UpdateRequest extends FormRequest
                 'numeric',
                 'min:1',
             ],
-            'status'    => [
+            'status'           => [
                 'required',
                 'numeric',
                 Rule::in(CarStatusEnum::getValues()),
