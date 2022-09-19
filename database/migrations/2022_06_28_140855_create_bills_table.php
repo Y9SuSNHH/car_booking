@@ -17,9 +17,9 @@ class CreateBillsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->unsignedBigInteger('staff_start')->nullable();
-            $table->unsignedBigInteger('staff_start')->nullable();
+            $table->unsignedBigInteger('staff_end')->nullable();
             $table->foreign('staff_start')->references('id')->on('users');
-            $table->foreign('staff_start')->references('id')->on('users');
+            $table->foreign('staff_end')->references('id')->on('users');
             $table->foreignId('car_id')->constrained();
             $table->date('date_start');
             $table->date('date_end');
