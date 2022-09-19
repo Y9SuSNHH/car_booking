@@ -533,7 +533,7 @@
 @endsection
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
-    script src="{{asset('js/helper.js')}}"></script>
+    <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         function carShow(carId) {
             $.ajax({
