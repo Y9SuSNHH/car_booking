@@ -140,7 +140,7 @@
                                                     <label class="col-md-3 col-form-label" for="phone">Số điện
                                                         thoại</label>
                                                     <div class="col-md-9">
-                                                        <input type="text" id="phone" name="phone" class="form-control"
+                                                        <input type="number" id="phone" name="phone" class="form-control"
                                                                value="">
                                                     </div>
                                                 </div>
