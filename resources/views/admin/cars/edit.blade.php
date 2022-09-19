@@ -3,6 +3,15 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="card-body">
                     <form action="{{ route('admin.cars.update', $each )}}" method="POST" enctype="multipart/form-data"
                           class="form-group">
@@ -105,9 +114,9 @@
                                     <img name="ole_image" src="{{asset('storage'). '/'. $each->image}}" alt="ảnh cũ"
                                          style="max-width: 200px; max-height:200px;">
                                     <br>
-                                    <label for="photo">Thay ảnh mới</label>
+                                    <label for="image">Thay ảnh mới</label>
                                     <img id="pic" style="max-width: 200px; max-height:200px;" src=""/>
-                                    <input type="file" name="photo" id="photo" class="form-control-file"
+                                    <input type="file" name="image" id="image" class="form-control-file"
                                            oninput="pic.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                                 <div class="form-group">
@@ -229,18 +238,21 @@
             })
 
             $("#slug").change(function () {
-                $("#btn-submit").attr('disabled', true);
-                $.ajax({
-                    url: '{{ route('api.cars.slug.check') }}',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {slug: $(this).val()},
-                    success: function (response) {
-                        if (response.success) {
-                            $("#btn-submit").attr('disabled', false);
+                let slug = "{{$each->slug}}";
+                if (slug !== $(this).val()) {
+                    $("#btn-submit").attr('disabled', true);
+                    $.ajax({
+                        url: '{{ route('api.cars.slug.check') }}',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {slug: $(this).val()},
+                        success: function (response) {
+                            if (response.success) {
+                                $("#btn-submit").attr('disabled', false);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             })
 
         });

@@ -73,13 +73,8 @@
                                         <tr>
                                             <td>{{$each->id}}</td>
                                             <td>
-                                                <button type="button" id="btn-modal-each-car-{{$each->id}}"
-                                                        data-toggle='modal' data-target='#modal-each-car'
-                                                        class='btn btn-link btn-rounded'>
-                                                    <img src="{{asset("storage/"). $each->image}}"
-                                                         class="img-fluid img-thumbnail p-1"
-                                                         style="max-width: 300px; max-height:200px;">
-                                                </button>
+                                                <img src="{{asset("storage").'/'. $each->image}}"
+                                                     class="img-fluid img-thumbnail p-1">
                                             </td>
                                             <td>
                                                 {{$each->name}}
@@ -129,15 +124,11 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                <a href="{{route("api.cars.show",$each->id)}}" class='action-icon'
+                                                   data-toggle='modal' data-target='#modal-each-car'><i
+                                                        class="mdi mdi-eye"></i></a>
                                                 <a href="{{route("admin.cars.edit",$each->id)}}" class='action-icon'><i
                                                         class='mdi mdi-pencil'></i></a>
-                                                <form action="{{route("admin.cars.destroy",$each->id)}}" method="post"
-                                                      class="action-icon" style="margin: 0px;padding: 0px;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-link action-icon"><i
-                                                            class='mdi mdi-delete'></i></button>
-                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -541,8 +532,8 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('js/jquery.validate.js')}}"></script>
+    script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         function carShow(carId) {
             $.ajax({
@@ -591,21 +582,6 @@
             $("#select-name").append(name);
         }
 
-        {{--function loadStatus() {--}}
-        {{--    $("#select-status").select2();--}}
-        {{--    let status = '<option selected value="All">Tất cả</option>';--}}
-        {{--    let selected = '';--}}
-        {{--    @foreach($status as $key => $value)--}}
-        {{--        @if($key === $search['filter']['status'])--}}
-        {{--        selected = 'selected';--}}
-        {{--    @else--}}
-        {{--        selected = '';--}}
-        {{--    @endif--}}
-        {{--        status += `<option value='{{$key}}' ` + selected + `>{{$value}}</option>`;--}}
-        {{--    @endforeach--}}
-        {{--    $("#select-status").append(status);--}}
-        {{--}--}}
-
         function filter() {
             $(".select-filter").change(function () {
                 $("#form-filter").submit();
@@ -615,14 +591,9 @@
         $(document).ready(async function () {
             loadNames();
             filter();
-            $(document).on('click', '#pagination > li > a', function (event) {
-                event.preventDefault();
-                let page = $(this).text();
-                let urlParams = new URLSearchParams(window.location.search);
-                urlParams.set('page', page);
-                window.location.search = urlParams;
-            });
-
+            @if (session('car_message'))
+            notifySuccess(`{{ session('car_message') }}`);
+            @endif
         });
     </script>
 @endpush

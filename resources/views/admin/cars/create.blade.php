@@ -93,9 +93,9 @@
                         <div class="form-row">
                             <div class="form-group col-4">
                                 <div class="form-group">
-                                    <label for="photo">Ảnh</label>
+                                    <label for="image">Ảnh</label>
                                     <img id="pic" style="max-width: 300px; max-height:200px;"/>
-                                    <input type="file" name="photo" id="photo" class="form-control-file"
+                                    <input type="file" name="image" id="image" class="form-control-file"
                                            oninput="pic.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                                 <div class="form-group">
@@ -141,9 +141,8 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('js/jquery.validate.js')}}"></script>
-    <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
+    <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         async function loadDistrict(parent) {
             $("#select-address2").empty();
