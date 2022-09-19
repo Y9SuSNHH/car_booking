@@ -24,7 +24,7 @@
                                 <i class="mdi mdi-24px mdi-account"></i>
                             </span>
                     <span>
-                                <span class="account-user-name">{{auth()->user()->name}}</span>
+                                <span class="account-user-name">{{ucwords(auth()->user()->name)}}</span>
                                 <span class="account-position">{{auth()->user()->RoleName}}</span>
                             </span>
                 </a>

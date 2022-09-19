@@ -1,4 +1,7 @@
 @extends('layout_backend.master')
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('bill') }}
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -94,9 +97,11 @@
                                                 {{$each->car->address2}} - {{$each->car->address}}
                                             </td>
                                             <td>
-                                                <span class="badge badge-info">{{date('d-m-Y', strtotime($each->date_start))}}</span>
+                                                <span
+                                                    class="badge badge-info">{{date('d-m-Y', strtotime($each->date_start))}}</span>
                                                 <br>
-                                                <span class="badge badge-info">{{date('d-m-Y', strtotime($each->date_end))}}</span>
+                                                <span
+                                                    class="badge badge-info">{{date('d-m-Y', strtotime($each->date_end))}}</span>
                                             </td>
                                             <td>
                                                 {{ number_format($each->total_price) }} đ
@@ -108,17 +113,17 @@
                                             <td class="table-action">
                                                 {{--                                                {{ route("admin.$table.show", $each)}}--}}
                                                 <div class="row">
-                                                    <a href="" class="action-icon"> <i
+                                                    <a href="{{ route("admin.$table.show", $each)}}" class="action-icon"> <i
                                                             class="mdi mdi-eye"></i></a>
-                                                    <a href="javascript: void(0);" class="action-icon"> <i
+                                                    <a href="{{ route("admin.$table.edit", $each)}}" class="action-icon"> <i
                                                             class="mdi mdi-pencil"></i></a>
                                                     @if(auth()->user()->role === \App\Enums\UserRoleEnum::ADMIN)
-                                                        {{--                                                    {{ route("admin.$table.destroy", $each)}}"--}}
-                                                        <form action="" method="post"
-                                                              class="action-icon" style="margin: 0px;padding: 0px;">
+                                                        <form action="{{ route("admin.$table.destroy", $each)}}"
+                                                              method="post" class="action-icon">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button class="btn btn-link action-icon" style="border: 0px;"><i
+                                                            <button class="btn btn-link action-icon"
+                                                                    style="border: 0px;"><i
                                                                     class="mdi mdi-delete"></i></button>
                                                         </form>
                                                     @endif
@@ -144,6 +149,7 @@
     </div>
 @endsection
 @push('js')
+    <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         function loadNameUsers() {
             $("#select-name-users").select2();
@@ -191,6 +197,9 @@
             loadNameUsers();
             loadNameCars();
             filter();
+            @if (session('bill_message'))
+            notifySuccess(`{{ session('bill_message') }}`);
+            @endif
         });
     </script>
 @endpush

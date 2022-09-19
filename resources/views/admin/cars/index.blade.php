@@ -1,4 +1,7 @@
 @extends('layout_backend.master')
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('car') }}
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12">

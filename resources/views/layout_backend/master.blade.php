@@ -11,13 +11,15 @@
 
     <!-- App css -->
     <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{asset('css/app-modern.min.css')}}" rel="stylesheet" type="text/css" id="light-style" disabled="disabled">
+    <link href="{{asset('css/app-modern.min.css')}}" rel="stylesheet" type="text/css" id="light-style"
+          disabled="disabled">
     <link href="{{asset('css/app-modern-dark.min.css')}}" rel="stylesheet" type="text/css" id="dark-style">
     @stack('css')
 </head>
 
 <body data-layout="detached"
-      data-layout-config='{"leftSidebarCondensed":false,"darkMode":true, "showRightSidebarOnStart": false}' data-leftbar-theme="dark">
+      data-layout-config='{"leftSidebarCondensed":false,"darkMode":true, "showRightSidebarOnStart": false}'
+      data-leftbar-theme="dark">
 
 <!-- Topbar Start -->
 @include('layout_backend.topbar')
@@ -37,11 +39,7 @@
                     <div class="col-12">
                         <div class="page-title-box">
                             <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                                    <li class="breadcrumb-item active">Basic Tables</li>
-                                </ol>
+                                @yield('breadcrumbs')
                             </div>
                             <h4 class="page-title">
                                 {{$title ?? ''}}

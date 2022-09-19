@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enums\BillStatusEnum;
+use App\Enums\FileTableEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -69,8 +71,18 @@ class Bill extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)
-            ->select('id', 'name', 'gender', 'phone', 'email');
+        return $this->belongsTo(User::class);
+    }
+
+    public function car(): BelongsTo
+    {
+        return $this->belongsTo(Car::class);
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class, 'id', 'table_id')
+            ->where('table', FileTableEnum::BILLS);
     }
 
     public function staffStart(): BelongsTo
@@ -83,10 +95,6 @@ class Bill extends Model
         return $this->belongsTo(User::class, 'staff_end', 'id');
     }
 
-    public function car(): BelongsTo
-    {
-        return $this->belongsTo(Car::class);
-    }
 
     public function getStatusNameAttribute(): bool|int|string
     {

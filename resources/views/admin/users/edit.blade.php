@@ -1,4 +1,7 @@
 @extends('layout_backend.master')
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('user.edit') }}
+@endsection
 @section('content')
     <div class="row">
         <div class="col-lg-12">
