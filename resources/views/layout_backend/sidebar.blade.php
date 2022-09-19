@@ -1,4 +1,10 @@
 <div class="left-side-menu left-side-menu-detached">
+    <div class="leftbar-user">
+        {{--            <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow-sm">--}}
+        <i class="mdi mdi-24px mdi-account"></i>
+        <span class="leftbar-user-name">{{ucwords(auth()->user()->name)}}</span>
+        {{--        </a>--}}
+    </div>
     <ul class="metismenu side-nav">
         <li class="side-nav-item">
             <a href="{{ route('admin.users.index') }}" class="side-nav-link">
