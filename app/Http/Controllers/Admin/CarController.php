@@ -16,11 +16,13 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View as ViewAlias;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Throwable;
-use function PHPUnit\Framework\isNull;
 
 class CarController extends Controller
 {
@@ -39,7 +41,7 @@ class CarController extends Controller
         View::share('table', $this->table);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Factory|ViewAlias|Application
     {
         $search['find']['address']    = $request->get('address');
         $search['find']['date_start'] = $request->get('date_start');
@@ -72,7 +74,7 @@ class CarController extends Controller
             $query->where('status', $search['filter']['status']);
         }
 
-        $data   = $query->paginate(10);
+        $data = $query->paginate(10);
 
         foreach ($data as $each) {
             $each->append('status_name');
@@ -88,7 +90,7 @@ class CarController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Factory|ViewAlias|Application
     {
         $types  = CarTypeEnum::getArrayView();
         $status = CarStatusEnum::getArrayView();
@@ -100,14 +102,15 @@ class CarController extends Controller
 
     public function store(StoreRequest $request): JsonResponse
     {
+        DB::beginTransaction();
         try {
-            if ($request->has('photo')) {
-                $path = Storage::disk('public')->putFile('car_images', $request->photo);
-                $request->merge(['image' => $path]);
-                $car = new Car($request->except(['photo', 'fullphoto']));
-                $car->save();
-            }
-            if ($request->has("fullphoto")) {
+            $data          = $request->validated();
+            $data          = Arr::except($data, ['image', 'fullphoto']);
+            $path          = Storage::disk('public')->putFile('car_images', $request->image);
+            $data['image'] = $path;
+            $car           = Car::query()->create($data);
+
+            if (Arr::has($data, 'fullphoto')) {
                 $files = $request->file("fullphoto");
                 foreach ($files as $file) {
                     $path = Storage::disk('public')->putFile('car_images', $file);
@@ -119,18 +122,13 @@ class CarController extends Controller
                     ]);
                 }
             }
+            DB::commit();
             return $this->successResponse();
-
         } catch (Throwable $e) {
+            DB::rollBack();
             return $this->errorResponse($e->getMessage());
         }
     }
-
-    public function show($id)
-    {
-        //
-    }
-
 
     public function edit($carId): Factory|ViewAlias|Application
     {
@@ -138,44 +136,46 @@ class CarController extends Controller
         $types  = CarTypeEnum::getArrayView();
         $slots  = [4, 5, 7];
         $status = CarStatusEnum::getArrayView();
+        $errors = [];
         return view("$this->role.$this->table.edit", [
             'each'   => $each,
             'types'  => $types,
             'slots'  => $slots,
             'status' => $status,
+            //            'errors' => $errors,
         ]);
     }
 
-    public function update(UpdateRequest $request, Car $car)
+    public function update(UpdateRequest $request, $carId): RedirectResponse
     {
-        dd(1);
-        dd($request->all());
-        return redirect()->route("$this->role.$this->table.index");
+        $car  = Car::query()->find($carId);
+        $data = $request->validated();
+        if (Arr::has($data, 'image')) {
+            $path = Storage::disk('public')->putFile('car_images', $data['image']);
+            data_set($data, 'image', $path);
+        }
+        $car->fill(Arr::except($data, ['fullphoto']));
+        $car->save();
+
+        if (Arr::has($data, 'fullphoto')) {
+            $arrFile = $data['fullphoto'];
+            File::query()->where('table', FileTableEnum::CARS)
+                ->where('table_id', $car->id)
+                ->where('type', FileTypeEnum::CAR_IMAGE)
+                ->delete();
+            foreach ($arrFile as $file) {
+                $path = Storage::disk('public')->putFile('car_images', $file);
+                File::create([
+                    'table'    => FileTableEnum::CARS,
+                    'table_id' => $car->id,
+                    'type'     => FileTypeEnum::CAR_IMAGE,
+                    'link'     => $path,
+                ]);
+            }
+        }
+        return redirect()->route("$this->role.$this->table.index")->with('car_message', 'Sửa xe thành công');
     }
-//        $image_path = app_path("uploads/{$request->ole_image}");
-//        if (!empty($request->new_image)) {
-//            unlink($image_path);
-//            $file      = $request->new_image;
-//            $ext       = $request->new_image->extension();
-//            $file_name = time() . '-' . 'car' . '.' . $ext;
-//            $file->move(public_path('uploads'), $file_name);
-//            $request->merge(['image' => $file_name]);
-//        }
-//
-//        $car->update($request->validated());
-
-//        return redirect()->route("$this->role.$this->table.index");
-//
-//    }
-
-    public function destroy($carId)
-    {
-        Car::destroy($carId);
-
-        return redirect()->back();
-    }
-
-    public function findCars()
+    public function findCars(): Factory|ViewAlias|Application
     {
         $addressCars = Car::query()->clone()
             ->groupBy('address')
