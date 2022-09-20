@@ -30,8 +30,8 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <select class="form-control select-address" name="address"
-                                                        id='select-address'></select>
+                                                <select class="form-control select-city" name="city"
+                                                        id='select-city'></select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -69,19 +69,19 @@
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script type="text/javascript">
-        function loadAddress() {
-            $("#select-address").select2();
-            let address = '<option selected value="">Tỉnh/TP</option>';
+        function loadCity() {
+            $("#select-city").select2();
+            let city = '<option selected value="">Tỉnh/TP</option>';
             let selected = '';
-            @foreach ($addressCars as $each)
-                @if ($each === session()->get('find_cars.address'))
+            @foreach ($cities as $each)
+                @if ($each === session()->get('find_cars.city'))
                 selected = 'selected';
             @else
                 selected = '';
             @endif
-                address += "<option " + selected + `>{{$each}}</option>`;
+                city += "<option " + selected + `>{{$each}}</option>`;
             @endforeach
-            $("#select-address").append(address);
+            $("#select-city").append(city);
         }
 
         function setStartDateEnd() {
@@ -107,7 +107,7 @@
         }
 
         $(document).ready(async function () {
-            loadAddress();
+            loadCity();
             loadDate();
         });
 

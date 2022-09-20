@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\FileStatusEnum;
 use App\Enums\FileTableEnum;
 use App\Enums\FileTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,7 @@ class File extends Model
         'table_id',
         'type',
         'link',
+        'status',
     ];
 
 //    public function cars(): HasMany
@@ -76,20 +78,21 @@ class File extends Model
         return $checkUserLicenseCar === 2;
     }
 
-    public function updateOrCreate($table, $table_id, $type, $value): void
+    public function updateOrCreate($table, $table_id, $type, $param, $status): void
     {
         $file = self::query()->clone()
             ->where('table', $table)
             ->where('table_id', $table_id)
             ->where('type', $type)
             ->first();
-        $link = Storage::disk('public')->putFile('users', $value);
+        $link = Storage::disk('public')->putFile('users', $param);
         if ($file === null) {
             self::query()->create([
                 'table'    => $table,
                 'table_id' => $table_id,
                 'type'     => $type,
                 'link'     => $link,
+                'status'   => $status,
             ]);
         } else {
             self::query()

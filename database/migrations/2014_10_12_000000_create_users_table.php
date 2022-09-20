@@ -18,8 +18,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('gender')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('address')->nullable();
+            $table->string('phone')->nullable()->unique();
             $table->string('email')->unique();
             $table->string('password')->nullable();
             $table->tinyInteger('role')->default(UserRoleEnum::USER);

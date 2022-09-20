@@ -13,9 +13,9 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12 ml-auto mr-auto">
-                                <label for="select-address">Tỉnh/TP</label>
-                                <select class="form-control select-address" name="address"
-                                        id='select-address'></select>
+                                <label for="select-city">Tỉnh/TP</label>
+                                <select class="form-control select-city" name="city"
+                                        id='select-city'></select>
                             </div>
                             <div class="col-md-12 ml-auto mr-auto">
                                 <label for="date_start">Ngày bắt đầu</label>
@@ -57,43 +57,18 @@
                 $('#date_end').datepicker('setStartDate', date_end);
             });
         }
-        function loadAddress() {
-            $("#select-address").select2();
-            let address = '<option selected value="">Tỉnh/TP</option>';
-            @foreach ($addressCars as $each)
-                address += `<option>{{$each}}</option>`;
+        function loadCity() {
+            $("#select-city").select2();
+            let city = '<option selected value="">Tỉnh/TP</option>';
+            @foreach ($cities as $each)
+                city += `<option>{{$each}}</option>`;
             @endforeach
-            $("#select-address").append(address);
+            $("#select-city").append(city);
         }
         $(document).ready(async function () {
             $('#modal-car-search').modal('show')
-            loadAddress();
+            loadCity();
             conditionalDateEnd();
-
-            {{--$("#form-list-car").validate({--}}
-            {{--    submitHandler: function (form) {--}}
-            {{--        $.ajax({--}}
-            {{--            url: $(form).attr('action'),--}}
-            {{--            type: 'GET',--}}
-            {{--            dataType: 'json',--}}
-            {{--            data: $(form).serialize(),--}}
-            {{--            success: function () {--}}
-            {{--                window.location = "{{route('admin.cars.index')}}" + '?' + $(form).serialize();--}}
-            {{--            },--}}
-            {{--            error: function (response) {--}}
-            {{--                const errors = Object.values(response.responseJSON.errors);--}}
-            {{--                let string = '<ul>';--}}
-            {{--                errors.forEach(function (each) {--}}
-            {{--                    each.forEach(function (error) {--}}
-            {{--                        string += `<li>${error}</li>`;--}}
-            {{--                    });--}}
-            {{--                });--}}
-            {{--                string += '</ul>';--}}
-            {{--                notifyError(string);--}}
-            {{--            },--}}
-            {{--        });--}}
-            {{--    }--}}
-            {{--});--}}
         });
     </script>
 @endpush

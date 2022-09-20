@@ -15,6 +15,7 @@ Route::group([
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('/{user}', [UserController::class, 'show'])->name('show');
     Route::get('/edit/{user?}', [UserController::class, 'edit'])->name('edit');
+    Route::put('/edit/{user}', [UserController::class, 'update'])->name('update');
 });
 
 Route::group([
@@ -27,7 +28,6 @@ Route::group([
     Route::get('/edit/{car?}', [CarController::class, 'edit'])->name('edit');
     Route::put('/edit/{car}', [CarController::class, 'update'])->name('update');
     Route::delete('/{car}', [CarController::class, 'destroy'])->name('destroy');
-
 });
 Route::group([
     'as'     => 'bills.',
@@ -35,11 +35,10 @@ Route::group([
 ], static function() {
     Route::get('/', [BillController::class, 'index'])->name('index');
     Route::get('/findCars', [CarController::class, 'findCars'])->name('find.cars');
-    Route::get('/show/{bill?}', [BillController::class, 'show'])->name('show');
-    Route::get('/create/{car?}', [BillController::class, 'create'])->name('create');
+    Route::get('/show/{bills?}', [BillController::class, 'show'])->name('show');
     Route::post('/create/{car}', [BillController::class, 'store'])->name('store');
     Route::get('/edit/{car?}', [BillController::class, 'edit'])->name('edit');
     Route::put('/edit/{car}', [BillController::class, 'update'])->name('update');
-    Route::delete('/{bill}', [BillController::class, 'destroy'])->name('destroy');
+    Route::delete('/{bills}', [BillController::class, 'destroy'])->name('destroy');
 });
 

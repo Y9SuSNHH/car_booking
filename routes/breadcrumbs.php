@@ -37,19 +37,19 @@ Breadcrumbs::for('car.edit', static function ($trail) {
 });
 
 // Home > Bill
-Breadcrumbs::for('bill', static function ($trail) {
+Breadcrumbs::for('bills', static function ($trail) {
     $trail->parent('home');
     $trail->push('Quản lý hóa đơn', route('admin.bills.index'));
 });
 
 // Home > Bill > Show
-Breadcrumbs::for('bill.show', static function ($trail) {
-    $trail->parent('bill');
+Breadcrumbs::for('bills.show', static function ($trail) {
+    $trail->parent('bills');
     $trail->push('Xem', route('admin.bills.show'));
 });
 
 // Home > Bill > Edit
-Breadcrumbs::for('bill.edit', static function ($trail) {
-    $trail->parent('bill');
+Breadcrumbs::for('bills.edit', static function ($trail) {
+    $trail->parent('bills');
     $trail->push('Sửa', route('admin.bills.edit'));
 });

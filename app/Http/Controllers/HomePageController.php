@@ -13,24 +13,24 @@ class HomePageController extends Controller
 {
     public function welcome(): Factory|View|Application
     {
-        $addressCars = Car::query()->clone()
-            ->groupBy('address')
-            ->pluck('address');
+        $cities = Car::query()->clone()
+            ->groupBy('city')
+            ->pluck('city');
 
         return view('welcome', [
-            'addressCars' => $addressCars,
+            'cities' => $cities,
         ]);
     }
 
     public function index(FindRequest $request): Factory|View|Application
     {
-        $address    = $request->get('address');
+        $city       = $request->get('city');
         $date_start = date('Y-m-d', strtotime($request->get('date_start')));
         $date_end   = date('Y-m-d', strtotime($request->get('date_end')));
 
         $query = Car::query()->clone();
-        if (!empty($address) && $address !== 'All') {
-            $query->where('address', $address);
+        if (!empty($city) && $city !== 'All') {
+            $query->where('city', $city);
         }
 
         $query->whereDoesntHave('bills', function ($query) use ($date_start, $date_end) {
@@ -39,13 +39,13 @@ class HomePageController extends Controller
                 $q->orwhereRaw("date_end   BETWEEN  CAST('$date_start' AS DATE) AND CAST('$date_end' AS DATE)");
             });
         });
-        $cars = $query->latest()->paginate(9);
+        $cars   = $query->latest()->paginate(9);
+        $cities = Car::query()->clone()
+            ->groupBy('city')
+            ->pluck('city');
 
-        $addressCars          = Car::query()->clone()
-            ->groupBy('address')
-            ->pluck('address');
         $session['find_cars'] = [
-            'address'    => $address,
+            'city'       => $city,
             'date_start' => $request->get('date_start'),
             'date_end'   => $request->get('date_end'),
         ];
@@ -55,8 +55,8 @@ class HomePageController extends Controller
         session($session);
 
         return view('index', [
-            'cars'        => $cars,
-            'addressCars' => $addressCars,
+            'cars'   => $cars,
+            'cities' => $cities,
         ]);
     }
 }

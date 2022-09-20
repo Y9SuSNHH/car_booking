@@ -80,19 +80,9 @@ class BillController extends Controller
         ]);
     }
 
-    public function create(Request $request, Car $car)
-    {
-        $user = User::create($request->except(['identity', 'license_car']));
-        return 1;
-    }
-
-    public function store(Request $request, Car $car)
-    {
-        dd(1);
-    }
-
     public function show($billId): Factory|ViewAlias|Application
     {
+        dd(1);
         return view("$this->role.$this->table.show", [
 //            'data' => $data,
         ]);

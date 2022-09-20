@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Car;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FindRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,24 @@ class FindRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'city' => [
+            'name'           => [
                 'required',
                 'string',
             ],
-            'date_start' => [
+            'gender'         => [
                 'required',
-                'date',
-                'after:today',
+                'boolean',
             ],
-            'date_end' => [
+            'phone'          => [
                 'required',
-                'date',
-                'after:date_start',
+                'numeric',
+                'min:8',
+            ],
+            'files'          => [
+                'array',
+            ],
+            'files.*'        => [
+                'image',
             ],
         ];
     }

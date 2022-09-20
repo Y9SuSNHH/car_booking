@@ -27,12 +27,6 @@
                                 <small>
                                     Giới tính: {{$user->gender ? 'Nam' : 'Nữ'}}
                                     <br>
-                                    Địa chỉ : {{$user->address2}} - {{$user->address}}
-                                    @if(empty($user->address2) || empty($user->address))
-                                        <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                           data-placement="top" title="Chưa điền đủ địa chỉ"></i>
-                                    @endif
-                                    <br>
                                     Số điện thoại: {{$user->phone}}
                                     @if(empty($user->phone))
                                         <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
@@ -59,7 +53,7 @@
                                 <i class="mdi mdi-eye-outline" id="identity"></i>
                                 @if($user->FileIdentity !== 'success')
                                     <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                       data-placement="top" title="CCCD chưa điền/duyệt"></i>
+                                       data-placement="top" title="CCCD chưa điền đủ/chưa duyệt"></i>
                                 @endif
                             </h4>
                         </div>
@@ -84,7 +78,7 @@
                                 <i class="mdi mdi-eye-outline" id="license-car"></i>
                                 @if($user->FileLicenseCar !== 'success')
                                     <i class="mdi dripicons-warning text-danger mdi-18px" data-toggle="tooltip"
-                                       data-placement="top" title="GPLX chưa điền/duyệt"></i>
+                                       data-placement="top" title="GPLX chưa điền đủ/chưa duyệt"></i>
                                 @endif
                             </h4>
                         </div>

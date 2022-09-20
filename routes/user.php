@@ -11,10 +11,11 @@ Route::get('/', function () {
 Route::get('/index', [UserController::class, 'index'])->name('index');
 Route::get('/edit', [UserController::class, 'edit'])->name('edit');
 Route::put('/edit', [UserController::class, 'update'])->name('update');
+
 Route::group([
     'as'     => 'bills.',
     'prefix' => 'bills',
 ], static function () {
     Route::get('/', [BillController::class, 'index'])->name('index');
-    Route::get('/show/{bill?}', [BillController::class, 'show'])->name('show');
+    Route::get('/show/{bills?}', [BillController::class, 'show'])->name('show');
 });

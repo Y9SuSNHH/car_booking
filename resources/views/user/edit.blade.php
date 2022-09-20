@@ -19,14 +19,23 @@
             </div>
             <div class="row">
                 <div class="col-md-6 ml-auto mr-auto">
-                    <form action="{{ route('user.update')}}" method="POST" enctype="multipart/form-data"
-                          class="settings-form">
+                    <div id="div-error-update" class="alert alert-danger d-none">
+                        <ul id="error-update">
+                        </ul>
+                    </div>
+                    <form action="{{ route('api.users.update',auth()->user()->id)}}" method="POST"
+                          enctype="multipart/form-data"
+                          class="settings-form" id="form-edit">
                         @method('PUT')
                         @csrf
                         <div class="form-group">
-                            <label for="name">Họ và tên</label>
-                            <input type="text" id="name" name="name" class="form-control border-input"
-                                   value="{{auth()->user()->name}}">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="name">Họ và tên</label>
+                                    <input type="text" id="name" name="name" class="form-control border-input"
+                                           value="{{auth()->user()->name}}">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
@@ -41,9 +50,10 @@
                                         <div class="col-5 ml-auto form-check-radio">
                                             <label class="form-check-label">
                                                 <input class="form-check-input" type="radio" name="gender"
-                                                       id="gender-male"
-                                                       value="1"
-                                                       checked>
+                                                       id="gender-male" value="1"
+                                                       @if($user->gender === 1)
+                                                           checked
+                                                    @endif>
                                                 Nam
                                                 <span class="form-check-sign"></span>
                                             </label>
@@ -51,8 +61,10 @@
                                         <div class="col-5 mr-auto form-check-radio">
                                             <label class="form-check-label">
                                                 <input class="form-check-input" type="radio" name="gender"
-                                                       id="gender-female"
-                                                       value="0">
+                                                       id="gender-female" value="0"
+                                                       @if($user->gender === 0)
+                                                           checked
+                                                    @endif>
                                                 Nữ
                                                 <span class="form-check-sign"></span>
                                             </label>
@@ -60,25 +72,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="select-address">Tỉnh/TP</label>
-                                    <select class="form-control select-address" name="address"
-                                            id='select-address'></select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="select-address2">Quận/Huyện</label>
-                                    <select class="form-control select-address2" name="address2"
-                                            id='select-address2'></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" class="form-control border-input"
-                                   value="{{auth()->user()->email}}">
                         </div>
                         <div class="form-group text-center">
                             <label for="">CCCD</label>
@@ -106,12 +99,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <img id="pic1" style="max-width: 200px; max-height:200px;"/>
-                                    <input type="file" name="identity_front" class="form-control-file"
+                                    <input type="file" name="files[IDENTITY_FRONT]" class="form-control-file"
                                            oninput="pic1.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                                 <div class="col-md-6">
                                     <img id="pic2" style="max-width: 200px; max-height:200px;"/>
-                                    <input type="file" name="identity_back" class="form-control-file"
+                                    <input type="file" name="files[IDENTITY_BACK]" class="form-control-file"
                                            oninput="pic2.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                             </div>
@@ -143,18 +136,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <img id="pic3" style="max-width: 200px; max-height:200px;"/>
-                                    <input type="file" name="license_car_front" class="form-control-file"
+                                    <input type="file" name="files[LICENSE_CAR_FRONT]" class="form-control-file"
                                            oninput="pic3.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                                 <div class="col-md-6">
                                     <img id="pic4" style="max-width: 200px; max-height:200px;"/>
-                                    <input type="file" name="license_car_back" class="form-control-file"
+                                    <input type="file" name="files[LICENSE_CAR_BACK]" class="form-control-file"
                                            oninput="pic4.src=window.URL.createObjectURL(this.files[0])">
                                 </div>
                             </div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-wd btn-info btn-round">Thay đổi</button>
+                            <button type="submit" class="btn btn-wd btn-info btn-round">Cập nhật</button>
                         </div>
                     </form>
                 </div>
@@ -163,58 +156,61 @@
     </div>
 @endsection
 @push('js')
-    <script type="text/javascript" src="{{asset('js/jasny-bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script src="{{asset('js/helper.js')}}"></script>
-    <script src="{{asset('js/pages/demo.toastr.js')}}"></script>
     <script type="text/javascript">
-        async function loadDistrict(parent) {
-            $("#select-address2").empty();
-            const path = $("#select-address option:selected").data('path');
-            const response = await fetch('{{ asset('locations/') }}' + path);
-            const address2 = await response.json();
-            const district = "{{$user->address2}}";
-            $.each(address2.district, function (index, each) {
-                let selected = '';
-                let select = each.pre + ' ' + each.name;
-                if (district === select) {
-                    selected = 'selected';
-                }
-                $("#select-address2").append(`
-                        <option ${selected}>
-                            ${each.pre} ${each.name}
-                        </option>`);
-            })
+        function showError(errors) {
+            let string = '<ul>';
+            if (Array.isArray(errors)) {
+                errors.forEach(function (each) {
+                    each.forEach(function (error) {
+                        string += `<li>${error}</li>`;
+                    });
+                });
+            } else {
+                string += `<li>${errors}</li>`;
+            }
+            string += '</ul>';
+            $("#error-update").html(string);
+            $("#div-error-update").removeClass("d-none").show();
         }
 
-        function UserUpdate() {
-            @if (session('UserUpdate'))
-            notifyInfo(`{{session('UserUpdate')}}`);
-            @endif
+        function submitForm() {
+            const obj = $("#form-edit");
+            const formData = new FormData(obj[0]);
+            $.ajax({
+                url: obj.attr('action'),
+                type: 'POST',
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false,
+                async: false,
+                cache: false,
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    notifySuccess(response.message);
+                    setTimeout("window.location=`{{route('user.edit')}}`", 3000);
+                },
+                error: function (response) {
+                    let errors;
+                    if (response.responseJSON.errors) {
+                        errors = Object.values(response.responseJSON.errors);
+                        showError(errors);
+                    } else {
+                        errors = response.responseJSON.message;
+                        showError(errors);
+                    }
+                },
+            });
         }
 
         $(document).ready(async function () {
-            UserUpdate();
-
-            $("#select-address").select2();
-            const response = await fetch('{{asset('locations/index.json')}}');
-            const address = await response.json();
-            const city = "{{$user->address}}";
-            $.each(address, function (index, each) {
-                let selected = '';
-                if (city === index) {
-                    selected = 'selected';
+            $("#form-edit").validate({
+                submitHandler: function () {
+                    submitForm();
                 }
-                $("#select-address").append(`
-                <option value='${index}' data-path='${each.file_path}' ${selected}>
-                    ${index}
-                </option>`);
-            })
-
-            $("#select-address").change(function () {
-                loadDistrict();
             });
-            $("#select-address2").select2();
-            await loadDistrict();
         });
     </script>
 @endpush

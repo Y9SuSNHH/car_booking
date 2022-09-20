@@ -52,6 +52,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Bill withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Bill withoutTrashed()
  * @method static create(array $array)
+ * @method static insert(array $arr)
  * @mixin \Eloquent
  * @property-read int $generate_status
  */
@@ -65,6 +66,7 @@ class Bill extends Model
         "car_id",
         "date_start",
         "date_end",
+        "address",
         "total_price",
         "status",
     ];

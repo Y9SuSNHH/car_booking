@@ -1,6 +1,6 @@
 @extends('layout_backend.master')
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('bill.edit') }}
+    {{ Breadcrumbs::render('bills.edit') }}
 @endsection
 @section('content')
 @endsection

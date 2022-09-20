@@ -35,13 +35,13 @@
                                         <a href="#account-2" data-toggle="tab"
                                            class="nav-link rounded-0 pt-2 pb-2 active">
                                             <i class="mdi mdi-account-circle mr-1"></i>
-                                            <span class="d-none d-sm-inline">Tài khoản</span>
+                                            <span class="d-none d-sm-inline">Thông tin</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#profile-tab-2" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
                                             <i class="mdi mdi-face-profile mr-1"></i>
-                                            <span class="d-none d-sm-inline">Thông tin</span>
+                                            <span class="d-none d-sm-inline">Tài khoản</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -60,65 +60,43 @@
                                             class="bar progress-bar progress-bar-striped progress-bar-animated bg-success"
                                             style="width: 33.3333%;"></div>
                                     </div>
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <div class="tab-pane active" id="account-2">
                                         @csrf
                                         <div class="row">
                                             <div class="col-12">
-                                                @auth
-                                                    <div class="form-group row mb-3">
-                                                        <label class="col-md-3 col-form-label" for="name">Họ và
-                                                            tên</label>
-                                                        <div class="col-md-9">
+                                                <div class="form-group row mb-3">
+                                                    <label class="col-md-3 col-form-label" for="name">Họ và
+                                                        tên</label>
+                                                    <div class="col-md-9">
+                                                        @auth
                                                             <input type="text" class="form-control" id="name"
-                                                                   name="name"
-                                                                   value="{{auth()->user()->name}}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row mb-3">
-                                                        <label class="col-md-3 col-form-label" for="email">Email</label>
-                                                        <div class="col-md-9">
-                                                            <input type="email" id="email" name="email"
-                                                                   class="form-control"
-                                                                   value="{{auth()->user()->email}}">
-                                                        </div>
-                                                    </div>
-                                                @endauth
-                                                @guest
-                                                    <div class="form-group row mb-3">
-                                                        <label class="col-md-3 col-form-label" for="name">Họ và
-                                                            tên</label>
-                                                        <div class="col-md-9">
+                                                                   name="name" value="{{auth()->user()->name}}">
+                                                        @endauth
+                                                        @guest
                                                             <input type="text" class="form-control" id="name"
                                                                    name="name">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row mb-3">
-                                                        <label class="col-md-3 col-form-label" for="email">Email</label>
-                                                        <div class="col-md-9">
-                                                            <input type="email" id="email" name="email"
-                                                                   class="form-control">
-                                                        </div>
-                                                    </div>
-                                                @endguest
-                                                <div class="form-group row mb-3">
-                                                    <label class="col-md-3 col-form-label" for="password">Mật
-                                                        khẩu</label>
-                                                    <div class="col-md-9">
-                                                        <input type="password" id="password" name="password"
-                                                               class="form-control">
+                                                        @endguest
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
                                                     <label class="col-md-3 col-form-label" for="gender">Giới
                                                         tính</label>
-                                                    <br><br><br>
-                                                    <div class="col-md-9">
+                                                    <div class="mt-2 col-md-9">
                                                         <div class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" id="genderNam" name="gender"
-                                                                       class="custom-control-input"
-                                                                       value="1" checked>
-                                                                <label class="custom-control-label"
-                                                                       for="genderNam">Nam</label>
+                                                            <input type="radio" id="genderNam" name="gender"
+                                                                   class="custom-control-input"
+                                                                   value="1" checked>
+                                                            <label class="custom-control-label"
+                                                                   for="genderNam">Nam</label>
                                                         </div>
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input type="radio" id="genderNữ" name="gender"
@@ -129,41 +107,46 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="tab-pane" id="profile-tab-2">
-                                        <div class="row">
-                                            <div class="col-12">
                                                 <div class="form-group row mb-3">
                                                     <label class="col-md-3 col-form-label" for="phone">Số điện
                                                         thoại</label>
                                                     <div class="col-md-9">
-                                                        <input type="number" id="phone" name="phone" class="form-control"
+                                                        <input type="number" id="phone" name="phone"
+                                                               class="form-control"
                                                                value="">
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-3">
-                                                    <label class="col-md-3 col-form-label"
-                                                           for="select-address">Tỉnh/TP</label>
-                                                    <div class="col-md-9">
-                                                        <select class="form-control select-address" name="address"
-                                                                id='select-address'></select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label class="col-md-3 col-form-label"
-                                                           for="select-address2">Quận/Huyện</label>
-                                                    <div class="col-md-9">
-                                                        <select class="form-control select-address2" name="address2"
-                                                                id='select-address2'></select>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end col -->
-                                        </div> <!-- end row -->
+                                            </div>
+                                        </div>
                                     </div>
-
+                                    <div class="tab-pane" id="profile-tab-2">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group row mb-3">
+                                                    <label class="col-md-3 col-form-label" for="email">Email</label>
+                                                    <div class="col-md-9">
+                                                        @auth
+                                                            <input type="email" id="email" name="email"
+                                                                   class="form-control" disabled
+                                                                   value="{{auth()->user()->email}}">
+                                                        @endauth
+                                                        @guest
+                                                            <input type="email" id="email" name="email"
+                                                                   class="form-control">
+                                                        @endguest
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-3">
+                                                    <label class="col-md-3 col-form-label" for="password">Mật
+                                                        khẩu</label>
+                                                    <div class="col-md-9">
+                                                        <input type="password" id="password" name="password"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="tab-pane" id="finish-2">
                                         <div class="row">
                                             <div class="col-12">
@@ -248,38 +231,6 @@
             document.getElementById("a").style.display = 'block';
         }
     }
-
-    async function loadDistrict(parent) {
-        $("#select-address2").empty();
-        const path = $("#select-address option:selected").data('path');
-        const response = await fetch('{{ asset('locations/') }}' + path);
-        const address2 = await response.json();
-        $.each(address2.district, function (index, each) {
-            $("#select-address2").append(`
-                        <option>
-                            ${each.pre} ${each.name}
-                        </option>`);
-        })
-    }
-
-    $(document).ready(async function () {
-        $("#select-address").select2();
-        const response = await fetch('{{asset('locations/index.json')}}');
-        const address = await response.json();
-        $.each(address, function (index, each) {
-            $("#select-address").append(`
-                <option value='${index}' data-path='${each.file_path}'>
-                    ${index}
-                </option>`);
-        })
-
-        $("#select-address").change(function () {
-            loadDistrict();
-        });
-        $("#select-address2").select2();
-        await loadDistrict();
-    });
-
 </script>
 </body>
 </html>

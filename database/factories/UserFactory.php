@@ -20,14 +20,12 @@ class UserFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'name'           => $this->faker->name,
+            'name'           => $this->faker->firstName . ' ' . $this->faker->lastName,
             'gender'         => $this->faker->boolean(),
             'phone'          => $this->faker->phoneNumber,
-            'address'        => $this->faker->city,
-            'address2'       => $this->faker->streetName,
             'email'          => $this->faker->unique()->safeEmail,
             'password'       => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),

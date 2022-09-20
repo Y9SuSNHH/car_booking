@@ -1,6 +1,6 @@
 @extends('layout_backend.master')
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('bill') }}
+    {{ Breadcrumbs::render('bills') }}
 @endsection
 @section('content')
     <div class="row">
@@ -94,7 +94,7 @@
                                             <td>
                                                 {{$each->car->name}}
                                                 <br>
-                                                {{$each->car->address2}} - {{$each->car->address}}
+                                                {{$each->car->district}} - {{$each->car->city}}
                                             </td>
                                             <td>
                                                 <span

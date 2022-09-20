@@ -68,8 +68,6 @@ class User extends Model implements AuthenticatableContract
         'name',
         'gender',
         'phone',
-        'address2',
-        'address',
         'email',
         'password',
     ];

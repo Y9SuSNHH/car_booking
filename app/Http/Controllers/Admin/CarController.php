@@ -43,7 +43,7 @@ class CarController extends Controller
 
     public function index(Request $request): Factory|ViewAlias|Application
     {
-        $search['find']['address']    = $request->get('address');
+        $search['find']['city']       = $request->get('city');
         $search['find']['date_start'] = $request->get('date_start');
         $search['find']['date_end']   = $request->get('date_end');
         $search['filter']['name']     = $request->get('name');
@@ -56,7 +56,7 @@ class CarController extends Controller
             $date_start = date('Y-m-d', strtotime($search['find']['date_start']));
             $date_end   = date('Y-m-d', strtotime($search['find']['date_end']));
 
-            $query->where('address', $search['find']['address'])
+            $query->where('city', $search['find']['city'])
                 ->where('status', CarStatusEnum::READY)
                 ->whereDoesntHave('bills', function ($query) use ($date_start, $date_end) {
                     $query->where(function ($q) use ($date_start, $date_end) {
@@ -136,13 +136,11 @@ class CarController extends Controller
         $types  = CarTypeEnum::getArrayView();
         $slots  = [4, 5, 7];
         $status = CarStatusEnum::getArrayView();
-        $errors = [];
         return view("$this->role.$this->table.edit", [
             'each'   => $each,
             'types'  => $types,
             'slots'  => $slots,
             'status' => $status,
-            //            'errors' => $errors,
         ]);
     }
 
@@ -175,13 +173,14 @@ class CarController extends Controller
         }
         return redirect()->route("$this->role.$this->table.index")->with('car_message', 'Sửa xe thành công');
     }
+
     public function findCars(): Factory|ViewAlias|Application
     {
-        $addressCars = Car::query()->clone()
-            ->groupBy('address')
-            ->pluck('address');
+        $cities = Car::query()->clone()
+            ->groupBy('city')
+            ->pluck('city');
         return view("$this->role.$this->table.find", [
-            "addressCars" => $addressCars,
+            "cities" => $cities,
         ]);
     }
 }

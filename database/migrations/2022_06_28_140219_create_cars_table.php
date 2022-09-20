@@ -17,8 +17,8 @@ class CreateCarsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('image');
-            $table->string('address');
-            $table->string('address2');
+            $table->string('city');
+            $table->string('district');
             $table->smallInteger('type');
             $table->smallInteger('slot');
             $table->boolean('transmission');

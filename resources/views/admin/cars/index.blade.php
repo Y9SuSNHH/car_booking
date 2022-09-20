@@ -8,143 +8,155 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-xl-4">
+                        <div class="col-xl-12">
                             <form class="form-row" id="form-filter">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-3">
                                     <label for="select-name">Tên xe</label>
                                     <select class="form-control select-filter" name="name" id='select-name'>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label for="select-status">Trạng thái</label>
-                                    <select class="form-control select-filter" name="status" id='select-status'>
-                                        <option value="All" selected>Tất cả</option>
-                                        @foreach($status as $key => $value)
-                                            <option value="{{$key}}"
-                                                    @if((string)$key === $search['filter']['status'])
-                                                        selected
-                                                @endif>
-                                                {{$value}}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                @if ($isFind !== 0)
+                                    <div class="form-group col-md-3">
+                                        <label for="select-status">Trạng thái</label>
+                                        <select class="form-control select-filter" name="status" id='select-status'>
+                                            <option value="All" selected>Tất cả</option>
+                                            @foreach($status as $key => $value)
+                                                <option value="{{$key}}"
+                                                        @if((string)$key === $search['filter']['status'])
+                                                            selected
+                                                    @endif>
+                                                    {{$value}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                                <div class="form-group col-md-3">
+                                    <label for="select-city">Tỉnh/TP</label>
+                                    <select class="form-control select-city" name="city"
+                                            id='select-city'></select>
                                 </div>
-                                <input type="text" hidden name="address" value="{{$search['find']['address']}}">
-                                <input type="text" hidden name="date_start" value="{{$search['find']['date_start']}}">
-                                <input type="text" hidden name="date_end" value="{{$search['find']['date_start']}}">
+                                <div class="form-group col-md-3">
+                                    <label for="select-district">Quận/Huyện</label>
+                                    <select class="form-control select-district" name="district"
+                                            id='select-district'></select>
+                                </div>
+                                <input type="text" hidden name="city" value="{{$search['find']['city']}}">
+                                <input type="text" hidden name="date_start"
+                                       value="{{$search['find']['date_start']}}">
+                                <input type="text" hidden name="date_end"
+                                       value="{{$search['find']['date_start']}}">
                             </form>
-                        </div>
-                        <div class="col-xl-8">
-                            <br>
-                            <nav class="float-right">
-                                <ul class="pagination pagination-rounded mb-0">
-                                    {{$data->appends(request()->query())->links()}}
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="header-title">
-                        <div class="form-group col-md-2">
-                            <a href="{{ route('admin.cars.create') }}" class="btn btn-success">Thêm xe</a>
-                        </div>
-                    </div>
-                    <div class="tab-content" style="overflow-y: auto !important;">
-                        <div class="tab-pane show active" id="responsive-preview">
-                            <div class="table-responsive">
-                                <table id="table-data" class="table table-striped table-centered mb-0   ">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Biển số</th>
-                                        <th scope="col">Thông tin xe</th>
-                                        <th scope="col">Đặc điểm</th>
-                                        <th scope="col">
-                                            Giá thuê 1 ngày
-                                            <br>
-                                            Phí bảo hiểm - dịch vụ
-                                            <br>
-                                            Ngày thêm
-                                        </th>
-                                        <th scope="col">Trạng thái</th>
-                                        <th scope="col">Xử lý</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($data as $each)
-                                        <tr>
-                                            <td>{{$each->id}}</td>
-                                            <td>
-                                                <img src="{{asset("storage").'/'. $each->image}}"
-                                                     class="img-fluid img-thumbnail p-1">
-                                            </td>
-                                            <td>
-                                                {{$each->name}}
-                                                <br>
-                                                {{$each->address2}} - {{$each->address}}
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-warning-lighten">{{$each->type}} </span>
-                                                -
-                                                <span class="badge badge-warning-lighten">{{$each->slot}} chỗ</span>
-                                                <br>
-                                                @if ($each->transmission === 0)
-                                                    <span class="badge badge-primary">Số tự động</span>
-                                                @else
-                                                    <span class="badge badge-info">Số sàn</span>
-                                                @endif
-                                                <br>
-                                                @if ($each->fuel === 0)
-                                                    <span class="badge badge-dark-lighten">Dầu - {{$each->fuel_comsumpiton}} L/km</span>
-                                                @else
-                                                    <span class="badge badge-success-lighten">Xăng - {{$each->fuel_comsumpiton}} L/km</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-success">{{$each->price_1_day}} K</span>
-                                                <br>
-                                                <span
-                                                    class="badge badge-secondary">{{$each->price_insure}}đ - {{$each->price_service}}đ</span>
-                                                <br>
-                                                <span
-                                                    class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>
-                                            </td>
-                                            <td>
-                                                @if ($isFind === 0)
-                                                    <button type='button'
-                                                            id='btn-modal-form-create-bill-" + each.id + "'
-                                                            data-toggle='modal' data-target='#modal-form-create-bill'
-                                                            class='btn btn-outline-info'><i class='uil-money-bill'></i>
-                                                    </button>
-                                                @elseif($isFind === 3)
-                                                    @if ($each->status === 0)
-                                                        <i class="mdi mdi-circle text-success"></i>
-                                                    @else
-                                                        <i class="mdi mdi-circle text-warning"></i>
-                                                    @endif
-                                                    {{$each->StatusName}}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{route("api.cars.show",$each->id)}}" class='action-icon'
-                                                   data-toggle='modal' data-target='#modal-each-car'><i
-                                                        class="mdi mdi-eye"></i></a>
-                                                <a href="{{route("admin.cars.edit",$each->id)}}" class='action-icon'><i
-                                                        class='mdi mdi-pencil'></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="card-body">
+                <div class="header-title">
+                    <div class="form-group col-md-2">
+                        <a href="{{ route('admin.cars.create') }}" class="btn btn-success">Thêm xe</a>
+                    </div>
+                </div>
+                <div class="tab-content" style="overflow-y: auto !important;">
+                    <div class="tab-pane show active" id="responsive-preview">
+                        <div class="table-responsive">
+                            <table id="table-data" class="table table-striped table-centered mb-0   ">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Biển số</th>
+                                    <th scope="col">Thông tin xe</th>
+                                    <th scope="col">Đặc điểm</th>
+                                    <th scope="col">
+                                        Giá thuê 1 ngày
+                                        <br>
+                                        Phí bảo hiểm - dịch vụ
+                                        <br>
+                                        Ngày thêm
+                                    </th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Xử lý</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($data as $each)
+                                    <tr>
+                                        <td>{{$each->id}}</td>
+                                        <td>
+                                            <img src="{{asset("storage").'/'. $each->image}}"
+                                                 class="img-fluid img-thumbnail p-1">
+                                        </td>
+                                        <td>
+                                            {{$each->name}}
+                                            <br>
+                                            {{$each->district}} - {{$each->city}}
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-warning-lighten">{{$each->type}} </span>
+                                            -
+                                            <span class="badge badge-warning-lighten">{{$each->slot}} chỗ</span>
+                                            <br>
+                                            @if ($each->transmission === 0)
+                                                <span class="badge badge-primary">Số tự động</span>
+                                            @else
+                                                <span class="badge badge-info">Số sàn</span>
+                                            @endif
+                                            <br>
+                                            @if ($each->fuel === 0)
+                                                <span class="badge badge-dark-lighten">Dầu - {{$each->fuel_comsumpiton}} L/km</span>
+                                            @else
+                                                <span class="badge badge-success-lighten">Xăng - {{$each->fuel_comsumpiton}} L/km</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-success">{{$each->price_1_day}} K</span>
+                                            <br>
+                                            <span
+                                                class="badge badge-secondary">{{$each->price_insure}}đ - {{$each->price_service}}đ</span>
+                                            <br>
+                                            <span
+                                                class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>
+                                        </td>
+                                        <td>
+                                            @if ($isFind === 0)
+                                                <button type="button" data-toggle="modal" class="btn btn-outline-info"
+                                                        data-target="#modal-form-create-bill"
+                                                        onclick="modalBillCreate('{{$each->id}}')">
+                                                    <i class="uil-money-bill"></i>
+                                                </button>
+                                            @elseif($isFind === 3)
+                                                @if ($each->status === 0)
+                                                    <i class="mdi mdi-circle text-success"></i>
+                                                @else
+                                                    <i class="mdi mdi-circle text-warning"></i>
+                                                @endif
+                                                {{$each->StatusName}}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{route("api.cars.show",$each->id)}}" class='action-icon'
+                                               data-toggle='modal' data-target='#modal-each-car'><i
+                                                    class="mdi mdi-eye"></i></a>
+                                            <a href="{{route("admin.cars.edit",$each->id)}}" class='action-icon'><i
+                                                    class='mdi mdi-pencil'></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <ul class="pagination pagination-rounded mb-0">
+                        {{$data->appends(request()->query())->links()}}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-
     <div class="modal fade" id="modal-each-car" tabindex="-1" role="dialog"
          aria-labelledby="scrollableModalTitle"
          aria-hidden="true">
@@ -415,121 +427,170 @@
     </div>
     <div id="modal-form-create-bill" class="modal fade bd-example-modal-lg"
          tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nhập thông tin khách hàng</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal-dialog modal-full-width" role="document">
+            <div class="modal-content bg-transparent">
+                <div class="modal-body">
+                    <form action="" id="form-bills-create">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="modal-title">
+                                            Nhập thông tin khách hàng
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                ×
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="div-error-update" class="alert alert-danger d-none">
+                                            <ul id="error-update">
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <label for="name">Họ và tên</label>
+                                                <input type="text" class="form-control"
+                                                       id="name" name="name">
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <label for="phone">Số điện thoại</label>
+                                                <input type="number" id="phone" name="phone" class="form-control">
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <label>Giới tinh</label>
+                                                <div class="mt-2">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input class="custom-control-input" type="radio" name="gender"
+                                                               id="genderMale" value="1" checked>
+                                                        <label class="custom-control-label"
+                                                               for="genderMale">Nam</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input class="custom-control-input" type="radio" name="gender"
+                                                               id="genderFemale" value="0">
+                                                        <label class="custom-control-label"
+                                                               for="genderFemale">Nữ</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Căn cước công dân</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <h6>Mặt trước</h6>
+                                                <input type="file" name="files[IDENTITY_FRONT]" id="identity"
+                                                       class="form-control-file"
+                                                       oninput="identity1.src=window.URL.createObjectURL(this.files[0])">
+                                                <img id="identity1"
+                                                     style="max-width: 300px; max-height:200px;"/>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <h6>Mặt sau</h6>
+                                                <input type="file" name="files[IDENTITY_BACK]" class="form-control-file"
+                                                       oninput="identity2.src=window.URL.createObjectURL(this.files[0])">
+                                                <img id="identity2"
+                                                     style="max-width: 300px; max-height:200px;"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Bằng lái xe</label>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <h6>Mặt trước</h6>
+                                                <input type="file" name="files[LICENSE_CAR_FRONT]" id="identity"
+                                                       class="form-control-file"
+                                                       oninput="license_car1.src=window.URL.createObjectURL(this.files[0])">
+                                                <img id="license_car1"
+                                                     style="max-width: 300px; max-height:200px;"/>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <h6>Mặt sau</h6>
+                                                <input type="file" name="files[LICENSE_CAR_BACK]"
+                                                       class="form-control-file"
+                                                       oninput="license_car2.src=window.URL.createObjectURL(this.files[0])">
+                                                <img id="license_car2"
+                                                     style="max-width: 300px; max-height:200px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="modal-title">Chi phí hóa đơn</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 float-left">
+                                                <h6>Đơn giá thuê</h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="float-right">
+                                                    <span id="price_1_day"></span> /ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 float-left">
+                                                <h6>Phí dịch vụ</h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="float-right">
+                                                    <span id="price_service"></span> /ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 float-left">
+                                                <h6>Phí bảo hiểm</h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="float-right">
+                                                    <span id="price_insure"></span> /ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6 float-left">
+                                                <h6>Tổng phí thuê xe</h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="float-right">
+                                                    <span id="price"></span>  x <span id="total-date"></span> ngày
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6 float-left">
+                                                <h6>Tổng tiền</h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="float-right">
+                                                    <span id="total-price"></span> đ
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-success">Tạo hóa
+                                                đơn
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form action="" id="action-bill-store">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <label for="name">Họ và tên</label>
-                                <input type="text" class="form-control"
-                                       id="name" name="name">
-                            </div>
-                            <div class="col">
-                                <div class="row">
-                                    <label>Giới tính</label>
-                                </div>
-                                <div class="row">
-                                    <div
-                                        class="form-check form-check-inline custom-control custom-radio custom-control-inline">
-                                        <input class="custom-control-input"
-                                               type="radio"
-                                               name="gender"
-                                               id="genderMale"
-                                               value="1" checked>
-                                        <label class="custom-control-label"
-                                               for="genderMale">Nam</label>
-                                    </div>
-                                    <div
-                                        class="form-check form-check-inline custom-control custom-radio custom-control-inline">
-                                        <input class="custom-control-input"
-                                               type="radio"
-                                               name="gender"
-                                               id="genderFemale"
-                                               value="0">
-                                        <label class="custom-control-label"
-                                               for="genderFemale">Nữ</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label for="phone">Số điện
-                                    thoại</label>
-                                <input type="number" id="phone" name="phone" class="form-control"
-                                       value="">
-                            </div>
-                            <div class="col">
-                                <label for="select-address">Tỉnh/TP</label>
-                                <select class="form-control select-address" name="address"
-                                        id='select-address'></select>
-                            </div>
-                            <div class="col">
-                                <label for="select-address2">Quận/Huyện</label>
-                                <select class="form-control select-address2" name="address2"
-                                        id='select-address2'></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label>Căn cước công dân</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <input type="file" name="identity[]" id="identity"
-                                       class="form-control-file"
-                                       oninput="identity1.src=window.URL.createObjectURL(this.files[0])">
-                                <img id="identity1"
-                                     style="max-width: 300px; max-height:200px;"/>
-                            </div>
-                            <div class="col-6">
-                                <input type="file" name="identity[]"
-                                       class="form-control-file"
-                                       oninput="identity2.src=window.URL.createObjectURL(this.files[0])">
-                                <img id="identity2"
-                                     style="max-width: 300px; max-height:200px;"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label>Bằng lái xe</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <input type="file" name="license_car[]" id="identity"
-                                       class="form-control-file"
-                                       oninput="license_car1.src=window.URL.createObjectURL(this.files[0])">
-                                <img id="license_car1"
-                                     style="max-width: 300px; max-height:200px;"/>
-                            </div>
-                            <div class="col-6">
-                                <input type="file" name="license_car[]"
-                                       class="form-control-file"
-                                       oninput="license_car2.src=window.URL.createObjectURL(this.files[0])">
-                                <img id="license_car2"
-                                     style="max-width: 300px; max-height:200px;"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Close
-                        </button>
-                        <button type="submit" class="btn btn-success">Tạo hóa
-                            đơn
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -538,6 +599,37 @@
     <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
+        function changeDateType(date) {
+            let new_date = date.split('-');
+            let day = new_date[0];
+            let month = new_date[1];
+            let year = new_date[2];
+            return month + "/" + day + "/" + year;
+        }
+
+        function getDateDiff() {
+            let date_start = changeDateType(`{{$search['find']['date_start']}}`);
+            let date_end = changeDateType(`{{$search['find']['date_end']}}`);
+
+            date_start = new Date(date_start);
+            date_end = new Date(date_end);
+            let date_diff = new Date(date_end - date_start);
+            return date_diff / 1000 / 60 / 60 / 24;
+        }
+
+        async function loadDistrict(parent) {
+            $("#select-district").empty();
+            const path = $("#select-city option:selected").data('path');
+            const response = await fetch('{{ asset('locations/') }}' + path);
+            const district = await response.json();
+            $.each(district.district, function (index, each) {
+                $("#select-district").append(`
+                        <option>
+                            ${each.pre} ${each.name}
+                        </option>`);
+            })
+        }
+
         function carShow(carId) {
             $.ajax({
                 url: '{{ route('api.cars.show') }}/' + carId,
@@ -591,9 +683,108 @@
             });
         }
 
+        function modalBillCreate(car) {
+            let route = '{{route('api.bills.store')}}/' + car;
+            $('#form-bills-create').prop('action', route);
+            $('#form-bills-create').prop('method', 'POST');
+            crawlInfoBill(car);
+        }
+
+        function crawlPrice(price) {
+            return price.toLocaleString('vi');
+        }
+
+        function crawlInfoBill(carId) {
+            $.ajax({
+                url: '{{ route('api.cars.show') }}/' + carId,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (response) {
+                    $.each(response.data, function (index, each) {
+                        $("#price_1_day").html(crawlPrice(each.price_1_day));
+                        $("#price_insure").html(crawlPrice(each.price_insure));
+                        $("#price_service").html(crawlPrice(each.price_service));
+                        let price = each.price_1_day + each.price_insure + each.price_service;
+                        $("#price").html(crawlPrice(price));
+                        $("#total-date").html(getDateDiff());
+                        let total_price = getDateDiff() * price;
+                        $("#total-price").html(crawlPrice(total_price));
+                    })
+                }
+            });
+        }
+
+        function showError(errors) {
+            let string = '<ul>';
+            if (Array.isArray(errors)) {
+                errors.forEach(function (each) {
+                    each.forEach(function (error) {
+                        string += `<li>${error}</li>`;
+                    });
+                });
+            } else {
+                string += `<li>${errors}</li>`;
+            }
+            string += '</ul>';
+            $("#error-update").html(string);
+            $("#div-error-update").removeClass("d-none").show();
+        }
+
+        function submitFormBillStore() {
+            const obj = $("#form-bills-create");
+            const formData = new FormData(obj[0]);
+            $.ajax({
+                url: obj.attr('action'),
+                type: 'POST',
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false,
+                async: false,
+                cache: false,
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    let route = '{{route('admin.bills.show')}}/' + response.data;
+                    window.location.assign(route);
+                },
+                error: function (response) {
+                    let errors;
+                    if (response.responseJSON.errors) {
+                        errors = Object.values(response.responseJSON.errors);
+                        showError(errors);
+                    } else {
+                        errors = response.responseJSON.message;
+                        showError(errors);
+                    }
+                },
+            });
+        }
+
         $(document).ready(async function () {
             loadNames();
             filter();
+
+            $("#form-bills-create").validate({
+                submitHandler: function () {
+                    submitFormBillStore()
+                }
+            });
+
+            $("#select-city").select2();
+            const response = await fetch('{{asset('locations/index.json')}}');
+            const city = await response.json();
+            $.each(city, function (index, each) {
+                $("#select-city").append(`
+                <option value='${index}' data-path='${each.file_path}'>
+                    ${index}
+                </option>`);
+            })
+            $("#select-city").change(function () {
+                loadDistrict();
+            });
+            $("#select-district").select2();
+            await loadDistrict();
+
             @if (session('car_message'))
             notifySuccess(`{{ session('car_message') }}`);
             @endif

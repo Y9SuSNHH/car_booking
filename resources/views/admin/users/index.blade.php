@@ -8,46 +8,6 @@
             <div class="card">
                 <div class="card-header">
                     <form class="form-horizontal form-inline" id="form-filter">
-                        {{--                        <div class="form-group col-md-4">--}}
-                        {{--                            <label for="role" class="col-form-label">Role</label>--}}
-                        {{--                            <select class="form-control select-filter" name="role" id="role">--}}
-                        {{--                                <option selected value="All">Tất cả</option>--}}
-                        {{--                                @foreach($roles as $key => $value)--}}
-                        {{--                                    <option value="{{ $key }}"--}}
-                        {{--                                            @if((string)$key === $selectedRole) selected @endif--}}
-                        {{--                                    >--}}
-                        {{--                                        {{ $value }}--}}
-                        {{--                                    </option>--}}
-                        {{--                                @endforeach--}}
-                        {{--                            </select>--}}
-                        {{--                        </div>--}}
-
-                        <div class="form-group col-md-4">
-                            <label for="address" class="col-form-label">Tỉnh/TP</label>
-                            <select class="form-control select-filter" name="address" id="address">
-                                <option selected value="All">Tất cả</option>
-                                @foreach($positions as $position)
-                                    <option
-                                        @if($position === $selectedAddress) selected @endif
-                                    >
-                                        {{ $position }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="address2" class="col-form-label">Quận/Huyện</label>
-                            <select class="form-control select-filter" name="address2" id="address2">
-                                <option selected value="All">Tất cả</option>
-                                @foreach($cities as $city)
-                                    <option
-                                        @if($city === $selectedAddress2) selected @endif
-                                    >
-                                        {{ $city }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
                     </form>
                 </div>
                 <div class="card-body">
@@ -75,8 +35,6 @@
                                 <th>Thông tin</th>
                                 <th>CMND</th>
                                 <th>GPLX</th>
-                                <th>Quận/Huyện</th>
-                                <th>Tỉnh/TP</th>
                                 <th>Xử lý</th>
                             </tr>
                             </thead>
@@ -102,8 +60,6 @@
                                     <td>
                                         <i class="mdi mdi-circle text-{{$each->FileLicenseCar}}"></i>
                                     </td>
-                                    <td>{{$each->address2}}</td>
-                                    <td>{{$each->address}}</td>
                                     <td class="table-action">
                                         <a href="{{ route("admin.$table.show", $each)}}" class="action-icon"> <i
                                                 class="mdi mdi-eye"></i></a>

@@ -81,8 +81,8 @@ class Car extends Model
     protected $fillable = [
         'name',
         'image',
-        'address',
-        'address2',
+        'city',
+        'district',
         'type',
         'slot',
         'transmission',
@@ -152,7 +152,7 @@ class Car extends Model
         $i = 0;
         foreach ($find as $key => $value) {
             if ($value === null) {
-                $i += 1;
+                ++$i;
             }
         }
         return $i;

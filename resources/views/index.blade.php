@@ -11,8 +11,8 @@
                                   id="form-list-car">
                                 <div class="card-body">
                                     <div class="form-group label-floating">
-                                        <select class="form-control select-address" name="address"
-                                                id='select-address'></select>
+                                        <select class="form-control select-city" name="city"
+                                                id='select-city'></select>
                                     </div>
                                     <div class="form-group label-floating">
                                         <input type="text" name="date_start" id="date_start" class="form-control"
@@ -486,7 +486,7 @@
                                             <strong>Địa điểm nhận xe</strong>
                                             <h6>
                                                 <i class="dripicons-location"> <span
-                                                        id="address2"></span></i>
+                                                        id="district"></span></i>
                                             </h6>
                                             <small class="text-muted">Không hỗ trợ giao nhận xe tận nơi. Địa chỉ
                                                 cụ
@@ -596,7 +596,7 @@
                                     <div class="row font-weight-bold">
                                         <div class="col-sm-4">
                                             <div class="grid-container">
-                                                Tổng cộng
+                                                Tổng tiền
                                             </div>
                                         </div>
                                         <div class="col-sm-8">
@@ -728,20 +728,20 @@
             return date_diff / 1000 / 60 / 60 / 24;
         }
 
-        function loadAddress() {
-            $("#select-address").select2();
-            let address = '<option selected value="">Tỉnh/TP</option>';
+        function loadCity() {
+            $("#select-city").select2();
+            let city = '<option selected value="">Tỉnh/TP</option>';
             let selected = '';
-            @foreach ($addressCars as $each)
-                @if ($each === session()->get('find_cars.address'))
+            @foreach ($cities as $each)
+                @if ($each === session()->get('find_cars.city'))
                 selected = 'selected';
             @else
                 selected = '';
             @endif
-                address += "<option " + selected + `>{{$each}}</option>`;
+                city += "<option " + selected + `>{{$each}}</option>`;
 
             @endforeach
-            $("#select-address").append(address);
+            $("#select-city").append(city);
         }
 
         function setStartDateEnd() {
@@ -760,7 +760,7 @@
             date_start.datepicker('setStartDate', setStartDateStart);
             setStartDateEnd();
 
-            $("#select-address").change(function () {
+            $("#select-city").change(function () {
                 $("#form-list-car").submit();
             });
             $("#date_end").change(function () {
@@ -797,7 +797,7 @@
                         $('.carousel-indicators').append(li);
                         $('.carousel-inner').append(image);
                         $("#price_1_day_title").html(each.price_1_day / 1000);
-                        $("#address2").html(each.address2);
+                        $("#district").html(each.district);
                         $("#slot").html(each.slot);
                         $("#fuel").html(each.fuel ? '<span class="badge badge-default">Dầu</span>' : '<span class="badge badge-success">Xăng</span>');
                         $("#transmission").html(each.transmission ? '<span class="badge badge-info">Số tự động</span>' : '<span class="badge badge-dark">Số sàn</span>');
@@ -831,8 +831,8 @@
 
         function modalEachCar(car) {
             let route = '{{route('api.bills.store')}}/' + car;
-            $('#form-bill-store').prop('action', route);
-            $('#form-bill-store').prop('method', 'POST');
+            $('#form-bills-store').prop('action', route);
+            $('#form-bills-store').prop('method', 'POST');
             $('.carousel-indicators').empty();
             $('.carousel-inner').empty();
             carShow(car);
@@ -843,7 +843,7 @@
         }
 
         function submitFormBillStore() {
-            $("#form-bill-store").validate({
+            $("#form-bills-store").validate({
                 submitHandler: function (form) {
                     $.ajax({
                         url: $(form).attr('action'),
@@ -856,7 +856,7 @@
                         },
                         error: function (response) {
                             $('#modal-each-car').modal('hide');
-                            $("#error-bill-store").html(response.responseJSON.message);
+                            $("#error-bills-store").html(response.responseJSON.message);
                             $('#alert-user-index').modal('show');
                         },
                     });
@@ -876,12 +876,12 @@
         }
 
         $(document).ready(async function () {
-            loadAddress();
+            loadCity();
             loadDate();
             submitFormBillStore();
             $("#modal-each-car").on('hide.bs.modal', function () {
-                $('#form-bill-store').prop('action', '');
-                $('#form-bill-store').prop('method', '');
+                $('#form-bills-store').prop('action', '');
+                $('#form-bills-store').prop('method', '');
             });
         });
     </script>

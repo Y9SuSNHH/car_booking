@@ -29,7 +29,7 @@
             <hr>
             <div class="card-footer">
                 <div class="author small">
-                    <i class="dripicons-location" aria-hidden="true"></i> {{$car->address2}}
+                    <i class="dripicons-location" aria-hidden="true"></i> {{$car->district}}
                 </div>
             </div>
         </div>

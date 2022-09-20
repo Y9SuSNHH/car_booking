@@ -26,13 +26,13 @@
                                 <input type="text" name="name" id="name" class="form-control" value="{{$each->name}}">
                             </div>
                             <div class="form-group select-location col-3">
-                                <label for="select-address">Tỉnh/TP</label>
-                                <select class="form-control select-address" name="address" id='select-address'></select>
+                                <label for="select-city">Tỉnh/TP</label>
+                                <select class="form-control select-city" name="city" id='select-city'></select>
                             </div>
                             <div class="form-group select-location col-3">
-                                <label for="select-address2">Quận/Huyện</label>
-                                <select class="form-control select-address2" name="address2"
-                                        id='select-address2'></select>
+                                <label for="select-district">Quận/Huyện</label>
+                                <select class="form-control select-district" name="district"
+                                        id='select-district'></select>
                             </div>
                         </div>
                         <div class="form-row">
@@ -172,18 +172,18 @@
 @push('js')
     <script type="text/javascript">
         async function loadDistrict(parent) {
-            $("#select-address2").empty();
-            const path = $("#select-address option:selected").data('path');
+            $("#select-district").empty();
+            const path = $("#select-city option:selected").data('path');
             const response = await fetch('{{ asset('locations/') }}' + path);
-            const address2 = await response.json();
-            const district = "{{$each->address2}}";
-            $.each(address2.district, function (index, each) {
+            const districts = await response.json();
+            const district = "{{$each->district}}";
+            $.each(districts.district, function (index, each) {
                 let selected = '';
                 let select = each.pre + ' ' + each.name;
                 if (district === select) {
                     selected = 'selected';
                 }
-                $("#select-address2").append(`
+                $("#select-district").append(`
                         <option ${selected}>
                             ${each.pre} ${each.name}
                         </option>`);
@@ -214,25 +214,25 @@
         }
 
         $(document).ready(async function () {
-            $("#select-address").select2();
+            $("#select-city").select2();
             const response = await fetch('{{asset('locations/index.json')}}');
-            const address = await response.json();
-            const city = "{{$each->address}}";
-            $.each(address, function (index, each) {
+            const cities = await response.json();
+            const city = "{{$each->city}}";
+            $.each(cities, function (index, each) {
                 let selected = '';
                 if (city === index) {
                     selected = 'selected';
                 }
-                $("#select-address").append(`
+                $("#select-city").append(`
                 <option value='${index}' data-path='${each.file_path}' ${selected}>
                     ${index}
                 </option>`);
             })
 
-            $("#select-address").change(function () {
+            $("#select-city").change(function () {
                 loadDistrict();
             });
-            $("#select-address2").select2();
+            $("#select-district").select2();
             await loadDistrict();
 
             $(document).on('change', '#name', function () {
