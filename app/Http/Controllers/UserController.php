@@ -7,6 +7,7 @@ use App\Enums\FileTableEnum;
 use App\Enums\FileTypeEnum;
 use App\Enums\UserRoleEnum;
 use App\Http\Requests\User\UpdateRequest;
+use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -45,6 +46,74 @@ class UserController extends Controller
 
             DB::commit();
             return $this->successResponse([], 'Cập nhật thành công');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage());
+        }
+    }
+
+    public function showImage($userId): JsonResponse
+    {
+        try {
+            $data = File::query()
+                ->where('table', FileTableEnum::USERS)
+                ->where('table_id', $userId)
+                ->whereIn('type', [
+                    FileTypeEnum::IDENTITY_FRONT,
+                    FileTypeEnum::IDENTITY_BACK,
+                    FileTypeEnum::LICENSE_CAR_FRONT,
+                    FileTypeEnum::LICENSE_CAR_BACK,
+                ])->get();
+            return $this->successResponse($data);
+        } catch (Throwable $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+    }
+
+    public function identityStatusUpdate(Request $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $data   = $request->validate([
+                'status' => 'required|boolean',
+                'user'   => 'required',
+            ]);
+            $status = $data['status'] ? FileStatusEnum::APPROVED : FileStatusEnum::PENDING;
+            File::query()->where('table', FileTableEnum::USERS)
+                ->where('table_id', $data['user'])
+                ->whereIn('type', [
+                    FileTypeEnum::IDENTITY_FRONT,
+                    FileTypeEnum::IDENTITY_BACK,
+                ])->update([
+                    'status' => $status,
+                ]);
+            DB::commit();
+            return $this->successResponse([], 'Duyệt căn cước công dân thành công');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage());
+        }
+    }
+
+    public function licenseCarStatusUpdate(Request $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $data   = $request->validate([
+                'status' => 'required|boolean',
+                'user'   => 'required',
+            ]);
+            $status = $data['status'] ? FileStatusEnum::APPROVED : FileStatusEnum::PENDING;
+            File::query()->where('table', FileTableEnum::USERS)
+                ->where('table_id', $data['user'])
+                ->whereIn('type', [
+                    FileTypeEnum::LICENSE_CAR_FRONT,
+                    FileTypeEnum::LICENSE_CAR_BACK,
+                ])->update([
+                    'status' => $status,
+                ]);
+            DB::commit();
+            return $this->successResponse([], 'Duyệt giấy phép lái xe thành công');
         } catch (Throwable $e) {
             DB::rollBack();
             return $this->errorResponse($e->getMessage());
