@@ -10,7 +10,7 @@ Breadcrumbs::for('home', static function ($trail) {
 // Home > Car
 Breadcrumbs::for('user', static function ($trail) {
     $trail->parent('home');
-    $trail->push('Người dùng', route('admin.users.index'));
+    $trail->push('Quản lý người dùng', route('admin.users.index'));
 });
 
 // Home > Car > Show
