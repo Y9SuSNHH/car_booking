@@ -86,7 +86,7 @@ class UserController extends Controller
 //        ]);
     }
 
-    public function edit($userId)
+    public function edit($userId): Factory|ViewAlias|Application
     {
         $query = User::query()->clone();
         $query->with([
@@ -100,7 +100,6 @@ class UserController extends Controller
             }
         ]);
         $user = $query->find($userId);
-//        dd($user);
         return view("$this->role.$this->table.edit", [
             'user' => $user,
         ]);
