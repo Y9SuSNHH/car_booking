@@ -35,7 +35,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-lg-3">
                                 <div class="row">
                                     <div class="col-6">
                                         <i class="mdi mdi-circle text-primary"></i> Đặt xe

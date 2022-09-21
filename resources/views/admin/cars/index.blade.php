@@ -31,16 +31,6 @@
                                         </select>
                                     </div>
                                 @endif
-                                <div class="form-group col-md-3">
-                                    <label for="select-city">Tỉnh/TP</label>
-                                    <select class="form-control select-city" name="city"
-                                            id='select-city'></select>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="select-district">Quận/Huyện</label>
-                                    <select class="form-control select-district" name="district"
-                                            id='select-district'></select>
-                                </div>
                                 <input type="text" hidden name="city" value="{{$search['find']['city']}}">
                                 <input type="text" hidden name="date_start"
                                        value="{{$search['find']['date_start']}}">

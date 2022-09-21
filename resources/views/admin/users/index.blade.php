@@ -13,24 +13,19 @@
                             <select class="form-control select-filter" name="name"
                                     id='select-name'></select>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="select-identity">Trạng thái CCCD</label>
-                            <select class="form-control select-filter" name="identity"
-                                    id='select-identity'>
-                                @foreach($statusImage as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="select-license-car">Trạng thái GPLX</label>
-                            <select class="form-control select-filter" name="license_car"
-                                    id='select-license-car'>
-                                @foreach($statusImage as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        {{--                        <div class="form-group col-md-3">--}}
+                        {{--                            <label for="select-status">Trạng thái giấy tờ</label>--}}
+                        {{--                            <select class="form-control select-filter" name="status"--}}
+                        {{--                                    id='select-status'>--}}
+                        {{--                                <option value="All" selected>Tất cả</option>--}}
+                        {{--                                @foreach($statusImage as $key => $value)--}}
+                        {{--                                    <option value="{{$key}}"--}}
+                        {{--                                            @if((string)$key === $search['filter']['status'])--}}
+                        {{--                                                selected--}}
+                        {{--                                    @endif>{{$value}}</option>--}}
+                        {{--                                @endforeach--}}
+                        {{--                            </select>--}}
+                        {{--                        </div>--}}
                     </form>
                 </div>
                 <div class="card-body">
@@ -84,10 +79,12 @@
                                         <i class="mdi mdi-circle text-{{$each->FileLicenseCar}}"></i>
                                     </td>
                                     <td class="table-action">
-                                        <a href="#" class="action-icon" data-toggle="modal"
-                                           data-target="#modalImage" onclick="userImageShow({{$each->id}})">
-                                            <i class="mdi mdi-eye"></i>
-                                        </a>
+                                        @if ($each->FileIdentity !== 'danger' || $each->FileLicenseCar !== 'danger')
+                                            <a href="#" class="action-icon" data-toggle="modal"
+                                               data-target="#modalImage" onclick="userImageShow({{$each->id}})">
+                                                <i class="mdi mdi-eye"></i>
+                                            </a>
+                                        @endif
                                         <a href="{{ route("admin.$table.edit", $each)}}" class="action-icon"> <i
                                                 class="mdi mdi-pencil"></i></a>
                                     </td>
