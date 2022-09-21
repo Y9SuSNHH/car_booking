@@ -36,16 +36,15 @@ class UserController extends Controller
 
     public function index(Request $request): Factory|ViewAlias|Application
     {
-        $search['filter']['identity']    = $request->get('identity');
-        $search['filter']['license_car'] = $request->get('license_car');
-        $search['filter']['name']        = $request->get('name');
+        $search['filter']['name']   = $request->get('name');
+        $search['filter']['status'] = $request->get('status');
 
         $query = $this->model->clone()->latest();
 
+        $names = $query->pluck('name');
         if (!empty($search['filter']['name']) && $search['filter']['name'] !== 'All') {
             $query->where('name', $search['filter']['name']);
         }
-
         $query->where('role', UserRoleEnum::USER);
         $query->with([
             'files' => function ($q) {
@@ -58,7 +57,6 @@ class UserController extends Controller
             },
         ]);
 
-        $names       = $query->pluck('name');
         $statusImage = FileStatusEnum::getArrayView();
 
         $data = $query->paginate();
