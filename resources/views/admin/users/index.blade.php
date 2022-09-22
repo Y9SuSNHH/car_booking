@@ -85,7 +85,7 @@
                                                 <i class="mdi mdi-eye"></i>
                                             </a>
                                         @endif
-                                        <a href="{{ route("admin.$table.edit", $each)}}" class="action-icon"> <i
+                                        <a href="{{ route("$role.$table.edit", $each->id)}}" class="action-icon"> <i
                                                 class="mdi mdi-pencil"></i></a>
                                     </td>
                                 </tr>
@@ -181,7 +181,6 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         function userImageShow(user) {
             $.ajax({

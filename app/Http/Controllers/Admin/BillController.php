@@ -8,10 +8,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Car;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View as ViewAlias;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class BillController extends Controller
@@ -24,10 +28,11 @@ class BillController extends Controller
     {
         $this->model = Bill::query();
         $this->table = (new Bill())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(UserRoleEnum::ADMIN));
+        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý hóa đơn'));
         View::share('table', $this->table);
+        View::share('role', $this->role);
     }
 
     public function index(Request $request): Factory|ViewAlias|Application
@@ -80,28 +85,39 @@ class BillController extends Controller
         ]);
     }
 
-    public function show($billId): Factory|ViewAlias|Application
+    public function show(Request $request, $billId): Factory|ViewAlias|RedirectResponse|Application
     {
-        dd(1);
+        $filter['status'] = $request->get('status');
+
+        $id = $request->get('id');
+
+        $status = BillStatusEnum::getArrayView();
+        $status = Arr::except($status, BillStatusEnum::EXPIRES);
+        if (isset($filter['status'])) {
+            DB::beginTransaction();
+            try {
+                $bill = $this->model->find($id);
+                $bill->status = $filter['status'];
+                $bill->date_real_end = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+                $bill->save();
+                DB::commit();
+                return redirect()->back()->with('bills_success_message', 'Thay đổi trạng thái thành công');
+            }catch(\Throwable $e) {
+                DB::rollBack();
+                return redirect()->back()->with('bills_error_message', 'Thay đổi trạng thái thất bại');
+            }
+        }
         return view("$this->role.$this->table.show", [
-//            'data' => $data,
+            'billId' => $billId,
+            'status' => $status,
+            'filter' => $filter,
         ]);
     }
 
-    public function edit($billId): Factory|ViewAlias|Application
+    public function destroy($id): RedirectResponse
     {
-        $query = $this->model->with('user')->with('car')->with('files');
-        $data  = $query->find($billId);
-
-        return view("$this->role.$this->table.edit", [
-            'data' => $data,
-        ]);
-    }
-
-    public function destroy($billId): \Illuminate\Http\RedirectResponse
-    {
-        $this->model->destroy($billId);
-
-        return redirect()->back()->with('bill_message', 'Xóa thành công');
+        $bill = $this->model->find($id);
+        $bill->delete();
+        return redirect()->back()->with('bills_success_message', 'Xóa thành công');
     }
 }

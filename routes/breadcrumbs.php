@@ -7,22 +7,16 @@ Breadcrumbs::for('home', static function ($trail) {
     $trail->push('Trang chủ', route('admin.welcome'));
 });
 
-// Home > Car
+// Home > User
 Breadcrumbs::for('user', static function ($trail) {
     $trail->parent('home');
     $trail->push('Quản lý người dùng', route('admin.users.index'));
 });
 
-// Home > Car > Show
-Breadcrumbs::for('user.show', static function ($trail) {
-    $trail->parent('user');
-    $trail->push('Xem', route('admin.users.show'));
-});
-
-// Home > Car> Edit
+// Home > User > Edit
 Breadcrumbs::for('user.edit', static function ($trail) {
     $trail->parent('user');
-    $trail->push('Sửa', route('admin.users.edit'));
+    $trail->push('Sửa');
 });
 
 // Home > Car
@@ -33,7 +27,7 @@ Breadcrumbs::for('car', static function ($trail) {
 // Home > Car > Edit
 Breadcrumbs::for('car.edit', static function ($trail) {
     $trail->parent('car');
-    $trail->push('Sửa', route('admin.cars.edit'));
+    $trail->push('Sửa');
 });
 
 // Home > Bill
@@ -45,11 +39,5 @@ Breadcrumbs::for('bills', static function ($trail) {
 // Home > Bill > Show
 Breadcrumbs::for('bills.show', static function ($trail) {
     $trail->parent('bills');
-    $trail->push('Xem', route('admin.bills.show'));
-});
-
-// Home > Bill > Edit
-Breadcrumbs::for('bills.edit', static function ($trail) {
-    $trail->parent('bills');
-    $trail->push('Sửa', route('admin.bills.edit'));
+    $trail->push('Xem');
 });

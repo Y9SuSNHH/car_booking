@@ -6,6 +6,7 @@ use App\Enums\CarStatusEnum;
 use App\Enums\CarTypeEnum;
 use App\Enums\FileTableEnum;
 use App\Enums\FileTypeEnum;
+use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ResponseTrait;
 use App\Http\Requests\Car\StoreRequest;
@@ -30,15 +31,17 @@ class CarController extends Controller
 
     private object $model;
     private string $table;
-    private string $role = 'admin';
+    private string $role;
 
     public function __construct()
     {
         $this->model = Car::query();
         $this->table = (new Car())->getTable();
+        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý xe'));
         View::share('table', $this->table);
+        View::share('role', $this->role);
     }
 
     public function index(Request $request): Factory|ViewAlias|Application
@@ -132,12 +135,12 @@ class CarController extends Controller
 
     public function edit($carId): Factory|ViewAlias|Application
     {
-        $each   = Car::query()->find($carId);
+        $car    = Car::query()->find($carId);
         $types  = CarTypeEnum::getArrayView();
         $slots  = [4, 5, 7];
         $status = CarStatusEnum::getArrayView();
         return view("$this->role.$this->table.edit", [
-            'each'   => $each,
+            'car'    => $car,
             'types'  => $types,
             'slots'  => $slots,
             'status' => $status,
@@ -146,32 +149,39 @@ class CarController extends Controller
 
     public function update(UpdateRequest $request, $carId): RedirectResponse
     {
-        $car  = Car::query()->find($carId);
-        $data = $request->validated();
-        if (Arr::has($data, 'image')) {
-            $path = Storage::disk('public')->putFile('car_images', $data['image']);
-            data_set($data, 'image', $path);
-        }
-        $car->fill(Arr::except($data, ['fullphoto']));
-        $car->save();
-
-        if (Arr::has($data, 'fullphoto')) {
-            $arrFile = $data['fullphoto'];
-            File::query()->where('table', FileTableEnum::CARS)
-                ->where('table_id', $car->id)
-                ->where('type', FileTypeEnum::CAR_IMAGE)
-                ->delete();
-            foreach ($arrFile as $file) {
-                $path = Storage::disk('public')->putFile('car_images', $file);
-                File::create([
-                    'table'    => FileTableEnum::CARS,
-                    'table_id' => $car->id,
-                    'type'     => FileTypeEnum::CAR_IMAGE,
-                    'link'     => $path,
-                ]);
+        DB::beginTransaction();
+        try {
+            $car  = Car::query()->find($carId);
+            $data = $request->validated();
+            if (Arr::has($data, 'image')) {
+                $path = Storage::disk('public')->putFile('car_images', $data['image']);
+                data_set($data, 'image', $path);
             }
+            $car->fill(Arr::except($data, ['fullphoto']));
+            $car->save();
+
+            if (Arr::has($data, 'fullphoto')) {
+                $arrFile = $data['fullphoto'];
+                File::query()->where('table', FileTableEnum::CARS)
+                    ->where('table_id', $car->id)
+                    ->where('type', FileTypeEnum::CAR_IMAGE)
+                    ->delete();
+                foreach ($arrFile as $file) {
+                    $path = Storage::disk('public')->putFile('car_images', $file);
+                    File::create([
+                        'table'    => FileTableEnum::CARS,
+                        'table_id' => $car->id,
+                        'type'     => FileTypeEnum::CAR_IMAGE,
+                        'link'     => $path,
+                    ]);
+                }
+            }
+            DB::commit();
+            return redirect()->route("$this->role.$this->table.index")->with('cars_success_message', 'Sửa xe thành công');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('cars_error_message', 'Sửa xe thất bại');
         }
-        return redirect()->route("$this->role.$this->table.index")->with('car_message', 'Sửa xe thành công');
     }
 
     public function findCars(): Factory|ViewAlias|Application

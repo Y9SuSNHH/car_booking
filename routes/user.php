@@ -17,5 +17,5 @@ Route::group([
     'prefix' => 'bills',
 ], static function () {
     Route::get('/', [BillController::class, 'index'])->name('index');
-    Route::get('/show/{bills?}', [BillController::class, 'show'])->name('show');
+    Route::get('/show/{id?}', [BillController::class, 'show'])->name('show');
 });

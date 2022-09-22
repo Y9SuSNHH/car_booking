@@ -28,10 +28,11 @@ class UserController extends Controller
     {
         $this->model = User::query();
         $this->table = (new User())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(UserRoleEnum::ADMIN));
+        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý người dùng'));
         View::share('table', $this->table);
+        View::share('role', $this->role);
     }
 
     public function index(Request $request): Factory|ViewAlias|Application
@@ -92,18 +93,4 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UpdateRequest $request, $userId)
-    {
-        $checkUserIdentity   = (new File)->checkUserIdentity($userId);
-        $checkUserLicenseCar = (new File)->checkUserLicenseCar($userId);
-        dd($checkUserLicenseCar, $checkUserIdentity);
-
-    }
-
-    public function destroy($userId): \Illuminate\Http\RedirectResponse
-    {
-        User::destroy($userId);
-
-        return redirect()->back();
-    }
 }

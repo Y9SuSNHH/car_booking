@@ -51,7 +51,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Bill whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|Bill withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Bill withoutTrashed()
- * @method static create(array $array)
  * @method static insert(array $arr)
  * @mixin \Eloquent
  * @property-read int $generate_status
@@ -73,12 +72,14 @@ class Bill extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+            ->with('files');
     }
 
     public function car(): BelongsTo
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Car::class)
+            ->with('files');
     }
 
     public function files(): HasMany
@@ -115,7 +116,7 @@ class Bill extends Model
             $status = BillStatusEnum::EXPIRES;
         }
 
-        $statusIcon = '';
+        $statusIcon = 'danger';
 
         if ($status === BillStatusEnum::PENDING) {
             $statusIcon = 'primary';

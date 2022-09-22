@@ -45,7 +45,7 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            return $this->successResponse([], 'Cập nhật thành công');
+            return $this->successResponse();
         } catch (Throwable $e) {
             DB::rollBack();
             return $this->errorResponse($e->getMessage());

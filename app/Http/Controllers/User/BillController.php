@@ -14,17 +14,34 @@ use App\Models\Bill;
 use App\Models\Car;
 use App\Models\File;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View as ViewAlias;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class BillController extends Controller
 {
     use ResponseTrait;
 
-    public function index()
+    private object $model;
+    private string $table;
+    private string $role;
+
+    public function __construct()
+    {
+        $this->model = Bill::query();
+        $this->table = (new Bill())->getTable();
+        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
+
+        View::share('title', ucfirst('Quản lý hóa đơn'));
+        View::share('table', $this->table);
+    }
+
+    public function index(): Factory|ViewAlias|Application
     {
         return view('user.bills.index');
     }
@@ -44,8 +61,9 @@ class BillController extends Controller
             if (auth()->user()->role === UserRoleEnum::USER) {
                 $checkUserIdentity   = (new File)->checkUserIdentity(auth()->user()->id);
                 $checkUserLicenseCar = (new File)->checkUserLicenseCar(auth()->user()->id);
-                $user['phone']       = auth()->user()->phone;
-                $id                  = auth()->user()->id;
+
+                $user['phone'] = auth()->user()->phone;
+                $id            = auth()->user()->id;
                 if (!$checkUserIdentity && !$checkUserLicenseCar && empty($user['phone'])) {
                     return $this->errorResponse('Chưa điền đủ thông tin');
                 }
@@ -66,7 +84,7 @@ class BillController extends Controller
                     (new \App\Models\File)->updateOrCreate(FileTableEnum::USERS, $id, $type, $files[$value], $status);
                 }
             }
-            $bill = Bill::create([
+            $bill = $this->model->create([
                 "user_id"     => $id,
                 "car_id"      => $carId,
                 "date_start"  => $date_start,
@@ -82,16 +100,24 @@ class BillController extends Controller
         }
     }
 
-    public function show($billId): Factory|\Illuminate\Contracts\View\View|Application
+    public function show($billId): JsonResponse
     {
-        $query = Bill::query()
-            ->where('id', $billId);
+        $query = $this->model->clone();
 
-        $query->with('car');
+        $query->with('user')->with('car')->with('files')->with('staffStart')->with('staffEnd');
 
-        $bill = $query->get();
-        return view('user.bills.show', [
-            'bills' => $bill,
-        ]);
+        $bill = $query->find($billId);
+
+        $date_start = Carbon::parse($bill->date_start);
+        $date_end   = Carbon::parse($bill->date_end);
+        $date_diff  = $date_start->diffInDays($date_end);
+
+        $bill->setAttribute('generate_status', $bill->GenerateStatus);
+        $bill->setAttribute('status_name', $bill->StatusName);
+        $bill->setAttribute('date_diff', $date_diff);
+        $bill->user->gender = $bill->user->GenderName;
+
+        return $this->successResponse($bill);
     }
+
 }

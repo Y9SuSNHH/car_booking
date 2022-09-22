@@ -610,7 +610,7 @@
                                     <hr/>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <form id="form-bill-store" class="form-horizontal">
+                                            <form id="form-bills-store" class="form-horizontal">
                                                 @csrf
                                                 <div class="text-center">
                                                     <button class="btn btn-success">ĐẶT XE
@@ -791,7 +791,8 @@
                     $.each(response.data, function (index, each) {
                         let image_url = "{{asset('storage/')}}" + '/' + each.image;
                         let li, image;
-                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "' class='active'></li>";
+                        console.log(index);
+                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active'></li>";
                         image = "<div class='carousel-item active'>" +
                             "<img class='d-block img-fluid' src='" + image_url + "'>";
                         $('.carousel-indicators').append(li);

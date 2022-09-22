@@ -18,7 +18,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('api.users.update', $user )}}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('api.users.update', $user->id )}}" method="post"
+                          enctype="multipart/form-data"
                           class="form-group" id="form-edit">
                         @method('PUT')
                         @csrf
@@ -107,35 +108,35 @@
 @endsection
 @push('js')
     <script src="{{asset('js/jquery.validate.js')}}"></script>
+    <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         function submitForm() {
-            const obj = $("#form-edit");
-            const formData = new FormData(obj[0]);
-            $.ajax({
-                url: obj.attr('action'),
-                type: 'POST',
-                dataType: 'json',
-                data: formData,
-                processData: false,
-                contentType: false,
-                async: false,
-                cache: false,
-                enctype: 'multipart/form-data',
-                success: function (response) {
-                    // console.log(response);
-                },
-                error: function (response) {
-                    // console.log(response);
-                },
+            const form = $("#form-edit");
+            form.on('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(form[0]);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    enctype: 'multipart/form-data',
+                    success: function () {
+                        notifySuccess('Sửa thành công');
+                    },
+                    error: function () {
+                        notifyError('Sửa thất bại');
+                    },
+                });
             });
         }
 
         $(document).ready(async function () {
-            $("#form-edit").validate({
-                submitHandler: function () {
-                    submitForm();
-                }
-            });
+            submitForm();
         });
     </script>
 @endpush

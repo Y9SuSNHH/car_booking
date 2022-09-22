@@ -108,21 +108,23 @@
                                             </td>
                                             <td>
                                                 <i class="mdi mdi-circle text-{{$each->GenerateStatus}}"></i>
-                                                {{--                                                {{$each->StatusName}}--}}
                                             </td>
                                             <td class="table-action">
-                                                {{--                                                {{ route("admin.$table.show", $each)}}--}}
                                                 <div class="row">
-                                                    <a href="{{ route("admin.$table.show", $each)}}" class="action-icon"> <i
-                                                            class="mdi mdi-eye"></i></a>
-                                                    <a href="{{ route("admin.$table.edit", $each)}}" class="action-icon"> <i
-                                                            class="mdi mdi-pencil"></i></a>
+                                                    @if ($each->GenerateStatus === 'danger')
+                                                        <a href="{{ route("$role.$table.edit", $each)}}"
+                                                           class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                                    @else
+                                                        <a href="{{ route("$role.$table.show",$each->id)}}"
+                                                           class="action-icon"><i class="mdi mdi-eye"></i>
+                                                        </a>
+                                                    @endif
                                                     @if(auth()->user()->role === \App\Enums\UserRoleEnum::ADMIN)
-                                                        <form action="{{ route("admin.$table.destroy", $each)}}"
-                                                              method="post" class="action-icon">
+                                                        <form action="{{ route("$role.$table.destroy",$each->id)}}"
+                                                              method="post" class="action-icon" id="form-bills-delete">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button class="btn btn-link action-icon"
+                                                            <button type="submit" class="btn btn-link action-icon"
                                                                     style="border: 0px;"><i
                                                                     class="mdi mdi-delete"></i></button>
                                                         </form>
@@ -149,7 +151,6 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{asset('js/helper.js')}}"></script>
     <script type="text/javascript">
         function loadNameUsers() {
             $("#select-name-users").select2();
@@ -187,18 +188,12 @@
             $("#select-name-cars").append(name);
         }
 
-        function filter() {
-            $(".select-filter").change(function () {
-                $("#form-filter").submit();
-            });
-        }
-
         $(document).ready(async function () {
             loadNameUsers();
             loadNameCars();
             filter();
-            @if (session('bill_message'))
-            notifySuccess(`{{ session('bill_message') }}`);
+            @if (session('bills_success_message'))
+            notifySuccess('{{ session('bills_success_message') }}');
             @endif
         });
     </script>
