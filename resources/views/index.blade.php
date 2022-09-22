@@ -7,8 +7,9 @@
                 <div class="col-lg-3">
                     <div class="card card-refine">
                         <div class="card-header">
-                            <form action="{{route('index')}}" class="form-group"
+                            <form action="{{route('api.cars.find')}}" method="GET" class="form-group"
                                   id="form-list-car">
+                                @csrf
                                 <div class="card-body">
                                     <div class="form-group label-floating">
                                         <select class="form-control select-city" name="city"
@@ -692,7 +693,7 @@
                 <div class="modal-body p-4">
                     <div class="text-center">
                         <i class="dripicons-warning h3 text-warning"></i>
-                        <h4 class="mt-2" id="error-bill-store"></h4>
+                        <h4 class="mt-2" id="error-bills-store"></h4>
                         <form action="{{route('user.index')}}" method="GET">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-warning my-2">Điền
@@ -777,7 +778,6 @@
                     date_end.change(function () {
                         $("#form-list-car").submit();
                     })
-                    console.log('1');
                 }
             });
         }
@@ -883,6 +883,31 @@
             $("#modal-each-car").on('hide.bs.modal', function () {
                 $('#form-bills-store').prop('action', '');
                 $('#form-bills-store').prop('method', '');
+            });
+            $("#form-list-car").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'GET',
+                        dataType: 'JSON',
+                        data: $(form).serialize(),
+                        success: function () {
+                            $("#div-error").hide();
+                            window.location = "{{route('index')}}";
+                        },
+                        error: function (response) {
+                            const errors = Object.values(response.responseJSON.errors);
+                            let string = '<ul>';
+                            errors.forEach(function (each) {
+                                each.forEach(function (error) {
+                                    string += `<li>${error}</li>`;
+                                });
+                            });
+                            string += '</ul>';
+                            notifyError(string);
+                        }
+                    });
+                }
             });
         });
     </script>

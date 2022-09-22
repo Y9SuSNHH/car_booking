@@ -188,8 +188,8 @@
                 async: false,
                 cache: false,
                 enctype: 'multipart/form-data',
-                success: function (response) {
-                    notifySuccess(response.message);
+                success: function () {
+                    notifySuccess('Sửa thông tin thành công');
                     setTimeout("window.location=`{{route('user.edit')}}`", 3000);
                 },
                 error: function (response) {

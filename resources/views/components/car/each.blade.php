@@ -2,10 +2,7 @@
      id="btn-modal-each-car-{{$car->id}}" data-toggle="modal" data-target="#modal-each-car">
     <div class="card card-blog" style="box-shadow: 0px 5px 25px 0px rgb(0 0 0 / 20%);">
         <div class="card-image">
-            <a href="#">
-                <img class="img img-raised" src="{{ asset('storage') . '/'. $car->image}}">
-                {{--                <img class="img img-raised" src="{{$car->image}}">--}}
-            </a>
+            <img class="img img-raised" src="{{ asset('storage') . '/'. $car->image}}">
         </div>
         <div class="card-body">
             <h6 class="card-category text-success">

@@ -12,21 +12,15 @@
                         <br>
                     </div>
                     <div class="col-md-8 ml-auto mr-auto">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                        <div id="div-error" class="alert alert-danger d-none">
+                        </div>
                     </div>
                     <div class="col-md-10 ml-auto mr-auto">
                         <div class="card card-raised card-form-horizontal no-transition">
                             <div class="card-body">
-                                <form action="{{route('index')}}" class="form-group"
+                                <form action="{{route('api.cars.find')}}" method="GET" class="form-group"
                                       id="form-list-car">
+                                    @csrf
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
@@ -107,8 +101,36 @@
         }
 
         $(document).ready(async function () {
+            // submitForm();
             loadCity();
             loadDate();
+
+            $("#form-list-car").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'GET',
+                        dataType: 'JSON',
+                        data: $(form).serialize(),
+                        success: function () {
+                            $("#div-error").hide();
+                            window.location = "{{route('index')}}";
+                        },
+                        error: function (response) {
+                            const errors = Object.values(response.responseJSON.errors);
+                            let string = '<ul>';
+                            errors.forEach(function (each) {
+                                each.forEach(function (error) {
+                                    string += `<li>${error}</li>`;
+                                });
+                            });
+                            string += '</ul>';
+                            $("#div-error").html(string);
+                            $("#div-error").removeClass("d-none").show();
+                        }
+                    });
+                }
+            });
         });
 
 

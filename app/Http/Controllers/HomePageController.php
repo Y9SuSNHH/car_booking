@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRoleEnum;
 use App\Http\Requests\Car\FindRequest;
 use App\Models\Car;
+use App\Models\File;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class HomePageController extends Controller
 {
@@ -22,11 +26,15 @@ class HomePageController extends Controller
         ]);
     }
 
-    public function index(FindRequest $request): Factory|View|Application
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
+    public function index(Request $request): Factory|View|Application
     {
-        $city       = $request->get('city');
-        $date_start = date('Y-m-d', strtotime($request->get('date_start')));
-        $date_end   = date('Y-m-d', strtotime($request->get('date_end')));
+        $city       = session()->get('find_cars.city');
+        $date_start = date('Y-m-d', strtotime(session()->get('find_cars.date_start')));
+        $date_end   = date('Y-m-d', strtotime(session()->get('find_cars.date_end')));
 
         $query = Car::query()->clone();
         if (!empty($city) && $city !== 'All') {
@@ -43,16 +51,6 @@ class HomePageController extends Controller
         $cities = Car::query()->clone()
             ->groupBy('city')
             ->pluck('city');
-
-        $session['find_cars'] = [
-            'city'       => $city,
-            'date_start' => $request->get('date_start'),
-            'date_end'   => $request->get('date_end'),
-        ];
-//        dd($session['find_cars']);
-
-
-        session($session);
 
         return view('index', [
             'cars'   => $cars,
