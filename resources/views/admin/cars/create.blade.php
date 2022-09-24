@@ -1,4 +1,7 @@
 @extends('layout_backend.master')
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('cars.create') }}
+@endsection
 @push('css')
     <style>
         .error {

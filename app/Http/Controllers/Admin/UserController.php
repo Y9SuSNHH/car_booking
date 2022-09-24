@@ -22,13 +22,12 @@ class UserController extends Controller
 {
     private object $model;
     private string $table;
-    private string $role;
+    private string $role = 'admin';
 
     public function __construct()
     {
         $this->model = User::query();
         $this->table = (new User())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý người dùng'));
         View::share('table', $this->table);

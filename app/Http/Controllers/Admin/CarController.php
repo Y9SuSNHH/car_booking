@@ -31,13 +31,12 @@ class CarController extends Controller
 
     private object $model;
     private string $table;
-    private string $role;
+    private string $role ='admin';
 
     public function __construct()
     {
         $this->model = Car::query();
         $this->table = (new Car())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý xe'));
         View::share('table', $this->table);
@@ -46,16 +45,14 @@ class CarController extends Controller
 
     public function index(Request $request): Factory|ViewAlias|Application
     {
-        $search['find']['city']       = $request->get('city');
-        $search['find']['date_start'] = $request->get('date_start');
-        $search['find']['date_end']   = $request->get('date_end');
-        $search['filter']['name']     = $request->get('name');
-        $search['filter']['status']   = $request->get('status');
+        $search['find']             = session()->get('find_cars');
+        $search['filter']['name']   = $request->get('name');
+        $search['filter']['status'] = $request->get('status');
+        $search['find']['check']    = $request->get('check');
 
         $query = $this->model->clone()->latest();
 
-        $isFind = (new Car())->isFind($search['find']);
-        if ($isFind === 0) {
+        if (!empty($search['find']['check']) && $search['find']['check'] === 'on') {
             $date_start = date('Y-m-d', strtotime($search['find']['date_start']));
             $date_end   = date('Y-m-d', strtotime($search['find']['date_end']));
 
@@ -84,12 +81,16 @@ class CarController extends Controller
             $each->type = $each->TypeName;
         }
 
+        $cities = Car::query()->clone()
+            ->groupBy('city')
+            ->pluck('city');
+
         return view("$this->role.$this->table.index", [
             "data"   => $data,
             "search" => $search,
             "names"  => $names,
             "status" => $status,
-            "isFind" => $isFind,
+            "cities" => $cities,
         ]);
     }
 

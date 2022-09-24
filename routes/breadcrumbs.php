@@ -8,25 +8,31 @@ Breadcrumbs::for('home', static function ($trail) {
 });
 
 // Home > User
-Breadcrumbs::for('user', static function ($trail) {
+Breadcrumbs::for('users', static function ($trail) {
     $trail->parent('home');
     $trail->push('Quản lý người dùng', route('admin.users.index'));
 });
 
 // Home > User > Edit
-Breadcrumbs::for('user.edit', static function ($trail) {
-    $trail->parent('user');
+Breadcrumbs::for('users.edit', static function ($trail) {
+    $trail->parent('users');
     $trail->push('Sửa');
 });
 
 // Home > Car
-Breadcrumbs::for('car', static function ($trail) {
+Breadcrumbs::for('cars', static function ($trail) {
     $trail->parent('home');
     $trail->push('Quản lý xe', route('admin.cars.index'));
 });
 // Home > Car > Edit
-Breadcrumbs::for('car.edit', static function ($trail) {
-    $trail->parent('car');
+Breadcrumbs::for('cars.create', static function ($trail) {
+    $trail->parent('cars');
+    $trail->push('Thêm');
+});
+
+// Home > Car > Edit
+Breadcrumbs::for('cars.edit', static function ($trail) {
+    $trail->parent('cars');
     $trail->push('Sửa');
 });
 

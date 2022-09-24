@@ -8,7 +8,8 @@
                     <h4 class="modal-title" id="mySmallModalLabel">Tìm xe</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <form action="{{route('admin.cars.index')}}" class="form-group"
+                <div id="div-error" class="alert alert-danger d-none"></div>
+                <form action="{{route('api.cars.find')}}" method="GET" class="form-group"
                       id="form-list-car">
                     <div class="modal-body">
                         <div class="row">
@@ -41,7 +42,7 @@
     </div>
 @endsection
 @push('js')
-{{--    <script src="{{asset('js/jquery.validate.js')}}"></script>--}}
+    <script src="{{asset('js/jquery.validate.js')}}"></script>
     <script type="text/javascript">
         function conditionalDateEnd() {
             let setStartDate = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
@@ -53,10 +54,11 @@
                 date_start[0] = (+date_start[0]) + (+1);
                 let date_end = date_start.join("-");
 
-                $('#date_end').datepicker('setDate','');
+                $('#date_end').datepicker('setDate', '');
                 $('#date_end').datepicker('setStartDate', date_end);
             });
         }
+
         function loadCity() {
             $("#select-city").select2();
             let city = '<option selected value="">Tỉnh/TP</option>';
@@ -65,10 +67,37 @@
             @endforeach
             $("#select-city").append(city);
         }
+
         $(document).ready(async function () {
             $('#modal-car-search').modal('show')
             loadCity();
             conditionalDateEnd();
+
+            $("#form-list-car").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'GET',
+                        dataType: 'JSON',
+                        data: $(form).serialize(),
+                        success: function () {
+                            window.location = "{{route("$role.$table.index")}}?check=on";
+                        },
+                        error: function (response) {
+                            const errors = Object.values(response.responseJSON.errors);
+                            let string = '<ul>';
+                            errors.forEach(function (each) {
+                                each.forEach(function (error) {
+                                    string += `<li>${error}</li>`;
+                                });
+                            });
+                            string += '</ul>';
+                            $("#div-error").html(string);
+                            $("#div-error").removeClass("d-none").show();
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endpush

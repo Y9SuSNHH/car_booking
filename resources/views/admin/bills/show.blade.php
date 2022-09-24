@@ -23,11 +23,13 @@
                         <div class="col-9">
                             <a id="user-phone"></a>
                         </div>
-                        <div class="col-3">
-                            <label for="">Email</label>
-                        </div>
-                        <div class="col-9">
-                            <a id="user-email"></a>
+                        <div class="user-email">
+                            <div class="col-3">
+                                <label for="">Email</label>
+                            </div>
+                            <div class="col-9">
+                                <a id="user-email"></a>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="d-lg-flex justify-content-center">
@@ -223,7 +225,11 @@
                     //crawlUser
                     $("#user-info").html(user.name + ' - ' + user.gender);
                     $("#user-phone").html(user.phone).attr("href", "tel:" + user.phone);
-                    $("#user-email").html(user.email).attr("href", "mailto:" + user.email);
+                    if (user.email === null) {
+                        $(".user-email").addClass("d-none");
+                    } else {
+                        $("#user-email").html(user.email).attr("href", "mailto:" + user.email);
+                    }
                     $.each(user.files, function (index, each) {
                         let storage = `{{asset('storage')}}/`;
                         if (each.type === {{\App\Enums\FileTypeEnum::IDENTITY_FRONT}}) {

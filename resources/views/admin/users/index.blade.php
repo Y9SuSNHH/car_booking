@@ -1,6 +1,6 @@
 @extends('layout_backend.master')
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('user') }}
+    {{ Breadcrumbs::render('users') }}
 @endsection
 @section('content')
     <div class="row">

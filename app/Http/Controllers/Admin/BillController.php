@@ -22,13 +22,12 @@ class BillController extends Controller
 {
     private object $model;
     private string $table;
-    private string $role;
+    private string $role = 'admin';
 
     public function __construct()
     {
         $this->model = Bill::query();
         $this->table = (new Bill())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý hóa đơn'));
         View::share('table', $this->table);
@@ -96,13 +95,13 @@ class BillController extends Controller
         if (isset($filter['status'])) {
             DB::beginTransaction();
             try {
-                $bill = $this->model->find($id);
-                $bill->status = $filter['status'];
+                $bill                = $this->model->find($id);
+                $bill->status        = $filter['status'];
                 $bill->date_real_end = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
                 $bill->save();
                 DB::commit();
                 return redirect()->back()->with('bills_success_message', 'Thay đổi trạng thái thành công');
-            }catch(\Throwable $e) {
+            } catch (\Throwable $e) {
                 DB::rollBack();
                 return redirect()->back()->with('bills_error_message', 'Thay đổi trạng thái thất bại');
             }
@@ -112,6 +111,16 @@ class BillController extends Controller
             'status' => $status,
             'filter' => $filter,
         ]);
+    }
+
+    public function edit()
+    {
+        dd(1);
+    }
+
+    public function update()
+    {
+        dd(1);
     }
 
     public function destroy($id): RedirectResponse

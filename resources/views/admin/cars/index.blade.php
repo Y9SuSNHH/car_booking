@@ -1,6 +1,6 @@
 @extends('layout_backend.master')
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('car') }}
+    {{ Breadcrumbs::render('cars') }}
 @endsection
 @section('content')
     <div class="row">
@@ -9,13 +9,13 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-xl-12">
-                            <form class="form-row" id="form-filter">
+                            <form id="form-filter" class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="select-name">Tên xe</label>
                                     <select class="form-control select-filter" name="name" id='select-name'>
                                     </select>
                                 </div>
-                                @if ($isFind !== 0)
+                                @if ($search['find']['check'] !== 'on')
                                     <div class="form-group col-md-3">
                                         <label for="select-status">Trạng thái</label>
                                         <select class="form-control select-filter" name="status" id='select-status'>
@@ -40,27 +40,51 @@
                                             </div>
                                         </div>
                                     </div>
+                                @else
+                                    <input type="checkbox" checked name="check" hidden>
                                 @endif
-                                <input type="text" hidden name="city" value="{{$search['find']['city']}}">
-                                <input type="text" hidden name="date_start"
-                                       value="{{$search['find']['date_start']}}">
-                                <input type="text" hidden name="date_end"
-                                       value="{{$search['find']['date_start']}}">
                             </form>
                         </div>
+                        @if($search['find']['check'] === 'on')
+                            <div class="col-xl-12">
+                                <form action="{{route('api.cars.find')}}" method="GET" class="form-row"
+                                      id="form-list-car">
+                                    @csrf
+                                    <div class="form-group col-md-3">
+                                        <label for="select-city">Tỉnh/TP</label>
+                                        <select class="form-control select-city" name="city"
+                                                id='select-city'></select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="date_start">Ngày bắt đầu</label>
+                                        <input type="text" name="date_start" id="date_start" class="form-control"
+                                               data-provide="datepicker" data-date-format="dd-mm-yyyy"
+                                               data-date-autoclose="true" placeholder="Ngày bắt đầu"
+                                               value="{{ session()->get('find_cars.date_start') }}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="date_end">Ngày kết thúc</label>
+                                        <input type="text" id="date_end" name="date_end" class="form-control"
+                                               data-provide="datepicker" data-date-format="dd-mm-yyyy"
+                                               data-date-autoclose="true" placeholder="Ngày kết thúc"
+                                               value="{{ session()->get('find_cars.date_end') }}">
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="card-body">
                 <div class="header-title">
                     <div class="form-group col-md-2">
-                        <a href="{{ route("$role.$table.create") }}" class="btn btn-success">Thêm xe</a>
+                            <a href="{{route("$role.$table.create")}}" class="btn btn-success">Thêm xe</a>
                     </div>
                 </div>
                 <div class="tab-content" style="overflow-y: auto !important;">
                     <div class="tab-pane show active" id="responsive-preview">
                         <div class="table-responsive">
-                            <table id="table-data" class="table table-striped table-centered mb-0   ">
+                            <table id="table-data" class="table table-sm  table-centered mb-0">
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -74,9 +98,9 @@
                                         <br>
                                         Ngày thêm
                                     </th>
-                                    @if ($isFind === 0)
+                                    @if ($search['find']['check'] === 'on')
                                         <th scope="col">Tạo hóa đơn</th>
-                                    @elseif($isFind === 3)
+                                    @else
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Xử lý</th>
                                     @endif
@@ -121,7 +145,7 @@
                                             <span
                                                 class="badge badge-info">{{date("d-m-Y", strtotime($each->created_at))}}</span>
                                         </td>
-                                        @if ($isFind === 0)
+                                        @if ($search['find']['check'] === 'on')
                                             <td>
                                                 <button type="button" data-toggle="modal" class="btn btn-outline-info"
                                                         data-target="#modal-form-create-bill"
@@ -129,7 +153,7 @@
                                                     <i class="uil-money-bill"></i>
                                                 </button>
                                             </td>
-                                        @elseif($isFind === 3)
+                                        @else
                                             <td>
                                                 @if ($each->status === 0)
                                                     <i class="mdi mdi-circle text-success"></i>
@@ -138,7 +162,8 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{route("$role.$table.edit",$each->id)}}" class='action-icon'><i
+                                                <a href="{{route("$role.$table.edit",$each->id)}}"
+                                                   class='action-icon'><i
                                                         class='mdi mdi-pencil'></i></a>
                                             </td>
                                         @endif
@@ -178,9 +203,7 @@
                                         </h5>
                                     </div>
                                     <div class="card-body">
-                                        <div id="div-error-update" class="alert alert-danger d-none">
-                                            <ul id="error-update">
-                                            </ul>
+                                        <div id="div-error" class="alert alert-danger d-none">
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-4">
@@ -382,6 +405,43 @@
             return price.toLocaleString('vi');
         }
 
+        function setStartDateEnd() {
+            let setStartDateEnd = $('#date_start').val();
+            setStartDateEnd = setStartDateEnd.split("-");
+            setStartDateEnd[0] = (+setStartDateEnd[0]) + (+1);
+            setStartDateEnd = setStartDateEnd.join("-");
+
+            $('#date_end').datepicker('setStartDate', setStartDateEnd);
+        }
+
+        function loadDate() {
+            const date_start = $('#date_start');
+
+            let setStartDateStart = `{{date_format(date_create(now()->addDays()),"d-m-Y")}}`;
+            date_start.datepicker('setStartDate', setStartDateStart);
+            setStartDateEnd();
+
+            $("#select-city").change(function () {
+                $("#form-list-car").submit();
+            });
+            $("#date_end").change(function () {
+                if ($(this).val()) {
+                    $("#form-list-car").submit();
+                }
+            });
+            date_start.on('change', function () {
+                const date_end = $('#date_end');
+
+                date_end.datepicker('setDate', '');
+                setStartDateEnd()
+                if (!date_end.val()) {
+                    date_end.change(function () {
+                        $("#form-list-car").submit();
+                    })
+                }
+            });
+        }
+
         function crawlInfoBill(carId) {
             $.ajax({
                 url: '{{ route("api.$table.show") }}/' + carId,
@@ -414,8 +474,8 @@
                 string += `<li>${errors}</li>`;
             }
             string += '</ul>';
-            $("#error-update").html(string);
-            $("#div-error-update").removeClass("d-none").show();
+            $("#div-error").html(string);
+            $("#div-error").removeClass("d-none").show();
         }
 
         function submitFormBillStore() {
@@ -448,6 +508,21 @@
             });
         }
 
+        function loadCity() {
+            $("#select-city").select2();
+            let city = '<option selected value="">Tỉnh/TP</option>';
+            let selected = '';
+            @foreach ($cities as $each)
+                @if ($each === session()->get('find_cars.city'))
+                selected = 'selected';
+            @else
+                selected = '';
+            @endif
+                city += "<option " + selected + `>{{$each}}</option>`;
+            @endforeach
+            $("#select-city").append(city);
+        }
+
         $(document).ready(async function () {
             loadNames();
             filter();
@@ -455,12 +530,55 @@
             notifySuccess(`{{ session('cars_success_message') }}`);
             @endif
 
+            @if($search['find']['check'] === 'on')
+            function getDateDiff() {
+                let date_start = changeDateType(`{{$search['find']['date_start']}}`);
+                let date_end = changeDateType(`{{$search['find']['date_end']}}`);
+
+                date_start = new Date(date_start);
+                date_end = new Date(date_end);
+                let date_diff = new Date(date_end - date_start);
+                return date_diff / 1000 / 60 / 60 / 24;
+            }
+
+            loadCity();
+            loadDate();
+            $('#modal-form-create-bill').on('hidden.bs.modal', function () {
+                $("#div-error").addClass('d-none');
+            });
+
             $("#form-bills-create").validate({
                 submitHandler: function () {
                     submitFormBillStore()
                 }
             });
 
+            $("#form-list-car").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'GET',
+                        dataType: 'JSON',
+                        data: $(form).serialize(),
+                        success: function () {
+                            window.location = window.location
+                        },
+                        error: function (response) {
+                            const errors = Object.values(response.responseJSON.errors);
+                            let string = '<ul>';
+                            errors.forEach(function (each) {
+                                each.forEach(function (error) {
+                                    string += `<li>${error}</li>`;
+                                });
+                            });
+                            string += '</ul>';
+                            notifyError(string);
+                        }
+                    });
+                }
+            });
+            @endif
         });
+
     </script>
 @endpush

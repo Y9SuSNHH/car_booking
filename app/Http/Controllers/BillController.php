@@ -25,13 +25,11 @@ class BillController extends Controller
 
     private object $model;
     private string $table;
-    private string $role;
 
     public function __construct()
     {
         $this->model = Bill::query();
         $this->table = (new Bill())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý hóa đơn'));
         View::share('table', $this->table);

@@ -4,7 +4,9 @@ namespace App\Http\Requests\User;
 
 use App\Enums\FileTypeEnum;
 use App\Enums\UserRoleEnum;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -38,6 +40,7 @@ class StoreRequest extends FormRequest
                 ],
                 'phone'   => [
                     'required',
+                    Rule::unique(User::class, 'phone'),
                     'numeric',
                     'min:8',
                 ],

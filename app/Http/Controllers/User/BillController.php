@@ -27,23 +27,21 @@ class BillController extends Controller
 {
     private object $model;
     private string $table;
-    private string $role;
+    private string $role = 'user';
 
     public function __construct()
     {
         $this->model = Bill::query();
         $this->table = (new Bill())->getTable();
-        $this->role  = strtolower(UserRoleEnum::getKey(auth()->user()->role));
 
         View::share('title', ucfirst('Quản lý hóa đơn'));
         View::share('table', $this->table);
-        View::share('role', $this->role);
     }
 
     public function index(): Factory|ViewAlias|Application
     {
         $query = $this->model->clone()->latest();
-        $query->where('user_id',auth()->user()->id);
+        $query->where('user_id', auth()->user()->id);
         $query->with('car');
 
         $bills = $query->paginate(5);

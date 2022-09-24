@@ -146,15 +146,4 @@ class Car extends Model
     {
         return $this->hasMany(Bill::class);
     }
-
-    public function isFind(array $find): int
-    {
-        $i = 0;
-        foreach ($find as $key => $value) {
-            if ($value === null) {
-                ++$i;
-            }
-        }
-        return $i;
-    }
 }

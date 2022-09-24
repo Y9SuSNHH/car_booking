@@ -11,7 +11,7 @@
     </style>
 @endpush
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('user.edit') }}
+    {{ Breadcrumbs::render('users.edit') }}
 @endsection
 @section('content')
     <div class="row">
