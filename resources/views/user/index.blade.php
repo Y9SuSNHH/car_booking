@@ -33,6 +33,8 @@
                                            data-placement="top" title="Chưa điền sđt"></i>
                                     @endif
                                     <br>
+                                    Email: {{$user->email}}
+                                    <br>
                                     Ngày tham gia: {{date('d-m-Y', strtotime($user->created_at))}}
                                     <br>
                                     <a href="{{route("user.edit")}}"
@@ -61,7 +63,7 @@
                             @foreach ($user->files as $file)
                                 @if($file->type === App\Enums\FileTypeEnum::IDENTITY_FRONT || $file->type === App\Enums\FileTypeEnum::IDENTITY_BACK)
                                     <div class="col-md-6">
-{{--                                        <img src="{{asset('storage/').'/'. $file->link}}" class="img-rounded img-responsive">--}}
+                                        {{--                                        <img src="{{asset('storage/').'/'. $file->link}}" class="img-rounded img-responsive">--}}
                                         <div class="card popImage" data-background="image"
                                              style="background-image: url('{{asset('storage/').'/'. $file->link}}')">
                                             <div class="card-body">

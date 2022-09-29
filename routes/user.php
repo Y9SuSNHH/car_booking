@@ -10,7 +10,6 @@ Route::get('/', function () {
 
 Route::get('/index', [UserController::class, 'index'])->name('index');
 Route::get('/edit', [UserController::class, 'edit'])->name('edit');
-Route::put('/edit', [UserController::class, 'update'])->name('update');
 
 Route::group([
     'as'     => 'bills.',

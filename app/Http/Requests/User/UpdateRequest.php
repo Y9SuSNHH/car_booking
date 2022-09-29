@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -36,6 +38,7 @@ class UpdateRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:8',
+                Rule::unique(User::class,'phone')->ignore($this->phone,'phone'),
             ],
             'files'          => [
                 'array',

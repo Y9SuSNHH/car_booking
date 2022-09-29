@@ -49,6 +49,9 @@ class AuthController extends Controller
             $role = strtolower(UserRoleEnum::getKey($user->role));
             return redirect()->route("$role.welcome");
         }
+        if (checkFindCars()) {
+            return redirect()->route('index');
+        }
         return redirect()->route('welcome');
     }
 
@@ -63,6 +66,9 @@ class AuthController extends Controller
             }
             Auth::login($user);
             $role = strtolower(UserRoleEnum::getKey($user->role));
+            if (checkFindCars()) {
+                return redirect()->route('index');
+            }
             return redirect()->route("$role.welcome");
         } catch (Throwable $e) {
             return redirect()->route('signin')->with('failed', 'Tài khoản không đúng');
@@ -71,26 +77,30 @@ class AuthController extends Controller
 
     public function processSignUp(SignUpRequest $request): RedirectResponse
     {
-        $password = Hash::make($request->password);
-        if (auth()->check()) {
-            User::where('id', auth()->user()->id)
-                ->update([
+        try {
+            $password = Hash::make($request->password);
+            if (auth()->check()) {
+                User::query()->where('id', auth()->user()->id)
+                    ->update([
+                        'name'     => $request->name,
+                        'gender'   => $request->gender,
+                        'phone'    => $request->phone,
+                        'password' => $password,
+                    ]);
+            } else {
+                $user = User::create([
                     'name'     => $request->name,
                     'gender'   => $request->gender,
                     'phone'    => $request->phone,
+                    'email'    => $request->email,
                     'password' => $password,
                 ]);
-        } else {
-            $user = User::create([
-                'name'     => $request->name,
-                'gender'   => $request->gender,
-                'phone'    => $request->phone,
-                'email'    => $request->email,
-                'password' => $password,
-            ]);
-            Auth::login($user);
+                Auth::login($user);
+            }
+            return redirect()->route("user.welcome");
+        } catch (\Throwable $e) {
+            return redirect()->back();
         }
-        return redirect()->route("user.welcome");
     }
 
     public function signout(Request $request): RedirectResponse

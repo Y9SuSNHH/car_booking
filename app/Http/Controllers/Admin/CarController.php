@@ -50,6 +50,7 @@ class CarController extends Controller
         $search['filter']['status'] = $request->get('status');
         $search['find']['check']    = $request->get('check');
 
+//        dd($search['find']['check'] === null);
         $query = $this->model->clone()->latest();
 
         if (!empty($search['find']['check']) && $search['find']['check'] === 'on') {
@@ -65,7 +66,6 @@ class CarController extends Controller
                     });
                 });
         }
-        $names  = $query->pluck('name');
         $status = CarStatusEnum::getArrayView();
         if (!empty($search['filter']['name']) && $search['filter']['name'] !== 'All') {
             $query->where('name', $search['filter']['name']);
@@ -73,7 +73,7 @@ class CarController extends Controller
         if (isset($search['filter']['status']) && $search['filter']['status'] !== 'All') {
             $query->where('status', $search['filter']['status']);
         }
-
+        $names  = $query->pluck('name');
         $data = $query->paginate(10);
 
         foreach ($data as $each) {
@@ -136,7 +136,7 @@ class CarController extends Controller
 
     public function edit($carId): Factory|ViewAlias|Application
     {
-        $car    = Car::query()->find($carId);
+        $car    = Car::query()->with('files')->find($carId);
         $types  = CarTypeEnum::getArrayView();
         $slots  = [4, 5, 7];
         $status = CarStatusEnum::getArrayView();

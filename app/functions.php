@@ -5,3 +5,9 @@ if (!function_exists('user')) {
         return auth()->user();
     }
 }
+if (!function_exists('checkFindCars')) {
+    function checkFindCars(): bool
+    {
+        return session()->get('find_cars') !== null;
+    }
+}

@@ -43,16 +43,9 @@ class BillController extends Controller
         $query = $this->model->clone()->latest();
 
         $status = BillStatusEnum::getArrayView();
+        $status = Arr::except($status, BillStatusEnum::EXPIRES);
         if (isset($filter['status']) && $filter['status'] !== 'All') {
-            if ($filter['status'] === (string)BillStatusEnum::EXPIRES) {
-                $query->where('status', BillStatusEnum::ACCEPTED);
-                $query->where('date_end', '<', Date('Y-m-d'));
-            } else if ($filter['status'] === (string)BillStatusEnum::ACCEPTED) {
-                $query->where('status', BillStatusEnum::ACCEPTED);
-                $query->where('date_end', '>=', Date('Y-m-d'));
-            } else {
-                $query->where('status', $filter['status']);
-            }
+            $query->where('status', $filter['status']);
         }
         if (!empty($filter['name_user']) && $filter['name_user'] !== 'All') {
             $name = $filter['name_user'];

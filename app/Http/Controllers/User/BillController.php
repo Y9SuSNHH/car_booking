@@ -36,6 +36,7 @@ class BillController extends Controller
 
         View::share('title', ucfirst('Quản lý hóa đơn'));
         View::share('table', $this->table);
+        View::share('role', $this->role);
     }
 
     public function index(): Factory|ViewAlias|Application
@@ -45,7 +46,7 @@ class BillController extends Controller
         $query->with('car');
 
         $bills = $query->paginate(5);
-        return view('user.bills.index', [
+        return view("$this->role.$this->table.index", [
             'bills' => $bills,
         ]);
     }

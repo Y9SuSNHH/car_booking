@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\RequiredIf;
 
 class SignUpRequest extends FormRequest
@@ -37,14 +39,16 @@ class SignUpRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:8',
+                Rule::unique(User::class,'phone'),
             ],
             'email'    => [
-                new RequiredIf(!auth()->check()),
+                'required',
                 'email',
+                Rule::unique(User::class,'email'),
             ],
             'password' => [
                 'required',
-                'password',
+//                'password',
             ],
         ];
     }

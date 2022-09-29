@@ -8,6 +8,7 @@ use App\Models\Car;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class BillSeeder extends Seeder
 {
@@ -32,7 +33,7 @@ class BillSeeder extends Seeder
                 "date_start"  => $faker->date(),
                 "date_end"    => $faker->date(),
                 "total_price" => $faker->numberBetween(500000, 10000000),
-                "status"      => $faker->randomElement(BillStatusEnum::getValues()),
+                "status"      => $faker->randomElement(Arr::except(BillStatusEnum::getValues(),BillStatusEnum::EXPIRES)),
             ];
             if ($i % 1000 === 0) {
                 Bill::insert($arr);

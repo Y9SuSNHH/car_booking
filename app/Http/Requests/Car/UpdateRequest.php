@@ -31,6 +31,7 @@ class UpdateRequest extends FormRequest
             'name'             => [
                 'required',
                 'string',
+                Rule::unique(Car::class,'name')->ignore($this->name,'name'),
             ],
             'image'            => [
                 'nullable',

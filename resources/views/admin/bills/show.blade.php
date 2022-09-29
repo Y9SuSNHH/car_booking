@@ -23,19 +23,24 @@
                         <div class="col-9">
                             <a id="user-phone"></a>
                         </div>
-                        <div class="user-email">
-                            <div class="col-3">
-                                <label for="">Email</label>
-                            </div>
-                            <div class="col-9">
-                                <a id="user-email"></a>
-                            </div>
+                        {{--                        <div class="user-email">--}}
+                        <div class="col-3 user-email">
+                            <label for="">Email</label>
                         </div>
+                        <div class="col-9 user-email">
+                            <a id="user-email"></a>
+                        </div>
+                        {{--                        </div>--}}
                         <div class="col-md-12">
                             <div class="d-lg-flex justify-content-center">
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <h5>Căn cước công dân</h5>
+                                        <div class="user-files-status">
+                                            <input type="checkbox" id="identity-switch" data-switch="success" checked/>
+                                            <label for="identity-switch" data-on-label="Yes"
+                                                   data-off-label="No"></label>
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <img src="" id="indentity-front" class="img-fluid p-2"
@@ -53,6 +58,12 @@
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <h5>Giấy phép lái xe</h5>
+                                        <div class="user-files-status">
+                                            <input type="checkbox" id="license-car-switch" data-switch="success"
+                                                   checked/>
+                                            <label for="license-car-switch" data-on-label="Yes"
+                                                   data-off-label="No"></label>
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <img src="" id="license-car-front" class="img-fluid p-2"
@@ -77,21 +88,23 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <form class="form-horizontal" id="form-filter">
-                        <div class="form-group row">
-                            <label for="select-status" class="col-5 col-form-label">Trạng thái</label>
-                            <div class="col-7">
-                                <select class="form-control select-filter" name="status" id='select-status'>
-                                    @foreach($status as $key => $value)
-                                        <option value="{{$key}}">
-                                            {{$value}}
-                                        </option>
-                                    @endforeach
-                                </select>
+                    <div id="update-bills-status" class="d-none">
+                        <form class="form-horizontal" id="form-filter">
+                            <div class="form-group row">
+                                <label for="select-status" class="col-5 col-form-label">Trạng thái</label>
+                                <div class="col-7">
+                                    <select class="form-control select-filter" name="status" id='select-status'>
+                                        @foreach($status as $key => $value)
+                                            <option value="{{$key}}">
+                                                {{$value}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" name="id" value="{{$billId}}">
-                    </form>
+                            <input type="hidden" name="id" value="{{$billId}}">
+                        </form>
+                    </div>
                     <div class="row">
                         <table class="table mb-0">
                             <thead class="thead-light">
@@ -230,24 +243,53 @@
                     } else {
                         $("#user-email").html(user.email).attr("href", "mailto:" + user.email);
                     }
+                    $("#identity-switch").attr("data-id", user.id)
+                    $("#license-car-switch").attr("data-id", user.id)
+                    let identity = 0, license_car = 0;
                     $.each(user.files, function (index, each) {
                         let storage = `{{asset('storage')}}/`;
                         if (each.type === {{\App\Enums\FileTypeEnum::IDENTITY_FRONT}}) {
                             $("#indentity-front").attr("src", storage + each.link);
+                            if (each.status === {{\App\Enums\FileStatusEnum::APPROVED}}) {
+                                identity++;
+                            }
                         }
                         if (each.type === {{\App\Enums\FileTypeEnum::IDENTITY_BACK}}) {
                             $("#indentity-back").attr("src", storage + each.link);
+                            if (each.status === {{\App\Enums\FileStatusEnum::APPROVED}}) {
+                                identity++;
+                            }
                         }
                         if (each.type === {{\App\Enums\FileTypeEnum::LICENSE_CAR_FRONT}}) {
                             $("#license-car-front").attr("src", storage + each.link);
+                            if (each.status === {{\App\Enums\FileStatusEnum::APPROVED}}) {
+                                license_car++;
+                            }
                         }
                         if (each.type === {{\App\Enums\FileTypeEnum::LICENSE_CAR_BACK}}) {
                             $("#license-car-back").attr("src", storage + each.link);
+                            if (each.status === {{\App\Enums\FileStatusEnum::APPROVED}}) {
+                                license_car++;
+                            }
                         }
                     });
+                    if (identity === 2) {
+                        $("#identity-switch").prop('checked', true);
+                    } else {
+                        $("#identity-switch").prop('checked', false);
+                    }
+                    if (license_car === 2) {
+                        $("#license-car-switch").prop('checked', true);
+                    } else {
+                        $("#license-car-switch").prop('checked', false);
+                    }
+                    updateBillsStatus();
                     //crawlCar
                     carShow(car);
                     //crawlBill
+                    if (bill.status !== {{\App\Enums\BillStatusEnum::PENDING}}) {
+                        $(".user-files-status").addClass('d-none')
+                    }
                     $("#date_start").html(bill.date_start);
                     $("#date_end").html(bill.date_end);
                     $("#price_1_day").html(crawlPrice(car.price_1_day));
@@ -265,6 +307,14 @@
                     @endforeach
                 }
             });
+        }
+
+        function updateBillsStatus() {
+            if ($('#identity-switch').is(":checked") && $('#license-car-switch').is(":checked")) {
+                $('#update-bills-status').removeClass('d-none');
+            } else {
+                $('#update-bills-status').addClass('d-none');
+            }
         }
 
         function carShow(car) {
@@ -296,15 +346,54 @@
             }
         }
 
+        function updateIdentityStatus() {
+            $('#identity-switch').change(function () {
+                let status = $(this).prop('checked') === true ? 1 : 0;
+                let user = $(this).data('id');
+                $.ajax({
+                    url: `{{route('api.users.identity.status.update')}}`,
+                    type: "GET",
+                    dataType: "json",
+                    data: {'status': status, 'user': user},
+                    success: function (response) {
+                        updateBillsStatus();
+                        $('#table').load(location.href + " #table");
+                        notifySuccess(response.message);
+                    }
+                });
+            })
+        }
+
+        function updateLicenseCarStatus() {
+            $('#license-car-switch').change(function () {
+                let status = $(this).prop('checked') === true ? 1 : 0;
+                let user = $(this).data('id');
+                $.ajax({
+                    url: `{{route('api.users.license.car.status.update')}}`,
+                    type: "GET",
+                    dataType: "json",
+                    data: {'status': status, 'user': user},
+                    success: function (response) {
+                        updateBillsStatus()
+                        $('#table').load(location.href + " #table");
+                        notifySuccess(response.message);
+                    }
+                });
+            })
+        }
+
         $(document).ready(async function () {
             crawlBillsShow();
             filter();
+            updateIdentityStatus();
+            updateLicenseCarStatus();
             @if (session('bills_success_message'))
             notifySuccess(`{{ session('bills_success_message') }}`);
             @endif
             @if (session('bills_error_message'))
             notifySuccess(`{{ session('bills_error_message') }}`);
             @endif
+
         });
     </script>
 @endpush

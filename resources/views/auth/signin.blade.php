@@ -84,11 +84,11 @@
                                     <a href="{{route('auth.redirect','google')}}"
                                        class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
                                 </li>
-                                <li class="list-inline-item">
-                                    <a href="{{route('auth.redirect','github')}}"
-                                       class="social-list-item border-secondary text-secondary"><i
-                                            class="mdi mdi-github-circle"></i></a>
-                                </li>
+{{--                                <li class="list-inline-item">--}}
+{{--                                    <a href="{{route('auth.redirect','github')}}"--}}
+{{--                                       class="social-list-item border-secondary text-secondary"><i--}}
+{{--                                            class="mdi mdi-github-circle"></i></a>--}}
+{{--                                </li>--}}
                             </ul>
                         </div>
                     </div>

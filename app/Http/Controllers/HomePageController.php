@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -40,7 +41,6 @@ class HomePageController extends Controller
         if (!empty($city) && $city !== 'All') {
             $query->where('city', $city);
         }
-
         $query->whereDoesntHave('bills', function ($query) use ($date_start, $date_end) {
             $query->where(function ($q) use ($date_start, $date_end) {
                 $q->orwhereRaw("date_start BETWEEN CAST('$date_start'  AS DATE) AND  CAST('$date_end' AS DATE)");

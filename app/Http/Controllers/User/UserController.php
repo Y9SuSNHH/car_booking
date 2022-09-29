@@ -32,6 +32,7 @@ class UserController extends Controller
 
         View::share('title', ucwords($this->table));
         View::share('table', $this->table);
+        View::share('role', $this->role);
     }
 
     public function index(): Factory|ViewAlias|Application
@@ -71,30 +72,5 @@ class UserController extends Controller
         return view("$this->role.edit", [
             'user' => $user,
         ]);
-    }
-
-    public function update(UpdateRequest $request): RedirectResponse
-    {
-        try {
-            $user = $this->model->find(auth()->user()->id);
-            $data = $request->validated();
-
-            if (Arr::has($data, 'files')) {
-                $files = $data['files'];
-
-                $keys = array_keys($files);
-                foreach ($keys as $key => $value) {
-                    $type = FileTypeEnum::getValue($value);
-                    $id   = auth()->user()->id;
-                    (new \App\Models\File)->updateOrCreate(FileTableEnum::USERS, $id, $type, $files[$value]);
-                }
-            }
-            $data = Arr::except($data, ['files']);
-            $user->fill($data);
-            $user->save();
-            return redirect()->back()->with('UserUpdate', 'Cập nhật thành công');
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('UserUpdate', $e->getMessage());
-        }
     }
 }

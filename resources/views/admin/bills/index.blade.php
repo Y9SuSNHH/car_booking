@@ -47,7 +47,7 @@
                                         <i class="mdi mdi-circle text-success"></i> Hoàn thành
                                     </div>
                                     <div class="col-6">
-                                        <i class="mdi mdi-circle text-danger"></i> Quá hạn trả xe
+                                        <i class="mdi mdi-circle text-danger"></i> Quá hạn
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                             </td>
                                             <td class="table-action">
                                                 <div class="row">
-                                                    @if ($each->GenerateStatus === 'danger')
+                                                    @if ($each->GenerateStatus === 'danger' && $each->status === \App\Enums\BillStatusEnum::PENDING)
                                                         <a href="{{ route("$role.$table.edit", $each)}}"
                                                            class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                                                     @else

@@ -112,7 +112,7 @@ class Bill extends Model
         $diff     = floor($diff / (60 * 60 * 24));
 
         $status = $this->status;
-        if ($diff > 0 && $status === BillStatusEnum::ACCEPTED) {
+        if ($diff > 0 && $status !== BillStatusEnum::DONE) {
             $status = BillStatusEnum::EXPIRES;
         }
 

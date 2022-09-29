@@ -124,6 +124,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="fullphoto">Ảnh chi tiết</label>
+                                    @foreach($car->files as $file)
+                                        <img id="pic" style="max-width: 200px; max-height:200px;" src="{{asset('storage'). '/'. $file->link}}"/>
+                                    @endforeach
+                                    <br>
+                                    <label for="fullphoto">Thay ảnh mới</label>
                                     <input type="file" name="fullphoto[]" id="fullphoto" class="form-control-file"
                                            multiple onchange="preview_image();">
                                     <div id="image_preview"></div>
@@ -258,7 +263,7 @@
                 }
             })
             @if (session('cars_error_message'))
-            notifySuccess(`{{ session('cars_error_message') }}`);
+            notifyError(`{{ session('cars_error_message') }}`);
             @endif
         });
     </script>

@@ -78,7 +78,7 @@
             <div class="card-body">
                 <div class="header-title">
                     <div class="form-group col-md-2">
-                            <a href="{{route("$role.$table.create")}}" class="btn btn-success">Thêm xe</a>
+                        <a href="{{route("$role.$table.create")}}" class="btn btn-success">Thêm xe</a>
                     </div>
                 </div>
                 <div class="tab-content" style="overflow-y: auto !important;">
@@ -111,8 +111,8 @@
                                     <tr>
                                         <td>{{$each->id}}</td>
                                         <td>
-                                            <img src="{{asset("storage").'/'. $each->image}}"
-                                                 class="img-fluid img-thumbnail p-1">
+                                            <img src="{{asset("storage").'/'. $each->image}}" data-toggle="modal"
+                                                 class="img-fluid img-thumbnail p-1"  onclick="modalEachCar('{{$each->id}}')" data-target="#modal-each-car">
                                         </td>
                                         <td>
                                             {{$each->name}}
@@ -180,6 +180,38 @@
                     <ul class="pagination pagination-rounded mb-0">
                         {{$data->appends(request()->query())->links()}}
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-each-car" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">X</button>
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content bg-transparent text-dark shadow-none">
+                <div class="modal-body">
+                    <div class="card">
+                        <div id="carouselExampleIndicators" class="carousel slide"
+                             data-ride="carousel">
+                            <ol class="carousel-indicators">
+                            </ol>
+                            <div class="carousel-inner" role="listbox">
+                            </div>
+                            <a class="carousel-control-prev"
+                               href="#carouselExampleIndicators"
+                               role="button" data-slide="prev">
+                                                                    <span class="carousel-control-prev-icon"
+                                                                          aria-hidden="true"></span>
+                                <span class="sr-only">Sau</span>
+                            </a>
+                            <a class="carousel-control-next"
+                               href="#carouselExampleIndicators"
+                               role="button" data-slide="next">
+                                                                    <span class="carousel-control-next-icon"
+                                                                          aria-hidden="true"></span>
+                                <span class="sr-only">Trước</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -385,13 +417,17 @@
         }
 
         function getDateDiff() {
-            let date_start = changeDateType(`{{$search['find']['date_start']}}`);
-            let date_end = changeDateType(`{{$search['find']['date_end']}}`);
+            @if($search['find']['check'] !== null)
+            let date_start = `{{$search['find']['date_start']}}`;
+            let date_end = `{{$search['find']['date_end']}}`;
+            date_start = changeDateType(date_start);
+            date_end = changeDateType(date_end);
 
             date_start = new Date(date_start);
             date_end = new Date(date_end);
             let date_diff = new Date(date_end - date_start);
             return date_diff / 1000 / 60 / 60 / 24;
+            @endif
         }
 
         function modalBillCreate(carId) {
@@ -523,11 +559,52 @@
             $("#select-city").append(city);
         }
 
+        function modalEachCar(car) {
+            $('.carousel-indicators').empty();
+            $('.carousel-inner').empty();
+            carShow(car);
+        }
+
+        function carShow(carId) {
+            $.ajax({
+                url: '{{ route('api.cars.show') }}/' + carId,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (response) {
+                    $.each(response.data, function (index, each) {
+                        let image_url = "{{asset('storage/')}}" + '/' + each.image;
+                        let li, image;
+                        li = "<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active'></li>";
+                        image = "<div class='carousel-item active'>" +
+                            "<img class='d-block img-fluid' src='" + image_url + "'>";
+                        $('.carousel-indicators').append(li);
+                        $('.carousel-inner').append(image);
+                        if (each.files.length !== 0) {
+                            $.each(each.files, function (index, each) {
+                                index += 1;
+                                let image_url = "{{asset('storage/')}}" + '/' + each.link;
+                                li = "<li data-target='#carouselExampleIndicators' data-slide-to='" + index + "'></li>";
+                                image = "<div class='carousel-item'>" +
+                                    "<img class='d-block img-fluid' src='" + image_url + "'>";
+                                $('.carousel-indicators').append(li);
+                                $('.carousel-inner').append(image);
+                            })
+                        } else {
+                            notifyInfo('Xe này chưa có ảnh chi tiết');
+                        }
+                    })
+                }
+            });
+        }
+
         $(document).ready(async function () {
             loadNames();
             filter();
             @if (session('cars_success_message'))
             notifySuccess(`{{ session('cars_success_message') }}`);
+            @endif
+            @if (session('cars_error_message'))
+            notifySuccess(`{{ session('cars_error_message') }}`);
             @endif
 
             @if($search['find']['check'] === 'on')
