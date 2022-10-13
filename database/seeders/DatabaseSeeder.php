@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        User::factory(500)->create();
+        User::factory(500)->create();
         Car::factory(500)->create();
         $this->call(BillSeeder::class);
 //         Bill::factory(500)->create();
